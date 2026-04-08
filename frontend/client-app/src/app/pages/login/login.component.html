@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="card">
+    <h2>🔐 Connexion Client</h2>
+    
+    <form (ngSubmit)="onSubmit()">
+      <input 
+        type="email" 
+        [(ngModel)]="email" 
+        name="email"
+        placeholder="Email" 
+        required>
+      
+      <input 
+        type="password" 
+        [(ngModel)]="password" 
+        name="password"
+        placeholder="Mot de passe" 
+        required>
+      
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+    
+    <p>Pas de compte ? <a routerLink="/register">S'inscrire</a></p>
+  </div>
+</div>

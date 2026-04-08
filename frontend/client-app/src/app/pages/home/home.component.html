@@ -1,0 +1,32 @@
+<nav>
+  <h1>🛒 MonShop - Espace Client</h1>
+  <div>
+    <span>👋 {{ authService.getUserEmail() || 'Client' }}</span>
+    <button (click)="logout()">Déconnexion</button>
+  </div>
+</nav>
+
+<div class="content">
+  <h2>Bienvenue sur votre espace client</h2>
+  <p>✅ Vous êtes authentifié en tant que <strong>Client</strong></p>
+  
+  <div class="grid">
+    <div class="card">
+      <h3>📦 Catalogue produits</h3>
+      <p>Consultez nos produits et ajoutez-les à votre panier.</p>
+      <small>🔜 Bientôt disponible</small>
+    </div>
+    
+    <div class="card">
+      <h3>🛍️ Mes commandes</h3>
+      <p>Suivez l'état de vos commandes et consultez votre historique.</p>
+      <small>🔜 Bientôt disponible</small>
+    </div>
+    
+    <div class="card">
+      <h3>❤️ Favoris</h3>
+      <p>Retrouvez vos produits préférés.</p>
+      <small>🔜 Bientôt disponible</small>
+    </div>
+  </div>
+</div>
