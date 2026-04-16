@@ -24,14 +24,13 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    private final UserRepository userRepository;  // ← Ajouter pour récupérer le rôle
+    private final UserRepository userRepository;
 
     private Key getSigningKey() {
         byte[] keyBytes = secret.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // ✅ MODIFIER : Générer le token avec le rôle
     public String generateToken(String email) {
         User user = userRepository.findByEmail(email).orElse(null);
 

@@ -38,6 +38,9 @@ public class AuthService {
         return new AuthResponse(token);
     }
 
+
+
+
     public AuthResponse registerAdmin(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email déjà utilisé");

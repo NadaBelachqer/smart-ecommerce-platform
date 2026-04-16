@@ -22,17 +22,30 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
 
-        System.out.println("🔍 Path: " + path);
+        System.out.println(" Path: " + path);
 
-        // ✅ Routes publiques
+
         if (path.contains("/api/auth/login") || path.contains("/api/auth/register")) {
+            System.out.println("✅ Route publique (auth)");
             return chain.filter(exchange);
         }
 
-        // 🔒 Vérification JWT
+        if (path.startsWith("/api/products") && !path.contains("/admin")) {
+            System.out.println("✅ Route publique (catalogue produits)");
+            return chain.filter(exchange);
+        }
+        // ✅ 🔥 AJOUT IMPORTANT (IMAGES)
+        if (path.startsWith("/uploads/")) {
+            System.out.println("🖼️ Route publique (images)");
+            return chain.filter(exchange);
+        }
+
+        System.out.println("🔒 Route protégée: " + path);
+
         String authHeader = request.getHeaders().getFirst("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println(" Token manquant");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -40,13 +53,14 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         String token = authHeader.substring(7);
 
         if (!jwtUtil.validateToken(token)) {
+            System.out.println("Token invalide");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
-        // Ajouter email dans header
-        String email = jwtUtil.extractEmail(token);
+        System.out.println("Token valide");
 
+        String email = jwtUtil.extractEmail(token);
         ServerHttpRequest mutatedRequest = request.mutate()
                 .header("X-User-Email", email)
                 .build();
@@ -56,6 +70,6 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -1; // exécuter AVANT les autres filters
+        return -1;
     }
 }

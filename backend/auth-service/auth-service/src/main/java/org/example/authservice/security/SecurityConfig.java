@@ -24,11 +24,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> {}) // Autoriser le CORS
-                .csrf(csrf -> csrf.disable()) // Désactiver CSRF pour API REST
+                .cors(cors -> {})
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Permettre register/login sans auth
-                        .anyRequest().authenticated() // Le reste nécessite auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated() //
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
