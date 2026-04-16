@@ -1,115 +1,159 @@
+/* background simple corporate */
 .register-container {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background-color: #f4f6f9;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
 }
 
+/* card clean */
 .register-card {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .logo {
-  text-align: center;
-  margin-bottom: 30px;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
 }
 
-.logo h1 {
-  color: #1a1a2e;
-  margin-bottom: 5px;
+.header h1 {
+  font-size: 1.4rem;
+  color: #111827;
+  margin: 0;
+  font-weight: 600;
 }
 
-.logo p {
-  color: #666;
-  font-size: 14px;
+.header p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.3rem;
 }
 
-.form-row {
+/* form */
+.form {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.form-row .form-group {
+/* row */
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* input */
+.input-group {
   flex: 1;
-}
-
-.form-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
-  font-weight: 500;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  color: #374151;
 }
 
 input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-  box-sizing: border-box;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.2s ease;
 }
 
 input:focus {
-  outline: none;
-  border-color: #1a1a2e;
+  border-color: #1f3a8a;
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  background: #1a1a2e;
-  color: white;
+/* button primary (bank style) */
+.btn-primary {
+  margin-top: 0.5rem;
+  padding: 0.85rem;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 8px;
+  background-color: #1f3a8a;
+  color: white;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  transition: 0.2s;
 }
 
-button:hover:not(:disabled) {
-  background: #16213e;
+.btn-primary:hover {
+  background-color: #1e40af;
 }
 
-button:disabled {
-  background: #999;
+.btn-primary:disabled {
+  background-color: #9ca3af;
   cursor: not-allowed;
 }
 
-.error-message {
-  background: #fee;
-  color: #e74c3c;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
+/* error */
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
   text-align: center;
 }
 
-.success-message {
-  background: #e8f5e9;
-  color: #4caf50;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
+/* success */
+.success-box {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
   text-align: center;
+  margin-bottom: 1rem;
 }
 
-.login-link {
+/* footer */
+.footer {
   text-align: center;
-  margin-top: 20px;
-  color: #666;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
-a {
-  color: #1a1a2e;
+.footer a {
+  color: #1f3a8a;
+  font-weight: 600;
   text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* responsive */
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .register-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
 }

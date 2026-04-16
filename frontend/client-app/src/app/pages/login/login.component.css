@@ -1,82 +1,124 @@
-.container {
+/* background simple + pro */
+.auth-container {
+  height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  justify-content: center;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #f4f6f9;
 }
 
-.card {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
+/* card sobre */
+.auth-card {
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  max-width: 420px;
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
-h2 {
+/* header */
+.auth-header {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 2rem;
 }
 
-input {
+.logo {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.auth-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.auth-header p {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* inputs */
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  font-size: 0.85rem;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.input-wrapper input {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-input:focus {
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
   outline: none;
-  border-color: #667eea;
+  background: #fff;
+  transition: border 0.2s ease;
 }
 
-button {
+.input-wrapper input:focus {
+  border-color: #2563eb;
+}
+
+/* error */
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* button principal (couleur banque classique) */
+.btn-primary {
   width: 100%;
-  padding: 12px;
-  background: #667eea;
-  color: white;
+  padding: 0.8rem;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 8px;
+  background-color: #1f3a8a; /* bleu banque pro */
+  color: white;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  transition: 0.2s ease;
 }
 
-button:hover:not(:disabled) {
-  background: #5a67d8;
+.btn-primary:hover {
+  background-color: #1e40af;
 }
 
-button:disabled {
-  background: #ccc;
+.btn-primary:disabled {
+  background-color: #9ca3af;
   cursor: not-allowed;
 }
 
-.error {
-  color: #e74c3c;
+/* footer */
+.auth-footer {
   text-align: center;
-  margin: 10px 0;
-  padding: 8px;
-  background: #fdecea;
-  border-radius: 5px;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
-p {
-  text-align: center;
-  margin-top: 20px;
-  color: #666;
-}
-
-a {
-  color: #667eea;
+.auth-footer a {
+  color: #1f3a8a;
+  font-weight: 600;
   text-decoration: none;
 }
 
-a:hover {
+.auth-footer a:hover {
   text-decoration: underline;
 }

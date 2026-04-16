@@ -34,13 +34,11 @@ export class RegisterComponent {
 
     console.log('Création compte admin:', this.user.email);
 
-    // ✅ Utiliser registerAdmin au lieu de register
     this.authService.registerAdmin(this.user).subscribe({
       next: (response) => {
         console.log('Compte admin créé:', response);
-        this.successMessage = '✅ Compte administrateur créé avec succès ! Redirection...';
+        this.successMessage = ' Compte administrateur créé avec succès ! Redirection...';
         
-        // Sauvegarder le token et rediriger
         this.authService.saveToken(response.token);
         
         setTimeout(() => {
@@ -53,11 +51,11 @@ export class RegisterComponent {
         this.loading = false;
         
         if (err.status === 0) {
-          this.errorMessage = '❌ Impossible de contacter le serveur. Vérifiez que l\'API Gateway est démarrée (port 8080).';
+          this.errorMessage = 'Impossible de contacter le serveur. Vérifiez que l\'API Gateway est démarrée (port 8080).';
         } else if (err.error?.message) {
           this.errorMessage = err.error.message;
         } else {
-          this.errorMessage = '❌ Erreur lors de la création du compte admin.';
+          this.errorMessage = ' Erreur lors de la création du compte admin.';
         }
       }
     });

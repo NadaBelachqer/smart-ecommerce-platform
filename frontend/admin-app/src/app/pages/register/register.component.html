@@ -1,57 +1,66 @@
 <div class="register-container">
+
   <div class="register-card">
-    <div class="logo">
-      <h1>📝 Créer un compte Admin</h1>
-      <p>Plateforme E-Commerce</p>
+
+    <div class="header">
+      <div class="logo">🧾</div>
+      <h1>Create Admin Account</h1>
+      <p>eCommerce Platform</p>
     </div>
-    
-    <div *ngIf="successMessage" class="success-message">
-      ✅ {{ successMessage }}
+
+    <div *ngIf="successMessage" class="success-box">
+      {{ successMessage }}
     </div>
-    
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Prénom</label>
+
+    <form (ngSubmit)="onSubmit()" class="form">
+
+      <div class="row">
+        <div class="input-group">
+          <label>First name</label>
           <input type="text" [(ngModel)]="user.firstName" name="firstName" required>
         </div>
-        <div class="form-group">
-          <label>Nom</label>
+
+        <div class="input-group">
+          <label>Last name</label>
           <input type="text" [(ngModel)]="user.lastName" name="lastName" required>
         </div>
       </div>
-      
-      <div class="form-group">
+
+      <div class="input-group">
         <label>Email</label>
         <input type="email" [(ngModel)]="user.email" name="email" required>
       </div>
-      
-      <div class="form-group">
-        <label>Mot de passe</label>
+
+      <div class="input-group">
+        <label>Password</label>
         <input type="password" [(ngModel)]="user.password" name="password" required minlength="6">
       </div>
-      
-      <div class="form-group">
-        <label>Adresse</label>
+
+      <div class="input-group">
+        <label>Address</label>
         <input type="text" [(ngModel)]="user.address" name="address">
       </div>
-      
-      <div class="form-group">
-        <label>Téléphone</label>
+
+      <div class="input-group">
+        <label>Phone</label>
         <input type="tel" [(ngModel)]="user.phone" name="phone">
       </div>
-      
-      <div *ngIf="errorMessage" class="error-message">
-        ⚠️ {{ errorMessage }}
+
+      <div *ngIf="errorMessage" class="error-box">
+        {{ errorMessage }}
       </div>
-      
-      <button type="submit" [disabled]="loading">
-        {{ loading ? 'Inscription...' : 'Créer un compte' }}
+
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Creating account...' : 'Create account' }}
       </button>
+
     </form>
-    
-    <p class="login-link">
-      Déjà un compte ? <a routerLink="/login">Se connecter</a>
-    </p>
+
+    <div class="footer">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </div>
+
   </div>
+
 </div>

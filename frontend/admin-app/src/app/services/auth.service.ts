@@ -9,7 +9,6 @@ export class AuthService {
   private router = inject(Router);
   private apiUrl = 'http://localhost:8080/api/auth';
 
-  // ========== INSCRIPTION CLIENT ==========
   register(user: {
     email: string;
     password: string;
@@ -21,7 +20,6 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.apiUrl}/register`, user);
   }
 
-  // ✅ NOUVEAU : INSCRIPTION ADMIN
   registerAdmin(user: {
     email: string;
     password: string;
@@ -33,28 +31,23 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.apiUrl}/register-admin`, user);
   }
 
-  // ========== CONNEXION ==========
   login(email: string, password: string): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password });
   }
 
-  // ========== SAUVEGARDE TOKEN ==========
   saveToken(token: string) {
     localStorage.setItem('adminToken', token);
     console.log('Token sauvegardé');
   }
 
-  // ========== RÉCUPÉRER TOKEN ==========
   getToken(): string | null {
     return localStorage.getItem('adminToken');
   }
 
-  // ========== SUPPRIMER TOKEN ==========
   clearToken() {
     localStorage.removeItem('adminToken');
   }
 
-  // ========== DÉCODER TOKEN ==========
   private decodeToken(token: string): any {
     try {
       const parts = token.split('.');
@@ -71,7 +64,6 @@ export class AuthService {
     }
   }
 
-  // ========== RÉCUPÉRER LE RÔLE ==========
   getUserRole(): string | null {
     const token = this.getToken();
     if (!token) return null;
@@ -93,7 +85,6 @@ export class AuthService {
     return role || null;
   }
 
-  // ========== RÉCUPÉRER L'EMAIL ==========
   getUserEmail(): string | null {
     const token = this.getToken();
     if (!token) return null;
@@ -101,7 +92,6 @@ export class AuthService {
     return payload?.sub || payload?.email || null;
   }
 
-  // ========== VÉRIFIER SI ADMIN ==========
   isAdmin(): boolean {
     const role = this.getUserRole();
     const isAdmin = role === 'ADMIN';
@@ -109,7 +99,6 @@ export class AuthService {
     return isAdmin;
   }
 
-  // ========== VÉRIFIER SI CONNECTÉ ==========
   isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) {
@@ -128,7 +117,6 @@ export class AuthService {
     return isValid;
   }
 
-  // ========== DÉCONNEXION ==========
   logout() {
     this.clearToken();
     this.router.navigate(['/login']);
