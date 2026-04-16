@@ -1,0 +1,138 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>📦 Gestion des Produits</h1>
+    <a routerLink="/products/new" class="btn-primary">➕ Nouveau produit</a>
+  </div>
+
+  <div class="filters-bar">
+   <!-- <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchKeyword" 
+        placeholder="🔍 Rechercher un produit..."
+        (keyup.enter)="search()"
+        class="search-input">
+      <button (click)="search()" class="btn-search">Rechercher</button>
+    </div>
+    
+    <div class="category-filters">
+      <button 
+        (click)="resetFilters()" 
+        class="cat-filter" 
+        [class.active]="!selectedCategory">
+        Tous
+      </button>
+      <button 
+        *ngFor="let cat of categories" 
+        (click)="filterByCategory(cat)" 
+        class="cat-filter"
+        [class.active]="selectedCategory === cat">
+        {{ cat }}
+      </button>
+    </div>-->
+    
+    <div class="page-size-selector">
+      <label>Afficher :</label>
+      <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+        <option [value]="10">10</option>
+        <option [value]="25">25</option>
+        <option [value]="50">50</option>
+        <option [value]="100">100</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>⏳ Chargement...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+     {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && products.length === 0" class="empty-state">
+    <p>Aucun produit trouvé.</p>
+    <button (click)="resetFilters()" class="btn-primary">Voir tous les produits</button>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && products.length > 0" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>SKU</th>
+          <th>Nom</th>
+          <th>Catégorie</th>
+          <th>Prix (DH)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td class="image-cell">
+            <img 
+              *ngIf="product.imageUrl" 
+              [src]="getImageUrl(product.imageUrl)" 
+              [alt]="product.name"
+              class="product-thumbnail"
+              (error)="onImageError($event)">
+            <div *ngIf="!product.imageUrl" class="no-image">
+              📷
+            </div>
+          </td>
+          <td>{{ product.sku || '-' }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.category || '-' }}</td>
+          <td class="price-cell">{{ product.sellingPrice }} DH</td>
+          <td class="actions">
+            <a [routerLink]="['/products', product.id, 'edit']" class="btn-edit">✏️ Modifier</a>
+            <button (click)="deleteProduct(product.id, product.name)" class="btn-delete">🗑️ Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <div class="pagination-info">
+        Affichage de {{ currentPage * pageSize + 1 }} à {{ Math.min((currentPage + 1) * pageSize, totalElements) }} sur {{ totalElements }} produits
+      </div>
+      
+      <div class="pagination-controls">
+        <button 
+          class="page-btn" 
+          [disabled]="currentPage === 0"
+          (click)="goToPage(0)">
+          ⏮ Premier
+        </button>
+        <button 
+          class="page-btn" 
+          [disabled]="currentPage === 0"
+          (click)="goToPage(currentPage - 1)">
+          ◀ Précédent
+        </button>
+        
+        <button 
+          *ngFor="let page of getPaginationArray()"
+          class="page-btn"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page + 1 }}
+        </button>
+        
+        <button 
+          class="page-btn" 
+          [disabled]="currentPage >= totalPages - 1"
+          (click)="goToPage(currentPage + 1)">
+          Suivant ▶
+        </button>
+        <button 
+          class="page-btn" 
+          [disabled]="currentPage >= totalPages - 1"
+          (click)="goToPage(totalPages - 1)">
+          Dernier ⏩
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
