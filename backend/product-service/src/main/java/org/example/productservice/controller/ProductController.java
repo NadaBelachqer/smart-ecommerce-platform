@@ -27,8 +27,14 @@ public class ProductController {
 
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponseDTO>> getProductsPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(productService.getProductsPaginated(page, size)
+    public ResponseEntity<Page<ProductResponseDTO>> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category
+    ) {
+        return ResponseEntity.ok(
+                productService.getFilteredProducts(page, size, keyword, category)
         );
     }
 

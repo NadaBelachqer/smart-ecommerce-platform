@@ -38,31 +38,38 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    this.loading = true;
-    this.errorMessage = '';
-    this.productService.getAllProducts(this.currentPage, this.pageSize)
-      .pipe( finalize(() => {
-        this.loading = false;
-          this.cdr.detectChanges(); 
-        })
-      )
-      .subscribe({
-        next: (response: PageResponse<Product>) => {
-          console.log(' Données reçues:', response);
-          this.products = response.content;
-          this.totalPages = response.totalPages;
-          this.totalElements = response.totalElements;
-          this.currentPage = response.number;
-          
-          this.extractCategories(response.content);
-        },
-        error: (err) => {
-          console.error(err);
-          this.errorMessage = 'Erreur lors du chargement des produits';
-        }
-      });
-  }
+  this.loading = true;
+  this.errorMessage = '';
 
+  this.productService.getProducts(
+    this.currentPage,
+    this.pageSize,
+    this.searchKeyword,
+    this.selectedCategory
+  )
+  .pipe(
+    finalize(() => {
+      this.loading = false;
+      this.cdr.detectChanges();
+    })
+  )
+  .subscribe({
+    next: (response: PageResponse<Product>) => {
+      console.log('Données reçues :', response);
+
+      this.products = response.content;
+      this.totalPages = response.totalPages;
+      this.totalElements = response.totalElements;
+      this.currentPage = response.number;
+
+      this.extractCategories(response.content);
+    },
+    error: (err) => {
+      console.error(err);
+      this.errorMessage = 'Erreur lors du chargement des produits';
+    }
+  });
+}
   extractCategories(products: Product[]) {
     const uniqueCategories = [...new Set(products.map(p => p.category).filter(c => c))];
     this.categories = uniqueCategories;

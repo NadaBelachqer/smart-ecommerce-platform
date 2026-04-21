@@ -66,7 +66,7 @@ export class ProductService {
     return products.map(p => this.normalizeImageUrl(p));
   }
 
-  getAllProducts(page: number = 0, size: number = 10): Observable<PageResponse<Product>> {
+  /*getAllProducts(page: number = 0, size: number = 10): Observable<PageResponse<Product>> {
     return this.http.get<PageResponse<Product>>(
       `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`,
       { headers: this.getAuthHeaders() }
@@ -76,7 +76,35 @@ export class ProductService {
         content: this.normalizeImageUrls(response.content)
       }))
     );
+  }*/
+ 
+  getProducts(
+  page: number = 0,
+  size: number = 10,
+  keyword: string = '',
+  category: string = ''
+): Observable<PageResponse<Product>> {
+
+  let url = `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`;
+
+  if (keyword?.trim()) {
+    url += `&keyword=${encodeURIComponent(keyword.trim())}`;
   }
+
+  if (category?.trim()) {
+    url += `&category=${encodeURIComponent(category.trim())}`;
+  }
+
+  return this.http.get<PageResponse<Product>>(
+    url,
+    { headers: this.getAuthHeaders() }
+  ).pipe(
+    map(response => ({
+      ...response,
+      content: this.normalizeImageUrls(response.content)
+    }))
+  );
+}
 
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(
