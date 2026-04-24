@@ -38,6 +38,7 @@ public class ProductController {
         );
     }
 
+
     @PostMapping(value = "/admin/import/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> importProductsFromCsv(@RequestPart("file") MultipartFile file) throws IOException {
         productService.importProductsFromCsv(file);
