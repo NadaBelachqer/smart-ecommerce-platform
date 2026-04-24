@@ -14,7 +14,7 @@ public class ProductServiceClient {
 
     private final WebClient.Builder webClientBuilder;
 
-    @Value("${product.service.url:http://localhost:8082}")
+    @Value("${product.service.url:http://product-service:8082}")
     private String productServiceUrl;
 
     public boolean productExists(Long productId) {
