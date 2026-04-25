@@ -78,17 +78,24 @@ export class ProductFormComponent implements OnInit {
       });
   }
 
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedImage = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(this.selectedImage);
+  
+
+  onImageSelected(event:Event){
+    const input =event.target as HTMLInputElement;
+    if(input.files && input.files.length>0){
+      this.selectedImage=input.files[0];
+      this.successMessage='';
+      this.errorMessage='';
+     const reader=new FileReader();
+     reader.onload= ()=>{
+      this.imagePreview=reader.result as string;
+      this.cdr.detectChanges();
+     };
+     reader.readAsDataURL(this.selectedImage);
+      
     }
   }
+
 
 
 onCsvSelected(event: Event) {
@@ -133,10 +140,15 @@ onCsvSelected(event: Event) {
     });
 }
 
-  removeSelectedImage() {
-    this.imagePreview = null;
-    this.selectedImage = null;
+ removeSelectedImage() {
+  this.imagePreview = null;
+  this.selectedImage = null;
+
+  const imageInput = document.getElementById('imageFileInput') as HTMLInputElement;
+  if (imageInput) {
+    imageInput.value = '';
   }
+}
 
   onSubmit() {
     this.loadingSubmit = true;

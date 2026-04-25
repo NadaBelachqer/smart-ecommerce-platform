@@ -128,7 +128,70 @@ public class ProductService {
         if (product.getImageUrl() != null) {
             imageStorageService.deleteImage(product.getImageUrl());
         }
-
         productRepository.deleteById(id);
+    }
+
+   /* public Page<ProductResponseDTO> getFilteredProducts(String keyword,String categorie,int page,int size ) {
+        Pageable pageable=PageRequest.of(page,size);
+        Page<Product> products;
+        if((keyword==null || keyword.isBlank() && categorie==null || categorie.isBlank())){
+            products=productRepository.findAll(pageable);
+        }
+        else if((keyword!=null && !keyword.isBlank() && categorie!=null && !categorie.isBlank())){
+            products=productRepository.findByNameContainingIgnoreCaseAndCategory(keyword,categorie,pageable);
+        } else if (keyword!=null && keyword.isBlank()) {
+            products = productRepository.findByNameContainingIgnoreCase(keyword, pageable);
+        }
+        else if (categorie!=null && categorie.isBlank()) {
+            products = productRepository.findByCategory(categorie, pageable);
+        }
+        else {
+            products = productRepository.findAll(pageable);
+        }
+
+        return products.map(productMapper::toResponseDTO);
+    }*/
+
+    public Page<ProductResponseDTO> getFilteredProducts(
+            int page,
+            int size,
+            String keyword,
+            String category
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> products;
+
+        if ((keyword == null || keyword.isBlank()) &&
+                (category == null || category.isBlank())) {
+
+            products = productRepository.findAll(pageable);
+        }
+
+        else if (keyword != null && !keyword.isBlank() &&
+                category != null && !category.isBlank()) {
+
+            products = productRepository
+                    .findByNameContainingIgnoreCaseAndCategory(keyword, category, pageable);
+        }
+
+        else if (keyword != null && !keyword.isBlank()) {
+
+            products = productRepository
+                    .findByNameContainingIgnoreCase(keyword, pageable);
+        }
+
+        else if (category != null && !category.isBlank()) {
+
+            products = productRepository
+                    .findByCategory(category, pageable);
+        }
+
+        else {
+            products = productRepository.findAll(pageable);
+        }
+
+        return products.map(productMapper::toResponseDTO);
     }
 }

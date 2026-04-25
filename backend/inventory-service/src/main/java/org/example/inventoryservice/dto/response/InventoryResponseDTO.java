@@ -15,4 +15,5 @@ public class InventoryResponseDTO {
     //(pour UI&ML)
     private Boolean inStock;
     private Boolean lowStock;
+    private String alertType;
 }

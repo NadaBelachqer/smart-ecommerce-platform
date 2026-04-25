@@ -23,6 +23,8 @@ public class InventoryService {
     private final InventoryRepository inventoryRepository;
     private final InventoryMapper inventoryMapper;
     private final ProductServiceClient productServiceClient;
+    private final MovementService movementService;
+    private final AlertService alertService;
 
     public List<InventoryResponseDTO> getAllInventories(){
         return inventoryRepository.findAll().stream().map(inventoryMapper::toDTO)

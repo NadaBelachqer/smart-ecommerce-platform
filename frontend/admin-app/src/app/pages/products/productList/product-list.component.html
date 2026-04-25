@@ -5,13 +5,15 @@
   </div>
 
   <div class="filters-bar">
-   <!-- <div class="search-box">
+
+
+    <!--<div class="search-box">
       <input 
-        type="text" 
-        [(ngModel)]="searchKeyword" 
-        placeholder="🔍 Rechercher un produit..."
-        (keyup.enter)="search()"
-        class="search-input">
+  type="text" 
+  [(ngModel)]="searchKeyword" 
+  placeholder="🔍 Rechercher un produit..."
+  (input)="search()"
+  class="search-input">
       <button (click)="search()" class="btn-search">Rechercher</button>
     </div>
     
