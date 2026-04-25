@@ -14,7 +14,7 @@ public class GatewayConfig {
                 .route("auth-service", r -> r
                         .path("/api/auth/**").permitAll()
                         .filters(f -> f.stripPrefix(1))
-                        .uri("http://localhost:8081"))
+                        .uri("http://auth-service:8081"))
                 .build();
     }
 }
