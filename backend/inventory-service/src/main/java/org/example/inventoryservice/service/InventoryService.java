@@ -13,7 +13,6 @@ import org.example.inventoryservice.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,55 +22,73 @@ public class InventoryService {
     private final InventoryRepository inventoryRepository;
     private final InventoryMapper inventoryMapper;
     private final ProductServiceClient productServiceClient;
-    private final MovementService movementService;
-    private final AlertService alertService;
 
-    public List<InventoryResponseDTO> getAllInventories(){
-        return inventoryRepository.findAll().stream().map(inventoryMapper::toDTO)
+    public List<InventoryResponseDTO> getAllInventories() {
+        return inventoryRepository.findAll()
+                .stream()
+                .map(inventoryMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public InventoryResponseDTO createInventory(InventoryRequestDTO request){
-     /*   if(!productServiceClient.productExists(request.getProductId())){
-            throw new ProductNotFoundException("Produit avec ID"+ request.getProductId()+"n'existe pas");
-        }*/
+    public InventoryResponseDTO createInventory(InventoryRequestDTO request) {
 
-        if(inventoryRepository.findByProductId(request.getProductId()).isPresent()){
-            throw new RuntimeException("Inventaire existe déja pour ce produit");
+        if (inventoryRepository.findByProductId(request.getProductId()).isPresent()) {
+            throw new RuntimeException("Inventory already exists for this product");
         }
-        Inventory inventory=inventoryMapper.toEntity(request);
-        Inventory saved=inventoryRepository.save(inventory);
+
+        Inventory inventory = inventoryMapper.toEntity(request);
+
+        if (inventory.getReservedStock() == null) {
+            inventory.setReservedStock(0);
+        }
+
+        if (inventory.getStockLevel() == null) {
+            inventory.setStockLevel(0);
+        }
+
+        Inventory saved = inventoryRepository.save(inventory);
+
         return inventoryMapper.toDTO(saved);
     }
 
     public InventoryResponseDTO getByProductId(Long productId) {
-        if (!productServiceClient.productExists(productId)) {
-            throw new ProductNotFoundException("Produit avec ID " + productId + " n'existe pas");
-        }
-        Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
-    return inventoryMapper.toDTO(inventory);
+
+        Inventory inventory = inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
+
+        return inventoryMapper.toDTO(inventory);
     }
 
+    public InventoryResponseDTO updateStock(Long productId, int quantity) {
 
-    public InventoryResponseDTO updateStock(Long productId,int quantity){
-        if(!productServiceClient.productExists(productId)){
-            throw new ProductNotFoundException("Produit avec ID " + productId + " n'existe pas");
-        }
-        Inventory inventory=inventoryRepository.findByProductId(productId).orElseThrow(()->new InventoryNotFoundException("Inventory not found"));
-        inventory.setStockLevel(quantity);
-        Inventory updated=inventoryRepository.save(inventory);
-        return  inventoryMapper.toDTO(updated);
+        Inventory inventory = inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
+
+        inventory.setStockLevel(inventory.getStockLevel() + quantity);
+
+        Inventory updated = inventoryRepository.save(inventory);
+
+        return inventoryMapper.toDTO(updated);
     }
 
-    public InventoryResponseDTO reserveStock(Long productId,int quantity){
-        if (!productServiceClient.productExists(productId)) {
-            throw new ProductNotFoundException("Produit avec ID " + productId + " n'existe pas");
+    public InventoryResponseDTO reserveStock(Long productId, int quantity) {
+
+        Inventory inventory = inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
+
+        int reserved = inventory.getReservedStock() == null ? 0 : inventory.getReservedStock();
+        int stock = inventory.getStockLevel();
+
+        if (stock < quantity) {
+            throw new RuntimeException("Insufficient stock");
         }
-        Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
-        inventory.setStockLevel(inventory.getStockLevel()-quantity);
-        inventory.setReservedStock(inventory.getReservedStock()+quantity);
-        Inventory updated=inventoryRepository.save(inventory);
+
+        inventory.setStockLevel(stock - quantity);
+        inventory.setReservedStock(reserved + quantity);
+
+        Inventory updated = inventoryRepository.save(inventory);
+
         return inventoryMapper.toDTO(updated);
     }
 }

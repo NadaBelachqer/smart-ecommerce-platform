@@ -141,7 +141,6 @@ public class ProductService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-<<<<<<< HEAD
         boolean hasKeyword = keyword != null && !keyword.isBlank();
         boolean hasCategory = category != null && !category.isBlank();
 
@@ -152,54 +151,22 @@ public class ProductService {
         }
 
         else if (hasKeyword && hasCategory) {
-=======
-        Page<Product> products;
-
-        if ((keyword == null || keyword.isBlank()) &&
-                (category == null || category.isBlank())) {
-
-            products = productRepository.findAll(pageable);
-        }
-
-        else if (keyword != null && !keyword.isBlank() &&
-                category != null && !category.isBlank()) {
-
->>>>>>> feature/my-local-work
             products = productRepository
                     .findByNameContainingIgnoreCaseAndCategory(keyword, category, pageable);
         }
 
-<<<<<<< HEAD
         else if (hasKeyword) {
-=======
-        else if (keyword != null && !keyword.isBlank()) {
-
->>>>>>> feature/my-local-work
             products = productRepository
                     .findByNameContainingIgnoreCase(keyword, pageable);
         }
 
-<<<<<<< HEAD
         else {
-=======
-        else if (category != null && !category.isBlank()) {
-
->>>>>>> feature/my-local-work
             products = productRepository
                     .findByCategory(category, pageable);
         }
 
-<<<<<<< HEAD
         return products.map(productMapper::toResponseDTO);
     }
 
 
-=======
-        else {
-            products = productRepository.findAll(pageable);
-        }
-
-        return products.map(productMapper::toResponseDTO);
-    }
->>>>>>> feature/my-local-work
 }
