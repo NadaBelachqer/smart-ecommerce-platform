@@ -39,6 +39,10 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             System.out.println("🖼️ Route publique (images)");
             return chain.filter(exchange);
         }
+        if (path.startsWith("/api/forecast")) {
+            System.out.println("📊 Route publique (forecast)");
+            return chain.filter(exchange);
+        }
 
         System.out.println("🔒 Route protégée: " + path);
 

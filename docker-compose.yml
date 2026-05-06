@@ -39,6 +39,19 @@ services:
     networks:
       - ecommerce-net
 
+  mysql-forecast:
+    image: mysql:8
+    container_name: mysql-forecast
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: forecast_db
+    ports:
+      - "3313:3306"
+    volumes:
+      - mysql_forecast_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
   auth-service:
     build:
       context: ./backend/auth-service/auth-service
@@ -72,6 +85,26 @@ services:
     networks:
       - ecommerce-net
 
+  forecast-service:
+    build:
+      context: ./backend/forecast-service
+    container_name: forecast-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql-forecast
+      - ml-api
+    networks:
+      - ecommerce-net
+
+  ml-api:
+    build:
+      context: ./backend/ml-api
+    container_name: ml-api
+    ports:
+      - "5000:5000"
+    networks:
+      - ecommerce-net
   api-gateway:
     build:
       context: ./backend/api-gateway/api-gateway
@@ -83,6 +116,8 @@ services:
       - auth-service
       - product-service
       - inventory-service
+      - forecast-service
+      - ml-api
     networks:
       - ecommerce-net
 
@@ -90,6 +125,7 @@ volumes:
   mysql_auth_data:
   mysql_product_data:
   mysql_inventory_data:
+  mysql_forecast_data:
 
 networks:
   ecommerce-net:

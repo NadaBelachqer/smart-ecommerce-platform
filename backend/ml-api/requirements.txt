@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 pandas
-numpy
-scikit-learn
-lightgbm
 joblib
+lightgbm
+scikit-learn
+pydantic

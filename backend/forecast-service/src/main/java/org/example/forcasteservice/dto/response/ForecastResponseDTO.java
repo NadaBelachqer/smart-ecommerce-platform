@@ -8,10 +8,7 @@ import lombok.Data;
 public class ForecastResponseDTO {
 
     private Long productId;
-
     private Double predictedSales;
-
     private Integer recommendedStock;
-
     private String message;
 }
