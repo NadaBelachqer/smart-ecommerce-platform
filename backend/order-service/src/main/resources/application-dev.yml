@@ -1,0 +1,15 @@
+server:
+  port: 8084
+
+spring:
+  datasource:
+    url: ${ORDER_DB_URL:jdbc:mysql://localhost:3313/order_db?useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${ORDER_DB_USERNAME:root}
+    password: ${ORDER_DB_PASSWORD:root}
+
+services:
+  api-gateway: http://localhost:8080
+  product:
+    url: ${PRODUCT_SERVICE_URL:http://localhost:8082/products}
+  inventory:
+    url: ${INVENTORY_SERVICE_URL:http://localhost:8083}

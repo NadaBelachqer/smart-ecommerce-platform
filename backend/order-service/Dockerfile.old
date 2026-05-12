@@ -1,0 +1,28 @@
+# Utiliser Eclipse Temurin 17 comme image de base
+FROM eclipse-temurin:17-jdk-slim
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier le fichier pom.xml et les dépendances Maven
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw .
+
+# Donner les permissions d'exécution au script mvnw
+RUN chmod +x mvnw
+
+# Télécharger les dépendances (optimisation du cache Docker)
+RUN ./mvnw dependency:go-offline -B
+
+# Copier le code source
+COPY src ./src
+
+# Construire l'application
+RUN ./mvnw clean package -DskipTests
+
+# Exposer le port 8084
+EXPOSE 8084
+
+# Commande pour démarrer l'application
+CMD ["java", "-jar", "target/order-service-1.0.0.jar"]

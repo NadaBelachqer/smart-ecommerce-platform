@@ -1,0 +1,435 @@
+{
+  "info": {
+    "name": "Order Service - Smart E-Commerce",
+    "_postman_id": "order-service-v2",
+    "description": "Collection complète pour tester order-service (local :8084) et les services liés via API Gateway (:8080).\n\n## Prérequis\n1. Lancer order-service en local : mvn spring-boot:run\n2. Les autres services tournent dans Docker\n3. Obtenir un token via POST /api/auth/login\n4. Mettre le token dans la variable `token`\n5. Mettre un `user_id` valide (celui retourné par le login)\n\n## Headers obligatoires sur toutes les requêtes\n- Authorization: Bearer {{token}}\n- X-User-Id: {{user_id}}  (sauf routes admin sans user context)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "gateway_url", "value": "http://localhost:8080" },
+    { "key": "order_url",   "value": "http://localhost:8084" },
+    { "key": "token",       "value": "PASTE_YOUR_JWT_TOKEN_HERE" },
+    { "key": "user_id",     "value": "1" },
+    { "key": "order_id",    "value": "1" },
+    { "key": "product_id",  "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "0. Auth - Obtenir un token",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "  console.log('Token saved');",
+                  "}",
+                  "if (res.id) pm.collectionVariables.set('user_id', res.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{gateway_url}}/api/auth/login",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. ORDER SERVICE - Client (direct :8084)",
+      "description": "Toutes les requêtes nécessitent Authorization: Bearer {{token}} et X-User-Id: {{user_id}}",
+      "item": [
+        {
+          "name": "Créer une commande",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.expect(pm.response.code).to.equal(201));",
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "  pm.collectionVariables.set('order_id', res.data.id);",
+                  "  console.log('order_id saved:', res.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",   "value": "application/json" },
+              { "key": "Authorization",  "value": "Bearer {{token}}" },
+              { "key": "X-User-Id",      "value": "{{user_id}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\": \"123 Rue Mohammed V, Casablanca\",\n  \"paymentMethod\": \"CARD\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 1\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Mes commandes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.expect(pm.response.code).to.equal(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has message', () => pm.expect(res.message).to.be.a('string'));",
+                  "// Si aucune commande : message = 'You have no orders yet'"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "X-User-Id",     "value": "{{user_id}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/my-orders",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "my-orders"]
+            }
+          }
+        },
+        {
+          "name": "Commande par ID (ownership vérifié)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.expect(pm.response.code).to.equal(200));",
+                  "// Si la commande n'appartient pas à l'user → 400 'You are not authorized to view this order'"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "X-User-Id",     "value": "{{user_id}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/{{order_id}}",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "{{order_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Annuler une commande (client)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.expect(pm.response.code).to.equal(200));",
+                  "// Stock restauré automatiquement si commande non expédiée",
+                  "// Si SHIPPED → annulation admin uniquement, stock non restauré auto"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "X-User-Id",     "value": "{{user_id}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/{{order_id}}/cancel",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "{{order_id}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. ORDER SERVICE - Admin (direct :8084)",
+      "description": "Routes admin — Authorization: Bearer {{token}} obligatoire",
+      "item": [
+        {
+          "name": "[ADMIN] Toutes les commandes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/admin/all",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "admin", "all"]
+            }
+          }
+        },
+        {
+          "name": "[ADMIN] Commande par ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/admin/{{order_id}}",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "admin", "{{order_id}}"]
+            }
+          }
+        },
+        {
+          "name": "[ADMIN] Changer le statut",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/admin/{{order_id}}/status?status=PROCESSING",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "admin", "{{order_id}}", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PROCESSING",
+                  "description": "PENDING | CONFIRMED | PROCESSING | SHIPPED | DELIVERED | CANCELLED | REFUNDED"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "[ADMIN] Annuler une commande",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Si statut était SHIPPED avant annulation :",
+                  "// stock NON restauré auto → ajustement manuel inventaire nécessaire",
+                  "// Sinon : stock restauré automatiquement"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{order_url}}/api/orders/admin/{{order_id}}/cancel",
+              "host": ["{{order_url}}"],
+              "path": ["api", "orders", "admin", "{{order_id}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. ORDER SERVICE - Via API Gateway (:8080)",
+      "description": "Mêmes endpoints routés via gateway. Route ajoutée : /api/orders/** → host.docker.internal:8084",
+      "item": [
+        {
+          "name": "Créer une commande (via gateway)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "X-User-Id",     "value": "{{user_id}}" }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/orders",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "orders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\": \"123 Rue Mohammed V, Casablanca\",\n  \"paymentMethod\": \"CARD\",\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 1 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Mes commandes (via gateway)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "X-User-Id",     "value": "{{user_id}}" }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/orders/my-orders",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "orders", "my-orders"]
+            }
+          }
+        },
+        {
+          "name": "[ADMIN] Toutes les commandes (via gateway)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/orders/admin/all",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "orders", "admin", "all"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. PRODUCT SERVICE - Via Gateway (:8080)",
+      "item": [
+        {
+          "name": "Liste produits (paginée)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{gateway_url}}/api/products?page=0&size=10",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "keyword",  "value": "", "disabled": true },
+                { "key": "category", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Produit par ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{gateway_url}}/api/products/{{product_id}}",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "products", "{{product_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Vérifier existence produit",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{gateway_url}}/api/products/{{product_id}}/exists",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "products", "{{product_id}}", "exists"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. INVENTORY SERVICE - Via Gateway (:8080)",
+      "description": "Appels via API Gateway : {{gateway_url}}/api/inventory/** → inventory-service:8083/inventory/**",
+      "item": [
+        {
+          "name": "Stock d'un produit (via gateway)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.expect(pm.response.code).to.equal(200));",
+                  "const res = pm.response.json();",
+                  "console.log('stockLevel (disponible):', res.stockLevel);",
+                  "console.log('reservedStock:', res.reservedStock);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/inventory/{{product_id}}",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "inventory", "{{product_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Ajouter du stock (via gateway)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/inventory/stock?productId={{product_id}}&quantity=10",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "inventory", "stock"],
+              "query": [
+                { "key": "productId", "value": "{{product_id}}" },
+                { "key": "quantity",  "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Réserver du stock (via gateway)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/inventory/reserve?productId={{product_id}}&quantity=1",
+              "host": ["{{gateway_url}}"],
+              "path": ["api", "inventory", "reserve"],
+              "query": [
+                { "key": "productId", "value": "{{product_id}}" },
+                { "key": "quantity",  "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Stock d'un produit (direct :8083)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/inventory/{{product_id}}",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["inventory", "{{product_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -4,7 +4,7 @@ services:
     image: mysql:8
     container_name: mysql-auth
     environment:
-      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: auth_db
     ports:
       - "3310:3306"
@@ -17,7 +17,7 @@ services:
     image: mysql:8
     container_name: mysql-product
     environment:
-      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: product_db
     ports:
       - "3311:3306"
@@ -30,12 +30,25 @@ services:
     image: mysql:8
     container_name: mysql-inventory
     environment:
-      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: inventory_db
     ports:
       - "3312:3306"
     volumes:
       - mysql_inventory_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-order:
+    image: mysql:8
+    container_name: mysql-order
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order_db
+    ports:
+      - "3313:3306"
+    volumes:
+      - mysql_order_data:/var/lib/mysql
     networks:
       - ecommerce-net
 
@@ -72,6 +85,25 @@ services:
     networks:
       - ecommerce-net
 
+  order-service:
+    build:
+      context: ./backend/order-service
+    container_name: order-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql-order
+      - product-service
+      - inventory-service
+    environment:
+      - ORDER_DB_URL=jdbc:mysql://mysql-order:3306/order_db?useSSL=false&allowPublicKeyRetrieval=true
+      - ORDER_DB_USERNAME=root
+      - ORDER_DB_PASSWORD=root
+      - PRODUCT_SERVICE_URL=http://product-service:8082/products
+      - INVENTORY_SERVICE_URL=http://inventory-service:8083
+    networks:
+      - ecommerce-net
+
   api-gateway:
     build:
       context: ./backend/api-gateway/api-gateway
@@ -83,6 +115,7 @@ services:
       - auth-service
       - product-service
       - inventory-service
+      - order-service
     networks:
       - ecommerce-net
 
@@ -90,6 +123,7 @@ volumes:
   mysql_auth_data:
   mysql_product_data:
   mysql_inventory_data:
+  mysql_order_data:
 
 networks:
   ecommerce-net:

@@ -1,0 +1,33 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: order-service
+
+  datasource:
+    url: ${ORDER_DB_URL:jdbc:mysql://localhost:3313/order_db?useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${ORDER_DB_USERNAME:root}
+    password: ${ORDER_DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+# URLs des services
+services:
+  product:
+    url: ${PRODUCT_SERVICE_URL:http://localhost:8082/products}
+  inventory:
+    url: ${INVENTORY_SERVICE_URL:http://localhost:8083}
+
+logging:
+  level:
+    org.example.orderservice: DEBUG
+    org.springframework.web.client: DEBUG

@@ -12,7 +12,7 @@ public class GatewayConfig {
     public RouteLocator customRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("auth-service", r -> r
-                        .path("/api/auth/**").permitAll()
+                        .path("/api/auth/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("http://auth-service:8081"))
                 .build();

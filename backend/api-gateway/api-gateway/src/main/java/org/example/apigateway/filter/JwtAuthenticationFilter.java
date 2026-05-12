@@ -61,8 +61,11 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         System.out.println("Token valide");
 
         String email = jwtUtil.extractEmail(token);
+        Long userId = jwtUtil.extractUserId(token);
+
         ServerHttpRequest mutatedRequest = request.mutate()
                 .header("X-User-Email", email)
+                .header("X-User-Id", userId != null ? userId.toString() : "")
                 .build();
 
         return chain.filter(exchange.mutate().request(mutatedRequest).build());

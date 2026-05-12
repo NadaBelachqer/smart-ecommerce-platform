@@ -38,4 +38,20 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+
+    public Long extractUserId(String token) {
+        try {
+            Object userId = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .get("userId");
+            if (userId instanceof Integer) return ((Integer) userId).longValue();
+            if (userId instanceof Long) return (Long) userId;
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
