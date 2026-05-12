@@ -19,6 +19,8 @@ public class ProductMapper {
                 .category(product.getCategory())
                 .description(product.getDescription())
                 .sellingPrice(product.getSellingPrice())
+                .cost(product.getCost())
+                .expirationDate(product.getExpirationDate())
                 .imageUrl(product.getImageUrl())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
@@ -36,6 +38,8 @@ public class ProductMapper {
                 .category(request.getCategory())
                 .description(request.getDescription())
                 .sellingPrice(request.getSellingPrice())
+                .cost(request.getCost())
+                .expirationDate(request.getExpirationDate())
                 .imageUrl(request.getImageUrl())
                 .build();
     }
@@ -59,6 +63,12 @@ public class ProductMapper {
         }
         if (request.getSellingPrice() != null) {
             product.setSellingPrice(request.getSellingPrice());
+        }
+        if (request.getCost() != null) {
+            product.setCost(request.getCost());
+        }
+        if (request.getExpirationDate() != null) {
+            product.setExpirationDate(request.getExpirationDate());
         }
         if (request.getImageUrl() != null) {
             product.setImageUrl(request.getImageUrl());
