@@ -5,15 +5,13 @@
   </div>
 
   <div class="filters-bar">
-
-
-    <!--<div class="search-box">
+    <div class="search-box">
       <input 
-  type="text" 
-  [(ngModel)]="searchKeyword" 
-  placeholder="🔍 Rechercher un produit..."
-  (input)="search()"
-  class="search-input">
+        type="text" 
+        [(ngModel)]="searchKeyword" 
+        placeholder="🔍 Rechercher un produit..."
+        (input)="search()"
+        class="search-input">
       <button (click)="search()" class="btn-search">Rechercher</button>
     </div>
     
@@ -31,7 +29,7 @@
         [class.active]="selectedCategory === cat">
         {{ cat }}
       </button>
-    </div>-->
+    </div>
     
     <div class="page-size-selector">
       <label>Afficher :</label>
@@ -44,22 +42,26 @@
     </div>
   </div>
 
+  <!-- LOADING -->
   <div *ngIf="loading" class="loading">
     <div class="spinner"></div>
     <p>⏳ Chargement...</p>
   </div>
 
+  <!-- ERROR -->
   <div *ngIf="errorMessage" class="error">
-     {{ errorMessage }}
+    {{ errorMessage }}
   </div>
 
+  <!-- EMPTY STATE -->
   <div *ngIf="!loading && !errorMessage && products.length === 0" class="empty-state">
     <p>Aucun produit trouvé.</p>
     <button (click)="resetFilters()" class="btn-primary">Voir tous les produits</button>
   </div>
 
+  <!-- TABLEAU -->
   <div *ngIf="!loading && !errorMessage && products.length > 0" class="table-container">
-    <table>
+    <table class="product-table">
       <thead>
         <tr>
           <th>Image</th>
@@ -67,6 +69,11 @@
           <th>Nom</th>
           <th>Catégorie</th>
           <th>Prix (DH)</th>
+          <th>Coût (DH)</th>
+          <th>Marge (DH)</th>
+          <th>Marge (%)</th>
+          <th>Date expiration</th>  <!-- ← NOUVELLE COLONNE -->
+          <th>Statut</th>            <!-- ← NOUVELLE COLONNE -->
           <th>Actions</th>
         </tr>
       </thead>
@@ -79,14 +86,24 @@
               [alt]="product.name"
               class="product-thumbnail"
               (error)="onImageError($event)">
-            <div *ngIf="!product.imageUrl" class="no-image">
-              📷
-            </div>
-          </td>
-          <td>{{ product.sku || '-' }}</td>
-          <td>{{ product.name }}</td>
+            <div *ngIf="!product.imageUrl" class="no-image">📷</div>
+           </td>
+           <td>{{ product.sku || '-' }}</td>
+          <td class="product-name">{{ product.name }}</td>
           <td>{{ product.category || '-' }}</td>
-          <td class="price-cell">{{ product.sellingPrice }} DH</td>
+          <td class="price-cell">{{ product.sellingPrice | number:'1.2-2' }} DH</td>
+          <td class="cost-cell">{{ (product.cost || 0) | number:'1.2-2' }} DH</td>
+          <td class="margin-cell" [class]="getProfitabilityClass(product)">{{ getMargin(product) | number:'1.2-2' }} DH</td>
+          <td class="margin-percent-cell" [class]="getProfitabilityClass(product)">{{ getMarginPercentage(product) | number:'1.0-0' }}%</td>
+          
+          <!-- ← NOUVELLES CELLULES -->
+          <td class="expiration-cell">{{ product.expirationDate | date:'dd/MM/yyyy' }}</td>
+          <td class="status-cell">
+            <span class="status-badge" [class]="getExpirationClass(product.expirationDate || '')">
+              {{ getExpirationStatus(product.expirationDate || '') }}
+            </span>
+          </td>
+          
           <td class="actions">
             <a [routerLink]="['/products', product.id, 'edit']" class="btn-edit">✏️ Modifier</a>
             <button (click)="deleteProduct(product.id, product.name)" class="btn-delete">🗑️ Supprimer</button>
@@ -95,45 +112,22 @@
       </tbody>
     </table>
 
+    <!-- PAGINATION -->
     <div class="pagination">
       <div class="pagination-info">
         Affichage de {{ currentPage * pageSize + 1 }} à {{ Math.min((currentPage + 1) * pageSize, totalElements) }} sur {{ totalElements }} produits
       </div>
       
       <div class="pagination-controls">
-        <button 
-          class="page-btn" 
-          [disabled]="currentPage === 0"
-          (click)="goToPage(0)">
-          ⏮ Premier
-        </button>
-        <button 
-          class="page-btn" 
-          [disabled]="currentPage === 0"
-          (click)="goToPage(currentPage - 1)">
-          ◀ Précédent
-        </button>
+        <button class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(0)">⏮ Premier</button>
+        <button class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">◀ Précédent</button>
         
-        <button 
-          *ngFor="let page of getPaginationArray()"
-          class="page-btn"
-          [class.active]="page === currentPage"
-          (click)="goToPage(page)">
+        <button *ngFor="let page of getPaginationArray()" class="page-btn" [class.active]="page === currentPage" (click)="goToPage(page)">
           {{ page + 1 }}
         </button>
         
-        <button 
-          class="page-btn" 
-          [disabled]="currentPage >= totalPages - 1"
-          (click)="goToPage(currentPage + 1)">
-          Suivant ▶
-        </button>
-        <button 
-          class="page-btn" 
-          [disabled]="currentPage >= totalPages - 1"
-          (click)="goToPage(totalPages - 1)">
-          Dernier ⏩
-        </button>
+        <button class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(currentPage + 1)">Suivant ▶</button>
+        <button class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(totalPages - 1)">Dernier ⏩</button>
       </div>
     </div>
   </div>

@@ -11,52 +11,47 @@
   </div>
 
   <div *ngIf="errorMessage" class="error">
-   {{ errorMessage }}
+    {{ errorMessage }}
   </div>
 
   <div *ngIf="successMessage" class="success">
-     {{ successMessage }}
+    {{ successMessage }}
   </div>
 
-<div class="csv-import-box">
-  <h3>📥 Importer une liste CSV</h3>
+  <!-- SECTION IMPORT CSV -->
+  <div class="csv-import-box">
+    <h3>📥 Importer une liste CSV</h3>
 
-  <input
-    type="file"
-    #csvInput
-    id="csvFileInput"
-    accept=".csv"
-    (change)="onCsvSelected($event)"
-    hidden
-  />
+    <input
+      type="file"
+      #csvInput
+      id="csvFileInput"
+      accept=".csv"
+      (change)="onCsvSelected($event)"
+      hidden
+    />
 
-  <button
-    type="button"
-    class="btn-upload"
-    (click)="csvInput.click()"
-  >
-    Choisir fichier CSV
-  </button>
+    <button type="button" class="btn-upload" (click)="csvInput.click()">
+      Choisir fichier CSV
+    </button>
 
-  <p *ngIf="selectedCsvFile">
-    📄 {{ selectedCsvFile.name }}
-  </p>
+    <p *ngIf="selectedCsvFile">
+      📄 {{ selectedCsvFile.name }}
+    </p>
 
-  <button
-    type="button"
-    class="btn-upload"
-    (click)="importCsv()"
-    [disabled]="!selectedCsvFile || loadingCsv"
-  >
-    {{ loadingCsv ? 'Import en cours...' : 'Importer CSV' }}
-  </button>
-</div>
+    <button
+      type="button"
+      class="btn-upload"
+      (click)="importCsv()"
+      [disabled]="!selectedCsvFile || loadingCsv">
+      {{ loadingCsv ? 'Import en cours...' : 'Importer CSV' }}
+    </button>
+  </div>
+  
   <hr>
 
-  <form
-    *ngIf="!loadingPage"
-    (ngSubmit)="onSubmit()"
-    class="product-form">
+  <!-- FORMULAIRE PRODUIT -->
+  <form *ngIf="!loadingPage" (ngSubmit)="onSubmit()" class="product-form">
 
     <div class="form-group">
       <label>SKU</label>
@@ -73,52 +68,104 @@
       <input type="text" [(ngModel)]="product.category" name="category" />
     </div>
 
-    <div class="form-group">
-      <label>Prix</label>
-      <input type="number" [(ngModel)]="product.sellingPrice" name="price" />
+    <div class="form-row">
+      <div class="form-group half">
+        <label>💰 Prix de vente (DH)</label>
+        <input 
+          type="number" 
+          [(ngModel)]="product.sellingPrice" 
+          name="sellingPrice" 
+          step="0.01" 
+          required />
+      </div>
+
+      <div class="form-group half">
+        <label>🏭 Coût d'achat (DH)</label>
+        <input 
+          type="number" 
+          [(ngModel)]="product.cost" 
+          name="cost" 
+          step="0.01" />
+        <small class="form-text text-muted">Prix d'achat / coût de revient</small>
+      </div>
+    </div>
+
+    <!-- NOUVEAU CHAMP DATE D'EXPIRATION -->
+    <div class="form-row">
+      <div class="form-group half">
+        <label>📅 Date d'expiration</label>
+        <input 
+          type="date" 
+          [(ngModel)]="expirationDateValue"
+          (ngModelChange)="onExpirationDateChange($event)"
+          name="expirationDate" 
+          class="date-input" />
+        <small class="form-text text-muted">Date à laquelle le produit expire</small>
+      </div>
+
+      <!-- Affichage du statut d'expiration -->
+      <div class="form-group half" *ngIf="expirationDateValue">
+        <label>⚠️ Statut :</label>
+        <div class="expiration-status" [class.expired]="isExpired(expirationDateValue)" [class.soon]="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30">
+          <ng-container *ngIf="isExpired(expirationDateValue)">
+            🚫 PRODUIT EXPIRÉ
+          </ng-container>
+          <ng-container *ngIf="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30">
+            ⚠️ Expire dans {{ getDaysUntilExpiration(expirationDateValue) }} jours
+          </ng-container>
+          <ng-container *ngIf="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! > 30">
+            ✅ Valide ({{ getDaysUntilExpiration(expirationDateValue) }} jours restants)
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFFICHAGE DE LA MARGE -->
+    <div class="form-group margin-preview" *ngIf="product.sellingPrice && product.cost">
+      <label>📊 Marge brute :</label>
+      <div class="margin-info">
+        <span class="margin-amount">{{ product.sellingPrice - product.cost }} DH</span>
+        <span class="margin-percent">
+          ({{ ((product.sellingPrice - product.cost) / product.sellingPrice * 100) | number:'1.0-0' }}%)
+        </span>
+      </div>
     </div>
 
     <div class="form-group">
       <label>Description</label>
-      <textarea [(ngModel)]="product.description" name="description"></textarea>
+      <textarea [(ngModel)]="product.description" name="description" rows="4"></textarea>
     </div>
 
+    <!-- SECTION IMAGE -->
     <div class="form-group">
-  <label>Image du produit</label>
+      <label>🖼️ Image du produit</label>
 
-  <input
-    type="file"
-    #imageInput
-    id="imageFileInput"
-    accept="image/*"
-    (change)="onImageSelected($event)"
-    hidden
-  />
+      <input
+        type="file"
+        #imageInput
+        id="imageFileInput"
+        accept="image/*"
+        (change)="onImageSelected($event)"
+        hidden
+      />
 
-  <button
-    type="button"
-    class="btn-upload"
-    (click)="imageInput.click()"
-  >
-    Choisir une image
-  </button>
+      <button type="button" class="btn-upload" (click)="imageInput.click()">
+        Choisir une image
+      </button>
 
-  <p *ngIf="selectedImage">
-    🖼️ {{ selectedImage.name }}
-  </p>
+      <p *ngIf="selectedImage">
+        🖼️ {{ selectedImage.name }}
+      </p>
 
-  <div *ngIf="imagePreview" class="image-preview">
-    <img [src]="imagePreview" alt="Aperçu">
-    <button type="button" (click)="removeSelectedImage()">✖</button>
-  </div>
-</div>
+      <div *ngIf="imagePreview" class="image-preview">
+        <img [src]="imagePreview" alt="Aperçu">
+        <button type="button" (click)="removeSelectedImage()">✖</button>
+      </div>
+    </div>
 
+    <!-- ACTIONS -->
     <div class="form-actions">
-      <button
-        type="submit"
-        class="btn-save"
-        [disabled]="loadingSubmit"
-      >
+      <button type="submit" class="btn-save" [disabled]="loadingSubmit">
         {{ loadingSubmit ? 'Enregistrement...' : 'Enregistrer' }}
       </button>
 

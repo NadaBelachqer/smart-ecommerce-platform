@@ -11,6 +11,8 @@ export interface Product {
   category: string;
   description: string;
   sellingPrice: number;
+  cost?: number;
+  expirationDate?: string;  
   imageUrl: string;
   createdAt: string;
   updatedAt: string;
@@ -22,8 +24,10 @@ export interface ProductRequest {
   category: string;
   description: string;
   sellingPrice: number;
+  cost?: number;
+  expirationDate?: string;  
   imageUrl?: string;
-  imageFile?: File; 
+  imageFile?: File;
 }
 
 export interface PageResponse<T> {
@@ -32,13 +36,6 @@ export interface PageResponse<T> {
   totalElements: number;
   number: number;
   size: number;
-}
-
-export interface ImportResult {
-  success: boolean;
-  message: string;
-  importedCount: number;
-  errors: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -50,9 +47,7 @@ export class ProductService {
 
   private getAuthHeaders() {
     const token = this.authService.getToken();
-    return {
-      Authorization: `Bearer ${token}`
-    };
+    return { Authorization: `Bearer ${token}` };
   }
 
   private normalizeImageUrl(product: Product): Product {
@@ -66,53 +61,31 @@ export class ProductService {
     return products.map(p => this.normalizeImageUrl(p));
   }
 
-  /*getAllProducts(page: number = 0, size: number = 10): Observable<PageResponse<Product>> {
-    return this.http.get<PageResponse<Product>>(
-      `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`,
-      { headers: this.getAuthHeaders() }
-    ).pipe(
-      map(response => ({
+  getProducts(
+    page: number = 0,
+    size: number = 10,
+    keyword: string = '',
+    category: string = ''
+  ): Observable<PageResponse<Product>> {
+    let url = `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`;
+
+    if (keyword?.trim()) {
+      url += `&keyword=${encodeURIComponent(keyword.trim())}`;
+    }
+    if (category?.trim()) {
+      url += `&category=${encodeURIComponent(category.trim())}`;
+    }
+
+    return this.http.get<PageResponse<Product>>(url, { headers: this.getAuthHeaders() })
+      .pipe(map(response => ({
         ...response,
         content: this.normalizeImageUrls(response.content)
-      }))
-    );
-  }*/
- 
-  getProducts(
-  page: number = 0,
-  size: number = 10,
-  keyword: string = '',
-  category: string = ''
-): Observable<PageResponse<Product>> {
-
-  let url = `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`;
-
-  if (keyword?.trim()) {
-    url += `&keyword=${encodeURIComponent(keyword.trim())}`;
+      })));
   }
-
-  if (category?.trim()) {
-    url += `&category=${encodeURIComponent(category.trim())}`;
-  }
-
-  return this.http.get<PageResponse<Product>>(
-    url,
-    { headers: this.getAuthHeaders() }
-  ).pipe(
-    map(response => ({
-      ...response,
-      content: this.normalizeImageUrls(response.content)
-    }))
-  );
-}
 
   getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(
-      `${this.apiUrl}/products/${id}`,
-      { headers: this.getAuthHeaders() }
-    ).pipe(
-      map(product => this.normalizeImageUrl(product))
-    );
+    return this.http.get<Product>(`${this.apiUrl}/products/${id}`, { headers: this.getAuthHeaders() })
+      .pipe(map(product => this.normalizeImageUrl(product)));
   }
 
   createProduct(product: ProductRequest, imageFile?: File): Observable<Product> {
@@ -130,17 +103,14 @@ export class ProductService {
       { headers: { 'Authorization': `Bearer ${token}` } }
     );
   }
+
   importProductsCsv(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-
     return this.http.post(
       `${this.apiUrl}/products/admin/import/csv`,
       formData,
-      { 
-        headers: this.getAuthHeaders(), 
-        responseType: 'text' 
-      }
+      { headers: this.getAuthHeaders(), responseType: 'text' }
     );
   }
 
@@ -159,10 +129,8 @@ export class ProductService {
       { headers: { 'Authorization': `Bearer ${token}` } }
     );
   }
+
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/products/admin/delete/${id}`,
-      { headers: this.getAuthHeaders() }
-    );
+    return this.http.delete<void>(`${this.apiUrl}/products/admin/delete/${id}`, { headers: this.getAuthHeaders() });
   }
 }
