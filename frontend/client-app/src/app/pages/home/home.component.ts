@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
 import { ProductService, Product } from '../../services/product.service';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private productService = inject(ProductService);
   public authService = inject(AuthService);
+  public cartService = inject(CartService);
   private cdr = inject(ChangeDetectorRef); 
 
   products: Product[] = [];
@@ -152,7 +154,7 @@ loadMore() {
 
 
   addToCart(product: Product) {
-    console.log('Ajout au panier:', product);
+    this.cartService.add(product);
   }
   logout() {
     this.authService.logout();
