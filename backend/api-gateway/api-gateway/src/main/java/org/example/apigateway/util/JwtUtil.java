@@ -47,8 +47,10 @@ public class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody()
                     .get("userId");
-            if (userId instanceof Integer) return ((Integer) userId).longValue();
-            if (userId instanceof Long) return (Long) userId;
+            if (userId instanceof Number) return ((Number) userId).longValue();
+            if (userId instanceof String && !((String) userId).isBlank()) {
+                return Long.parseLong((String) userId);
+            }
             return null;
         } catch (Exception e) {
             return null;

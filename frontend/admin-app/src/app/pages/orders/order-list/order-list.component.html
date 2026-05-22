@@ -1,0 +1,66 @@
+<div class="page-header">
+  <h2>Gestion des Commandes</h2>
+  <div class="filters">
+    <select [(ngModel)]="selectedStatus" (change)="applyFilter()" class="filter-select">
+      <option value="">Tous les statuts</option>
+      <option *ngFor="let s of statuses.slice(1)" [value]="s">{{ s }}</option>
+    </select>
+    <span class="total-badge">{{ filteredOrders.length }} commande(s)</span>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" class="alert-error">{{ errorMessage }}</div>
+
+<div *ngIf="loading" class="loading">Chargement...</div>
+
+<div *ngIf="!loading" class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>N° Commande</th>
+        <th>Client (ID)</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Paiement</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of pagedOrders">
+        <td class="order-number">{{ order.orderNumber }}</td>
+        <td>{{ order.userId }}</td>
+        <td>{{ order.totalAmount | number:'1.2-2' }} MAD</td>
+        <td><span class="badge" [ngClass]="getStatusClass(order.status)">{{ order.status }}</span></td>
+        <td>{{ order.paymentMethod }}</td>
+        <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td class="actions">
+          <a [routerLink]="['/orders', order.id]" class="btn-action btn-view" title="Voir détails">
+            <span class="icon">👁️</span>
+            <span class="label">Détails</span>
+          </a>
+          <button 
+            class="btn-action btn-delete" 
+            (click)="deleteOrder(order.id, order.orderNumber)" 
+            [disabled]="isOrderDeleted(order)"
+            [title]="isOrderDeleted(order) ? 'Commande déjà supprimée' : 'Supprimer'">
+            <span class="icon">🗑️</span>
+            <span class="label">Supprimer</span>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="pagedOrders.length === 0">
+        <td colspan="7" class="empty">Aucune commande pour le moment — essayez d'ajuster les filtres</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">‹</button>
+    <button *ngFor="let p of getPaginationArray()"
+            (click)="goToPage(p)"
+            [class.active]="p === currentPage">{{ p + 1 }}</button>
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages - 1">›</button>
+  </div>
+</div>
