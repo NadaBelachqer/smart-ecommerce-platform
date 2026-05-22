@@ -1,18 +1,9 @@
 package org.example.orderservice.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+// CORS is handled exclusively by the API Gateway.
+// Do NOT add CORS mappings here — it causes duplicate Access-Control-Allow-Origin headers.
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                .allowedHeaders("*")
-                .maxAge(3600);
-    }
+public class WebConfig {
 }

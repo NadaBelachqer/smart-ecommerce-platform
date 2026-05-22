@@ -61,6 +61,7 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponseDTO.success(orders, "Orders retrieved successfully"));
     }
 
+
     // Client : vérifie que la commande lui appartient. Admin : accès libre via /admin/{id}
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<OrderResponseDTO>> getOrderById(
