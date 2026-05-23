@@ -1,0 +1,626 @@
+nom,prix,categorie,store_name,prix_original,unite,promotion
+Concombre court 1Kg - FILIERE M,6.9,Marche,marjane,,kg,False
+Concombre court 1Kg - FILIERE M,6.9,Marche,marjane,,kg,False
+Concombre court 1Kg - FILIERE M,6.9,Marche,marjane,,kg,False
+Filet de dinde fumé en tranches 100g - DINDY,11.5,Marche,marjane,,L,False
+Menthe en sachet - FILIERE M,3.9,Marche,marjane,,L,False
+Oignon blanc 1Kg - FILIERE M,12.9,Marche,marjane,,kg,False
+Tomate cerise allongée 250g - FILIERE M,9.9,Marche,marjane,,L,False
+Tomate ronde 1Kg - FILIERE M,9.9,Marche,marjane,,kg,False
+Persil en sachet - FILIERE M,3.9,Marche,marjane,,L,False
+Céleri en sachet de 110g - FILIERE M,4.5,Marche,marjane,,L,False
+Banane 1Kg,19.9,Marche,marjane,,kg,False
+Coriandre en sachet - FILIERE M,3.9,Marche,marjane,,L,False
+Deux steacks hachés de boeuf maigre 250g,29.9,Marche,marjane,,g,False
+Jambon de dinde fumé en tranches 100g - DINDY,9.85,Marche,marjane,,g,False
+Laitue frisée à la pièce - FILIERE M,9.9,Marche,marjane,,L,False
+Laitue romaine à la pièce -FILIERE M,9.9,Marche,marjane,,L,False
+"Laitue verte, la pièce - FILIERE M",9.9,Marche,marjane,,L,False
+Patate douce 1Kg,10.9,Marche,marjane,,kg,False
+Pomme de terre blanche lavée 1Kg - FILIERE M,10.5,Marche,marjane,,kg,False
+Pomme de terre blanche non lavée 1Kg - FILIERE M,9.5,Marche,marjane,,kg,False
+Pomme de terre lavée 1Kg - FILIERE M,10.9,Marche,marjane,,kg,False
+Pomme de terre rouge non lavée 1Kg - FILIERE M,9.5,Marche,marjane,,kg,False
+Tomate cerise ronde 250g - FILIERE M,7.9,Marche,marjane,,L,False
+Laitue batavia verte à la pièce - FILIERE M,9.9,Marche,marjane,,L,False
+Pepperoni 100g,9.9,Marche,marjane,,g,False
+Salami de dinde 100g - DINDY,9.9,Marche,marjane,,L,False
+Blanc de dinde light 100g - DEL PACHA,13.5,Marche,marjane,,L,False
+Cornet de Poulet 100g,13.0,Marche,marjane,,L,False
+Cuisse de dinde 100g - DEL PACHA,14.85,Marche,marjane,,L,False
+Duo bœuf / poulet 100g,16.5,Marche,marjane,,L,False
+Filet de dinde 100g - DEL PACHA,14.95,Marche,marjane,,L,False
+Filet de dinde mavi 100g,10.0,Marche,marjane,,L,False
+Jambon cuit fumé 100g,10.75,Marche,marjane,,g,False
+Jambon cuit supérieur 100g - DINDY,11.5,Marche,marjane,,g,False
+Jambon de bœuf suprême 100g,19.5,Marche,marjane,,g,False
+Jambon de dinde aux fines herbes 100g,13.0,Marche,marjane,,g,False
+Jambon de dinde paprika 100g - DEL PACHA,13.0,Marche,marjane,,L,False
+Jambon duo fumé 100g - DINDY,15.95,Marche,marjane,,g,False
+Laitue feuille de chêne rouge à la pièce - FILIERE M,9.9,Marche,marjane,,L,False
+"Laitue feuille de chêne verte, la pièce - FILIERE M",9.9,Marche,marjane,,L,False
+Marbré de poulet 100g,13.5,Marche,marjane,,L,False
+Pepperoni 100g - DEL PACHA,16.5,Marche,marjane,,L,False
+Suprême de dinde paprika 100g,12.0,Marche,marjane,,g,False
+Suprême Filet Herbes 100g - DINDY,13.0,Marche,marjane,,L,False
+"Laitue iceberg, la pièce - FILIERE M",8.9,Marche,marjane,,L,False
+Orange navel 1Kg,10.5,Marche,marjane,,kg,False
+Saucisson fumé à l’ail 100g - DINDY,5.95,Marche,marjane,,L,False
+Kacher nature 100g - DINDY,4.5,Marche,marjane,,g,False
+Kacher piquant 100g - DINDY,4.5,Marche,marjane,,g,False
+Mâche 100g,19.9,Marche,marjane,,g,False
+Mortadelle fine aux herbes 100g,4.95,Marche,marjane,,L,False
+Mortadelle fromage 100g - DINDY,4.95,Marche,marjane,,L,False
+Boisson lait d'amande intense bio 1L - BJORG,74.0,Produits_laitiers_oeufs,marjane,,L,False
+Boisson lait d'amande intense bio 1L - BJORG,74.0,Produits_laitiers_oeufs,marjane,,L,False
+Boisson lait d'amande intense bio 1L - BJORG,74.0,Produits_laitiers_oeufs,marjane,,L,False
+Boisson végétale à l'amande bio sans sucres ajoutés 1L - BJORG,64.95,Produits_laitiers_oeufs,marjane,,L,False
+Boisson végétale à l'amande calcium bio 1L - BJORG,67.95,Produits_laitiers_oeufs,marjane,,L,False
+Boisson végétale avoine calcium bio 1L - BJORG,59.5,Produits_laitiers_oeufs,marjane,,L,False
+Fromage Edam boule environ 900g - KROON,142.95,Produits_laitiers_oeufs,marjane,,L,False
+"Œufs frais gros calibre x 30 environ 1,850 Kg - MATINALES",41.25,Produits_laitiers_oeufs,marjane,,kg,False
+Lait entier naturel stérilisé UHT 6x1L - JAOUDA,65.7,Produits_laitiers_oeufs,marjane,,L,False
+Œufs frais jaune orangé x30 - MAZRAAT AL ASSIL,45.25,Produits_laitiers_oeufs,marjane,,L,False
+Beurre doux pasteurisé en plaquette 200g - JAOUDA,19.95,Produits_laitiers_oeufs,marjane,,L,False
+Lait stérilisé UHT entier 6x1L - SALIM,66.0,Produits_laitiers_oeufs,marjane,,L,False
+Plateau œufs frais x30 unités - NATUR ŒUF,29.55,Produits_laitiers_oeufs,marjane,,L,False
+Fromage frais nature 8x80g - PERLY,23.95,Produits_laitiers_oeufs,marjane,,L,False
+2 Fromages frais 150g - JEBLI,26.0,Produits_laitiers_oeufs,marjane,,L,False
+Yaourt ferme saveur vanille Assil 8x110g - DANONE,19.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage fondu à tartiner Délice 200g - KIRI,19.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage frais à tartiner 190g - JEBLI,14.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage frais à tartiner light 150g - JEBLI,16.5,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à tartiner Jben 160g - JAOUDA,12.0,Produits_laitiers_oeufs,marjane,,g,False
+Fromage frais à tartiner Jben 190g - CHERGUI,14.95,Produits_laitiers_oeufs,marjane,,g,False
+Fromage fondu cheddar 24 méga portions - LA HOLLANDAISE,31.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage frais à tartiner aux herbes traditionnelles 150g - JEBLI,16.5,Produits_laitiers_oeufs,marjane,,L,False
+Intermarché - Feta grecque AOP 180g - IDS,39.95,Produits_laitiers_oeufs,marjane,,g,False
+Fromage à tartiner Jben 160g - JIBAL,10.9,Produits_laitiers_oeufs,marjane,,L,False
+Fromage fondu au goût harissa 8 portions - LA VACHE QUI RIT,13.0,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à tartiner GREEK Style 200g - KIRI,19.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à la crème sans gluten 2x170g - GERVAIS,32.1,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à la crème 170g - GERVAIS,15.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage frais crémeux à tartiner duo 2x180g - CHERGUI,27.95,Produits_laitiers_oeufs,marjane,,g,False
+Intermarché - Crème cuisine végétale coco BIO 20cl - REGAIN,23.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à tartiner nature 180g - PHILADELPHIA,39.0,Produits_laitiers_oeufs,marjane,,L,False
+Intermarché - Crème cuisine végétale amande BIO 20cl - REGAIN,23.95,Produits_laitiers_oeufs,marjane,,L,False
+Intermarché - Dessert soja à la vanille bio 530g - REGAIN,23.95,Produits_laitiers_oeufs,marjane,,L,False
+Intermarché - Dessert soja bio au chocolat 530g - REGAIN,23.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage fondu au goût harissa 16 portions - LA VACHE QUI RIT,26.0,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à tartiner standard 200g - LA VACHE QUI RIT,20.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage blanc à l’ail et aux fines herbes 900g - FAYZ,44.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à tartiner Cream Cheese 900g - FAYZ,44.95,Produits_laitiers_oeufs,marjane,,g,False
+Crème dessert chocolat Dubaï Style 80g - DANETTE,2.5,Produits_laitiers_oeufs,marjane,,L,False
+Boisson à l'avoine BIO 1L - REGAIN,21.95,Produits_laitiers_oeufs,marjane,,L,False
+Fromage à tartiner Cream Cheese 1Kg - MILKY FOOD,62.95,Produits_laitiers_oeufs,marjane,,kg,False
+Fromage frais nature sans sucre 80g - LES PLAISIRS DE CHERGUI,3.5,Produits_laitiers_oeufs,marjane,,L,False
+Lait végétal UHT d'amande grillée sans sucres 100% végétal 1L - ALPRO,33.5,Produits_laitiers_oeufs,marjane,,L,False
+Fromage fondu x48 portions - OR BLANC,48.5,Produits_laitiers_oeufs,marjane,,L,False
+Beurre doux frais 82% de matières grasses 1Kg- CENTRALE,108.95,Produits_laitiers_oeufs,marjane,,kg,False
+Crème cuisson UHT légère 500ml - JAOUDA,19.95,Produits_laitiers_oeufs,marjane,,L,False
+Crème dessert caramel 12x80g -DANETTE,30.95,Produits_laitiers_oeufs,marjane,,L,False
+Crème dessert caramel 80g - DANETTE,2.5,Produits_laitiers_oeufs,marjane,,L,False
+Crème dessert chocolat 12x80g - DANETTE,29.95,Produits_laitiers_oeufs,marjane,,L,False
+Crème dessert chocolat 80g - DANETTE,2.5,Produits_laitiers_oeufs,marjane,,L,False
+Crème fraîche 200g - CHERGUI,12.95,Produits_laitiers_oeufs,marjane,,g,False
+Lipton Ice Tea fruits rouges 25cl,3.95,Eaux_boissons,marjane,,L,False
+Lipton Ice Tea fruits rouges 25cl,3.95,Eaux_boissons,marjane,,L,False
+Lipton Ice Tea fruits rouges 25cl,3.95,Eaux_boissons,marjane,,L,False
+Lipton Ice Tea fruits rouges canette 33cl,7.0,Eaux_boissons,marjane,,L,False
+Lipton Ice Tea pêche 25cl,3.95,Eaux_boissons,marjane,,L,False
+Lipton Ice Tea pêche canette 33cl,7.0,Eaux_boissons,marjane,,L,False
+Bahia Eau de table 5L,9.95,Eaux_boissons,marjane,,L,False
+Nectar de pêche 1L - MARJANE,9.95,Eaux_boissons,marjane,,L,False
+Schweppes virgin mojito 90cl,12.0,Eaux_boissons,marjane,,L,False
+Intermarché - Nectar d'orange d'abricot et de pêche 2L - PAQUITO,39.95,Eaux_boissons,marjane,,L,False
+Coca Cola 1L,8.0,Eaux_boissons,marjane,,L,False
+Intermarché - Sirop concentré de citron vert 70cl - PAQUITO,34.95,Eaux_boissons,marjane,,L,False
+Intermarché - Sirop de menthe bio 50cl - PAQUITO,44.95,Eaux_boissons,marjane,,L,False
+Intermarché - Jus de pomme à base de concentré 1L - PAQUITO,16.95,Eaux_boissons,marjane,,L,False
+Intermarché - Sirop de pêche bio 75cl - PAQUITO,31.95,Eaux_boissons,marjane,,L,False
+Coca Cola Zero 1L,8.0,Eaux_boissons,marjane,,L,False
+Intermarché - Jus de raisin 1L - PAQUITO,30.95,Eaux_boissons,marjane,,L,False
+Jaouda Jutos jus d'oranges 6 x 20cl,11.95,Eaux_boissons,marjane,,L,False
+Intermarché - Sirop de grenadine sans sucre ajouté 75cl - PAQUITO,23.95,Eaux_boissons,marjane,,L,False
+Jaouda Jutos jus d'oranges 20cl,2.0,Eaux_boissons,marjane,,L,False
+"Intermarché - Look Boisson iced tea saveur pêche light 1,5L",10.95,Eaux_boissons,marjane,,L,False
+Marrakech Premium Pur jus d'orange 1L,16.2,Eaux_boissons,marjane,,L,False
+Nectar d'orange 1L - Marjane,9.95,Eaux_boissons,marjane,,L,False
+Oulmès Eau minérale gazeuse 6x1L,41.7,Eaux_boissons,marjane,,L,False
+Schweppes virgin mojito canette 25cl,5.5,Eaux_boissons,marjane,,L,False
+Intermarché - 100% Pur jus de pomme 1L - PAQUITO,23.95,Eaux_boissons,marjane,,L,False
+Valencia Pur jus d'orange 1L,18.7,Eaux_boissons,marjane,,L,False
+"Sidi Ali Eau minérale 1,5L",5.0,Eaux_boissons,marjane,,L,False
+"Sidi Ali Eau minérale 6x1,5L",30.0,Eaux_boissons,marjane,,L,False
+Andros Pur Jus d'oranges pressées 100% sans sucres ajoutés 1L,49.95,Eaux_boissons,marjane,,L,False
+Boissons gazeuses (Pepsi + 7up + Mirinda) 4x1L,18.0,Eaux_boissons,marjane,,L,False
+Intermarché - Pur jus clémentine en Pet 1L -PAQUITO,29.95,Eaux_boissons,marjane,,L,False
+Jaouda Jutos jus d'oranges 4x1L,39.95,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale 12x50cl,35.4,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale 50cl,2.95,Eaux_boissons,marjane,,L,False
+Al Boustane Pur jus d'orange Bio 1L,22.2,Eaux_boissons,marjane,,L,False
+Oulmès Eau minérale gazeuse 50cl,4.9,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale 12x33cl,22.2,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale 33cl,1.9,Eaux_boissons,marjane,,L,False
+Coca-Cola boissons gazeuses sans sucres 4x1L,32.0,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale 2L,5.9,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale 1L,3.95,Eaux_boissons,marjane,,L,False
+Jaouda Jutos jus d'oranges 1L,7.95,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale bouchon sport 75cl,3.95,Eaux_boissons,marjane,,L,False
+Coca-Cola boissons gazeuses canettes slim 6x25cl,30.0,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale en verre 75cl,10.95,Eaux_boissons,marjane,,L,False
+"Boissons gazeuses Pepsi + 7Up 2x1,5L",12.95,Eaux_boissons,marjane,,L,False
+"Juver Disfruta jus d'orange sans sucres ajoutés 1,5L",27.95,Eaux_boissons,marjane,,L,False
+Paquito Jus d'orange à base de concentré sans pulpe en brique 1L,34.95,Eaux_boissons,marjane,,L,False
+Sidi Ali Eau minérale en verre 50cl,8.5,Eaux_boissons,marjane,,L,False
+Coca-Cola boissons gazeuses canettes 6x33cl,50.5,Eaux_boissons,marjane,,L,False
+"Intermarché - Look Boisson iced tea saveur pêche 1,5L",13.95,Eaux_boissons,marjane,,L,False
+Sauce piquante au piment rouge 60ml - TABASCO,29.2,Epicerie,marjane,,L,False
+Sauce piquante au piment rouge 60ml - TABASCO,29.2,Epicerie,marjane,,L,False
+Sauce piquante au piment rouge 60ml - TABASCO,29.2,Epicerie,marjane,,L,False
+Double concentré de tomates 850g - MABROUKA,26.9,Epicerie,marjane,,L,False
+Huile de tournesol 1L - HUILOR,18.75,Epicerie,marjane,,L,False
+Safran de Taliouine flacon en verre 3x1g - DAR AZAÂFARAN,117.9,Epicerie,marjane,,L,False
+Safran de Taliouine flacon en verre 3x1g - FILIERE M,109.0,Epicerie,marjane,,L,False
+Huile de table 5L - FAYZ,70.95,Epicerie,marjane,,L,False
+Huile de tournesol 2L - HUILOR,37.5,Epicerie,marjane,,L,False
+Thon entier à l'huile végétale 3x85g - DELFY,33.5,Epicerie,marjane,,L,False
+Farine finot 10Kg - FAYZ,86.95,Epicerie,marjane,,kg,False
+Mix pain de seigle 1Kg - ALITKANE,19.95,Epicerie,marjane,,kg,False
+Lentilles 1Kg - CAPRI,13.95,Epicerie,marjane,,kg,False
+Blé dur précuit 1kg - MARJANE,32.95,Epicerie,marjane,,kg,False
+Champignons coupés 3x 200g - MIDO,35.95,Epicerie,marjane,,g,False
+Ketchup 310g - STAR,13.9,Epicerie,marjane,,g,False
+Mix pain de campagne 1Kg - ALITKANE,19.95,Epicerie,marjane,,kg,False
+Pâtes courtes torsade penne coquille 3x500g - DARI,22.5,Epicerie,marjane,,L,False
+Mix pain multicereales 1Kg - ALITKANE,19.95,Epicerie,marjane,,kg,False
+Maïs doux en grains 3x150g - FAYZ,19.95,Epicerie,marjane,,g,False
+Farine fleur 10Kg - FAYZ,46.5,Epicerie,marjane,,kg,False
+Intermarché - Riz Basmati Cello 500g - SAINT ELOI,31.95,Epicerie,marjane,,L,False
+Intermarché - Coulis de tomates bio 500g - SAINT ELOI,19.95,Epicerie,marjane,,L,False
+Mayonnaise 280g - STAR,14.95,Epicerie,marjane,,g,False
+Sauce biggy tasty goût fumé 290g - STAR,22.5,Epicerie,marjane,,g,False
+Sauce pour pâtes Arrabiata 350g + sauce Italienne 350g - SOLIS,42.5,Epicerie,marjane,,L,False
+Intermarché - Asperges blanches 205g - SAINT ELOI,31.95,Epicerie,marjane,,L,False
+Intermarché - Carottes extra-fines 1/2 265g - SAINT ELOI,13.95,Epicerie,marjane,,L,False
+Intermarché - Champignon de paris entiers 1/2 230g - SAINT ELOI,26.95,Epicerie,marjane,,L,False
+Intermarché - Crème de coco 400ml - IDS,36.95,Epicerie,marjane,,L,False
+Intermarché - Épinards Hachés 1/2 395g -SAINT ELOI,17.95,Epicerie,marjane,,L,False
+Intermarché - Flageolets verts extra-fins 1/2 265g - SAINT ELOI,20.95,Epicerie,marjane,,L,False
+Intermarché - Haricots coupés verts extra-fins 3x110g - SAINT ELOI,38.95,Epicerie,marjane,,L,False
+Intermarché - Haricots verts extra fins 1/2 220g - SAINT ELOI,14.95,Epicerie,marjane,,L,False
+Intermarché - Haricots verts extra-fins bio 180g - SAINT ELOI,29.95,Epicerie,marjane,,L,False
+Intermarché - Huile d'olive vierge extra bio 75cl - BOUTON D'OR,135.95,Epicerie,marjane,,L,False
+Intermarché - Huile vierge de noix de coco bio 200ml - REGAIN,55.95,Epicerie,marjane,,L,False
+Intermarché - Mélange couscous 20g - CIGALOU,16.95,Epicerie,marjane,,L,False
+Intermarché - Mini cornichons 210g - BOUTON D'OR,28.95,Epicerie,marjane,,g,False
+Intermarché - Mouliné légumes variés 1L -SAINT ELOI,26.95,Epicerie,marjane,,L,False
+Intermarché - Moutarde mi-forte 250g - BOUTON D'OR,27.95,Epicerie,marjane,,g,False
+Intermarché - Olives vertes entières 200G - BOUTON D'OR,21.95,Epicerie,marjane,,L,False
+Intermarché - Petits pois extra fins 1/2 265g - SAINT ELOI,18.95,Epicerie,marjane,,L,False
+Intermarché - Petits pois extra fins 1/4x3 420g - SAINT ELOI,37.95,Epicerie,marjane,,L,False
+Intermarché - Poires williams 4/4 fruits au sirop léger 455g - PAQUITO,46.95,Epicerie,marjane,,L,False
+Intermarché - Purée lait entier 375g - BOUTON D'OR,39.95,Epicerie,marjane,,L,False
+Intermarché - Sauce curry 350g - BOUTON D'OR,29.95,Epicerie,marjane,,g,False
+Intermarché - Sauce hollandaise 36g - CLAUDE LEGER,10.95,Epicerie,marjane,,L,False
+Intermarché - Sauce samourai 350g - BOUTON D'OR,29.95,Epicerie,marjane,,g,False
+Intermarché - Sauce tomate provençale 190g - FIORINI,11.95,Epicerie,marjane,,L,False
+Intermarché - Suprême à base de vinaigre balsamique 250ml - LES CRÉATIONS,59.95,Epicerie,marjane,,L,False
+Intermarché - Velouté 10 légumes à la crème 1L - SAINT ELOI,28.95,Epicerie,marjane,,L,False
+Boisson lait d'amande intense bio 1L - BJORG,74.0,Bio_et_sante,marjane,,L,False
+Boisson lait d'amande intense bio 1L - BJORG,74.0,Bio_et_sante,marjane,,L,False
+Boisson lait d'amande intense bio 1L - BJORG,74.0,Bio_et_sante,marjane,,L,False
+Boisson végétale à l'amande bio sans sucres ajoutés 1L - BJORG,64.95,Bio_et_sante,marjane,,L,False
+Boisson végétale à l'amande calcium bio 1L - BJORG,67.95,Bio_et_sante,marjane,,L,False
+Boisson végétale avoine calcium bio 1L - BJORG,59.5,Bio_et_sante,marjane,,L,False
+Chewing-gum sans sucres saveur menthe en flacon 60g - FLASH,15.6,Bio_et_sante,marjane,,L,False
+Flocons d'avoine bio 4 graines et raisins 375g - BJORG,72.0,Bio_et_sante,marjane,,L,False
+Flocons d'avoine complète bio 500g - BJORG,54.0,Bio_et_sante,marjane,,L,False
+Galettes bio 4 céréales 130g - BJORG,36.95,Bio_et_sante,marjane,,L,False
+Galettes bio maïs extra-fines 130g - BJORG,34.5,Bio_et_sante,marjane,,L,False
+Galettes bio riz complet 130g - BJORG,34.5,Bio_et_sante,marjane,,L,False
+Muesli bio sans sucres ajoutés 375g - BJORG,77.0,Bio_et_sante,marjane,,L,False
+Muesli bio superfruits 375g - BJORG,93.0,Bio_et_sante,marjane,,L,False
+Pain d'épices miel bio 300g - BJORG,67.5,Bio_et_sante,marjane,,L,False
+Son d'avoine bio 500g - BJORG,59.5,Bio_et_sante,marjane,,g,False
+Intermarché - Coulis de tomates bio 500g - SAINT ELOI,19.95,Bio_et_sante,marjane,,L,False
+Fromage à la crème sans gluten 2x170g - GERVAIS,32.1,Bio_et_sante,marjane,,L,False
+Intermarché - Dessert soja à la vanille bio 530g - REGAIN,23.95,Bio_et_sante,marjane,,L,False
+Intermarché - Dessert soja bio au chocolat 530g - REGAIN,23.95,Bio_et_sante,marjane,,L,False
+Intermarché - Huile d'olive vierge extra bio 75cl - BOUTON D'OR,135.95,Bio_et_sante,marjane,,L,False
+Intermarché - Huile vierge de noix de coco bio 200ml - REGAIN,55.95,Bio_et_sante,marjane,,L,False
+Intermarché - Huile de colza vierge bio 75cl - BOUTON D'OR,65.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sirop de menthe bio 50cl - PAQUITO,44.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sirop de pêche bio 75cl - PAQUITO,31.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sauce pesto au basilic bio 190g - FIORINI,38.95,Bio_et_sante,marjane,,L,False
+Yaourt 0% Svelty 8x110g - JIBAL,19.95,Bio_et_sante,marjane,,L,False
+Yaourt 0% Svelty 110g - JIBAL,2.5,Bio_et_sante,marjane,,L,False
+Al Boustane Pur jus d'orange Bio 1L,22.2,Bio_et_sante,marjane,,L,False
+Valencia nectar au jus d'orange light 0% sucre ajouté 1L,16.5,Bio_et_sante,marjane,,L,False
+Intermarché - Huile vierge de sésame bio 250ml - REGAIN,69.95,Bio_et_sante,marjane,,L,False
+Intermarché - Lentilles corail bio 500g - SAINT ELOI,49.95,Bio_et_sante,marjane,,L,False
+Intermarché - Quinoa blond bio 500g - SAINT ELOI,55.95,Bio_et_sante,marjane,,L,False
+Intermarché - Riz 1/2 complet bio 500g - SAINT ELOI,32.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sauce provençale bio 190g - FIORINI,19.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sirop de citron bio 50cl - PAQUITO,43.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sirop de fraise bio 75cl - PAQUITO,34.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sirop de grenadine bio 50cl - PAQUITO,44.95,Bio_et_sante,marjane,,L,False
+Intermarché - Sirop de menthe bio sans sucre ajouté 75cl - PAQUITO,19.95,Bio_et_sante,marjane,,L,False
+Yaourt au lait de chèvre nature 4x110g - CHERGUI,17.95,Bio_et_sante,marjane,,L,False
+Boisson végétale d'amandes non sucré bio sans gluten 1L - SCOTTI,44.45,Bio_et_sante,marjane,,L,False
+Boisson végétale de riz et coco bio sans gluten 1L - SCOTTI,32.0,Bio_et_sante,marjane,,L,False
+Boisson végétale d'avoine enrichi en calcium bio sans sucres ajoutés 1L - SCOTTI,27.5,Bio_et_sante,marjane,,L,False
+Boisson végétale d'avoine et barista bio sans sucres ajoutés 1L - SCOTTI,29.5,Bio_et_sante,marjane,,L,False
+Yaourt nature édulcoré 0% 8x110g - LINEA,19.95,Bio_et_sante,marjane,,L,False
+Boisson végétale au soja et arôme naturel de vanille 1L - SOJASUN,35.5,Bio_et_sante,marjane,,L,False
+Boisson végétale de riz enrichi en calcium bio sans sucres ajoutés 1L - SCOTTI,28.5,Bio_et_sante,marjane,,L,False
+Boisson végétale au soja nature sans sucres ajoutés 1L - SOJASUN,29.95,Bio_et_sante,marjane,,L,False
+Boisson végétale de riz avec cacao sans gluten 1L - SCOTTI,28.5,Bio_et_sante,marjane,,L,False
+Boisson végétale d'amande sans sucres Bio 3x25cl - BJORG,70.5,Bio_et_sante,marjane,,L,False
+Amlou traditionnel 200g - LES DOMAINES,83.95,Bio_et_sante,marjane,,L,False
+Aide culinaire végétale liquide au soja 14% MG 1L - SOJASUN,49.95,Bio_et_sante,marjane,,L,False
+Barre au nougat 34g - NOOCO,4.95,Biscuits_snacking,marjane,,g,False
+Barre au nougat 34g - NOOCO,4.95,Biscuits_snacking,marjane,,g,False
+Barre au nougat 34g - NOOCO,4.95,Biscuits_snacking,marjane,,g,False
+Barre céréales aux noix et amandes Crunchy 30g - SANTÉ,5.8,Biscuits_snacking,marjane,,L,False
+Barre croustillante au caramel et aux cacahuètes 40 g - NOOCO,4.95,Biscuits_snacking,marjane,,L,False
+Barre croustillante au chocolat au lait 18g - NOOCO,2.5,Biscuits_snacking,marjane,,L,False
+Barre croustillante aux bananes et enrobage chocolat Crunchy 35g - SANTÉ,6.95,Biscuits_snacking,marjane,,L,False
+Barre croustillante aux canneberges et framboises Crunchy 40g - SANTÉ,6.95,Biscuits_snacking,marjane,,L,False
+Barre croustillante aux prunes et yogourt Crunchy 35g - SANTÉ,6.95,Biscuits_snacking,marjane,,L,False
+Barre Nougat Cacahuète & Caramel 48g - NOOCO,4.95,Biscuits_snacking,marjane,,L,False
+Barre Nougat & Caramel 45g - NOOCO,4.95,Biscuits_snacking,marjane,,L,False
+Bonbon à la fraise 33g - THEATRO,4.95,Biscuits_snacking,marjane,,L,False
+Chewing-gum fourré liquide tropical melon Splash 30g - FLASH,8.95,Biscuits_snacking,marjane,,L,False
+Chewing-gum mini flacon 18g - FLASH,5.95,Biscuits_snacking,marjane,,L,False
+Chewing-Gum mint sans sucre dragées 18g - FLASH,5.95,Biscuits_snacking,marjane,,L,False
+Chewing-gum peppermint sans sucres 35g - FLASH,4.0,Biscuits_snacking,marjane,,L,False
+Chewing-gum sans sucre peppermint Ice Cubes 60g - FLASH,26.5,Biscuits_snacking,marjane,,L,False
+Chewing-gum sans sucres FlipTop pepermint 25g - FLASH,4.1,Biscuits_snacking,marjane,,L,False
+Chewing-gum Sans sucres menthe poivrée et fraise x12 pièces - FLASH,2.7,Biscuits_snacking,marjane,,L,False
+Chewing-gum sans sucres saveur menthe en flacon 60g - FLASH,15.6,Biscuits_snacking,marjane,,L,False
+Chewing-gum sans sucres saveur menthe poivrée en flacon 60g - FLASH,12.75,Biscuits_snacking,marjane,,L,False
+Chewing-gum saveur menthe 30g - FLASH,3.6,Biscuits_snacking,marjane,,L,False
+Chewing-gum saveur menthe x12 sticks - FLASH,2.3,Biscuits_snacking,marjane,,L,False
+Chocolat au Lait Fourré Lait et Biscuit 95g - NOOCO,11.95,Biscuits_snacking,marjane,,L,False
+Chocolat Lait Crémeux 95g - NOOCO,11.95,Biscuits_snacking,marjane,,L,False
+Chocolat Lait Crispy 80g - NOOCO,11.95,Biscuits_snacking,marjane,,L,False
+Chocolat Lait Fourré Praliné noisette 95g - NOOCO,12.95,Biscuits_snacking,marjane,,L,False
+Chocolat Lait Noisettes entières 90g - NOOCO,12.95,Biscuits_snacking,marjane,,L,False
+Sucette xxl cola lollipop bubble gum - CHUPA CHUPS,21.95,Biscuits_snacking,marjane,,L,False
+Sucettes sans sucre lollipops 10 pièces - CHUPA CHUPS,39.95,Biscuits_snacking,marjane,,L,False
+Tablette au chocolat au lait pistache et kunafa 95g - NOOCO,18.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Biscuits Thé 335g - CHABRIOR,31.95,Biscuits_snacking,marjane,,g,False
+Intermarché - Gâteaux tout choco aux pépites de chocolat 300g - CHABRIOR,45.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Palets bretons 125g - CHABRIOR,20.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Tartelettes carrées fourrées au chocolat noisette 127g - CHABRIOR,26.95,Biscuits_snacking,marjane,,L,False
+Biscuits aux céréales et aux pépites de chocolat 400g - CHABRIOR,46.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Barre Kassoa fourrée chocolat lait 295g - CHABRIOR,50.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Biscuits fourrés chocolat et noisette Tendre Dej' 250g - CHABRIOR,61.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Biscuits Goutak carrées fourrés à la fraise 295g - CHABRIOR,31.5,Biscuits_snacking,marjane,,L,False
+Intermarché - Biscuits Noccio fourrés cacao et noisettes 228g - CHABRIOR,41.95,Biscuits_snacking,marjane,,g,False
+Intermarché - Biscuits sablés fourrés aux figues 165g - CHABRIOR,22.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Biscuits turbulo au chocolat au lait 195g - CHABRIOR,19.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Cigarettes croustillantes 200g - CHABRIOR,20.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Cookies aux pépites de chocolat et nougatine 200g - CHABRIOR,21.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Crêpes dentelle nature 120g - ITINÉRAIRE DE NOS RÉGIONS,37.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Gâteaux Shortbread pur beurre 150g - IDS,41.95,Biscuits_snacking,marjane,,g,False
+Intermarché - Gaufrettes au cacao maigre enrobées de chocolat - 150g - CHABRIOR,33.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Les gaufrettes praliné 110g - CHABRIOR,19.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Palmiers nappés au chocolat au lait 100g - CHABRIOR,19.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Tartelettes rondes abricot P'tits Prods 150g - CHABRIOR,20.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Tuiles au citron 85g - CHABRIOR,19.95,Biscuits_snacking,marjane,,L,False
+Intermarché - Tuiles aux amandes 100g - CHABRIOR,21.95,Biscuits_snacking,marjane,,L,False
+Céréales Tchico caramel 2x400g + 400g offertes - RÉVEY,59.95,Petit_dejeuner,marjane,,L,False
+Céréales Tchico caramel 2x400g + 400g offertes - RÉVEY,59.95,Petit_dejeuner,marjane,,L,False
+Céréales Tchico caramel 2x400g + 400g offertes - RÉVEY,59.95,Petit_dejeuner,marjane,,L,False
+2 paquets de céréales Tchico XXL x400g le 2ème à -50% - REVEY,69.95,Petit_dejeuner,marjane,,L,False
+Céréales Revey Tchico XXL 400g + Céreales Tchico caramel 400g,47.5,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO au blé complet et riz avec goût chocolat et caramel 400g - REVEY,31.95,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO balls au blé complet et maïs avec goût chocolat 400g - REVEY,28.95,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO flakes au blé complet et maïs avec goût chocolat 400g - REVEY,31.95,Petit_dejeuner,marjane,,L,False
+"Céréales Tchico XXL à l'avoine, riz et blé fourrées au chocolat 400g - REVEY",38.5,Petit_dejeuner,marjane,,L,False
+Céréales Tchico XXL caramel x550g - RÉVEY,30.5,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO XXL choco white 400g - REVEY,38.95,Petit_dejeuner,marjane,,L,False
+Céréales Tchico XXL Choco White+Tchico Peanuts Caramel 2x400g 2ème à-50%-RÉVEY,57.95,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO XXL double chocolat milk 400g - RÉVEY,38.95,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO XXL exotico rings 400g - REVEY,38.95,Petit_dejeuner,marjane,,L,False
+Céréales TCHICO XXL peanuts caramel 400g - REVEY,38.95,Petit_dejeuner,marjane,,L,False
+Céréales Tchico XXL+Tchico XXL choco white+Tchico peanuts gratuit 3x400g -RÉVEY,76.95,Petit_dejeuner,marjane,,L,False
+Corn flakes pétales de maïs 375g - RÉVEY,23.5,Petit_dejeuner,marjane,,L,False
+Flocons d'avoine bio 4 graines et raisins 375g - BJORG,72.0,Petit_dejeuner,marjane,,L,False
+Flocons d'avoine complète bio 500g - BJORG,54.0,Petit_dejeuner,marjane,,L,False
+Galettes bio 4 céréales 130g - BJORG,36.95,Petit_dejeuner,marjane,,L,False
+Galettes bio maïs extra-fines 130g - BJORG,34.5,Petit_dejeuner,marjane,,L,False
+Galettes bio riz complet 130g - BJORG,34.5,Petit_dejeuner,marjane,,L,False
+Muesli bio sans sucres ajoutés 375g - BJORG,77.0,Petit_dejeuner,marjane,,L,False
+Muesli bio superfruits 375g - BJORG,93.0,Petit_dejeuner,marjane,,L,False
+Pain d'épices miel bio 300g - BJORG,67.5,Petit_dejeuner,marjane,,L,False
+Paquets de céréales 400g exotico + caramel - THICO,57.75,Petit_dejeuner,marjane,,L,False
+Paquets de céréales Tchico XXL 2x400g - RÉVEY,51.5,Petit_dejeuner,marjane,,L,False
+Pâte à tartiner à la crème de noisette Buenossimo 350g - RÉVEY,39.95,Petit_dejeuner,marjane,,L,False
+Pâte à tartiner aux cacahuètes Tchico 200g - RÉVEY,22.95,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner aux noisettes Tchico 350g - REVEY,28.95,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner aux noisettes Tchico 750g - REVEY,64.5,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner aux noisettes Tchico squeezy 320g + 500g - RÉVEY,52.5,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner aux noisettes Tchico squeezy 320g - REVEY,34.95,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner aux noisettes Tchico2x350g+beurre de cacahuète350g offerts-RÉVEY,56.5,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner noisette 200g - RÉVEY,22.95,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner Tchico 350g + beurre de cacahuète Tchico 350g - RÉVEY,41.5,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner Tchico 350g + beurre de cacahuète Tchico 350g - RÉVEY,41.5,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner Tchico peanuts 350g - RÉVEY,27.3,Petit_dejeuner,marjane,,g,False
+Pâtes à tartiner buenossimo 2x350g + 1 aux noisettes 2+1gratuit - RÉVEY,79.95,Petit_dejeuner,marjane,,g,False
+Son d'avoine bio 500g - BJORG,59.5,Petit_dejeuner,marjane,,g,False
+Pâte à tartiner 600g - NUTELLA,73.5,Petit_dejeuner,marjane,,L,False
+Miel de fleurs 1Kg - RUCHE D'OR,104.95,Petit_dejeuner,marjane,,kg,False
+Intermarché - Flocons d'avoine 500g - CHABRIOR,14.95,Petit_dejeuner,marjane,,L,False
+Intermarché - Pâte à tartiner aux noisettes 18.5% Bio 350g - IVORIA,59.95,Petit_dejeuner,marjane,,g,False
+Intermarché - Café moulu Régal Force et Tradition 250g - PLANTEUR DES TROPIQUES,64.95,Petit_dejeuner,marjane,,L,False
+Intermarché - Cappuccino nature 252g - PLANTEUR DES TROPIQUES,53.95,Petit_dejeuner,marjane,,L,False
+Intermarché - Cappuccino saveur chocolat x8 136g - PLANTEUR DES TROPIQUES,38.95,Petit_dejeuner,marjane,,L,False
+"Intermarché - Infusion fruits rouges 25 sachets de 1,6g - COTTERLEY",21.95,Petit_dejeuner,marjane,,L,False
+Intermarché - Petits pains grillés au blé complet 225g - CHABRIOR,18.95,Petit_dejeuner,marjane,,L,False
+Céréales caramel & chocolat Lion 400g + 200g offertes - NESTLÉ,47.5,Petit_dejeuner,marjane,,L,False
+Miel toutes fleurs 850g - JNANE EL AASSAL,60.0,Petit_dejeuner,marjane,,L,False
+3 boîtes de thé vert en filaments 4011 x200g - TIYAY,42.5,Petit_dejeuner,marjane,,L,False
+Crème de soin hydratante Soft tube 75ml - NIVEA,28.95,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante Soft tube 75ml - NIVEA,28.95,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante Soft tube 75ml - NIVEA,28.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Pearl & Beauty 50ml - NIVEA,43.5,Hygiene_beaute_soins,marjane,,L,False
+"Baume à Lèvres Blackberry Shine Mûre 4,8g - LABELLO",40.95,Hygiene_beaute_soins,marjane,,L,False
+"Baume à Lèvres Cherry Shine Cerise 4,8g - LABELLO",40.95,Hygiene_beaute_soins,marjane,,L,False
+"Baume à Lèvres Fruity Shine Fraise 4,8g - LABELLO",40.95,Hygiene_beaute_soins,marjane,,L,False
+"Baume à Lèvres Original 4,8g - LABELLO",39.95,Hygiene_beaute_soins,marjane,,L,False
+Baume après-rasage Sensitive 100ml - NIVEA MEN,82.0,Hygiene_beaute_soins,marjane,,L,False
+BB Cream Crème de teint clair SPF 10 50ml - NIVEA,102.95,Hygiene_beaute_soins,marjane,,L,False
+Brume protectrice rafraîchissante Protect & Refresh SPF50 200ml-NIVEA SUN,178.95,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante 75ml - NIVEA MEN,34.5,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante Soft 200ml - NIVEA,50.95,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante Soft 50ml - NIVEA,18.5,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante Soft pot 100ml - NIVEA,27.95,Hygiene_beaute_soins,marjane,,L,False
+Crème de soin hydratante tube 100ml - NIVEA,33.5,Hygiene_beaute_soins,marjane,,L,False
+Crème hydratante boîte 150ml - NIVEA,39.5,Hygiene_beaute_soins,marjane,,L,False
+Crème hydratante boîte 60ml - NIVEA,20.5,Hygiene_beaute_soins,marjane,,L,False
+Crème Nettoyante Douceur peaux sèches et sensibles 150ml - NIVEA,89.5,Hygiene_beaute_soins,marjane,,L,False
+Crème solaire visage sensible SPF50 Sun 50ml - NIVEA,110.95,Hygiene_beaute_soins,marjane,,L,False
+Démaquillant yeux Double Action 125ml - NIVEA,75.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Black & White Original 50ml - NIVEA,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Black & White Silky Smooth 50ml - NIVEA,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Double Effect 50ml - NIVEA,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Dry Fresh 50ml - NIVEA,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Fresh Cherry 50ml - NIVEA,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Fresh Flower 50ml - NIVEA,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Femme Protect & Care 50ml - NIVEA,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme Black & White Original 50ml - NIVEA MEN,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme DEEP 50ml - NIVEA MEN,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme DEEP Espresso 50ml - NIVEA MEN,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme Dry Impact 50ml - NIVEA MEN,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme Fresh Ocean 50ml - NIVEA MEN,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme Fresh Power 50ml - NIVEA MEN,43.5,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme Invisible Black & White Fresh 50ml - NIVEA MEN,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant bille Homme Protect & Care 50ml - NIVEA MEN,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant black frais 48h 2x150ml - AXE,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant homme Black & White invisible Fresh 200ml - NIVEA MEN,44.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant protection sèche et douce 48H - NIVEA,44.95,Hygiene_beaute_soins,marjane,,,False
+Déodorant spray excite 2x150ml - AXE,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Black & White Original 200ml - NIVEA,47.25,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Black & White Pure 200ml - NIVEA,41.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Black & White Silky Smooth 200ml - NIVEA,44.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Double Effect 200ml - NIVEA,44.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Dry Comfort 200ml - NIVEA,47.25,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Dry Fresh 200ml - NIVEA,44.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Fresh Natural 200ml - NIVEA,46.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Invisible Black & White Fresh 200ml - NIVEA,46.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Femme Pearl & Beauty 200ml - NIVEA,44.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Homme Black & White Original 200ml - NIVEA MEN,44.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Homme Cool Kick 200ml - NIVEA MEN,46.95,Hygiene_beaute_soins,marjane,,L,False
+Déodorant spray Homme DEEP 200ml - NIVEA MEN,46.95,Hygiene_beaute_soins,marjane,,L,False
+Lessive liquide Matic Downy 3L - ARIEL,111.95,Entretien_nettoyage,marjane,,L,False
+Lessive liquide Matic Downy 3L - ARIEL,111.95,Entretien_nettoyage,marjane,,L,False
+Lessive liquide Matic Downy 3L - ARIEL,111.95,Entretien_nettoyage,marjane,,L,False
+Capsules lessive Matic All in 1 Pods Downy x30 - ARIEL,123.95,Entretien_nettoyage,marjane,,L,False
+Capsules lessive Matic All in 1 Pods Original x30 + 15 capsules - ARIEL,139.95,Entretien_nettoyage,marjane,,L,False
+Capsules lessive Matic All in 1 Pods Original x30 - ARIEL,124.2,Entretien_nettoyage,marjane,,L,False
+Capsules lessive Matic All in 1 Pods Original x40 - ARIEL,154.95,Entretien_nettoyage,marjane,,L,False
+Lessive liquide downy 3L - TIDE,99.95,Entretien_nettoyage,marjane,,L,False
+Lessive liquide lavande 3L - ARIEL,111.95,Entretien_nettoyage,marjane,,L,False
+Lessive liquide lavande 3L - TIDE,99.95,Entretien_nettoyage,marjane,,L,False
+"Lessive liquide machine authentique 2,5L - EL KEF",90.5,Entretien_nettoyage,marjane,,L,False
+Lessive liquide machine authentique 4L - EL KEF,127.5,Entretien_nettoyage,marjane,,L,False
+"Lessive liquide machine fleur d'orange 2,5L - EL KEF",90.5,Entretien_nettoyage,marjane,,L,False
+Lessive liquide machine fleur d'oranger 4L - EL KEF,127.5,Entretien_nettoyage,marjane,,L,False
+"Lessive liquide machine floral 2,5L - EL KEF",90.5,Entretien_nettoyage,marjane,,L,False
+Lessive liquide machine floral 4L - EL KEF,127.5,Entretien_nettoyage,marjane,,L,False
+"Lessive liquide machine lavande 2,5L - EL KEF",90.5,Entretien_nettoyage,marjane,,L,False
+Lessive liquide machine lavande 4L - EL KEF,127.5,Entretien_nettoyage,marjane,,L,False
+Lessive liquide Matic Original 3Kg - ARIEL,111.95,Entretien_nettoyage,marjane,,kg,False
+Lessive main en poudre citron sachet 700g - TIDE,19.5,Entretien_nettoyage,marjane,,L,False
+"Lessive main en poudre citron sachet 1,5Kg - TIDE",39.95,Entretien_nettoyage,marjane,,kg,False
+Lessive machine Fresh Dreamy 8Kg - MAGIX,129.95,Entretien_nettoyage,marjane,,kg,False
+Capsules de lessive 3 en 1 x30 unités - OMO,102.95,Entretien_nettoyage,marjane,,L,False
+Lessives machine liquides downy 2x2.5L - TIDE,120.95,Entretien_nettoyage,marjane,,L,False
+Liquides vaisselles concentré citron 2x650ml - FAIRY,49.95,Entretien_nettoyage,marjane,,L,False
+Assouplissant dilué Valley Dew 3L - DOWNY,76.95,Entretien_nettoyage,marjane,,L,False
+Capsules lave-vaisselle parfum citron All in One x42 - FAIRY,116.95,Entretien_nettoyage,marjane,,L,False
+"Lessive Liquide sensitive savon de marseille et aloe vera x63 lvg 2,835L-LE CHAT",179.95,Entretien_nettoyage,marjane,,L,False
+Lingettes anti-décoloration x40 unités - DECOLOR STOP,83.95,Entretien_nettoyage,marjane,,L,False
+Lessive main semi-automatique parfum rose 1Kg - MIO,17.5,Entretien_nettoyage,marjane,,kg,False
+10 sacs poubelle parfumés x60L - CHIKI NET,18.95,Entretien_nettoyage,marjane,,L,False
+10 sacs poubelle x 120L - CHIKI NET,25.95,Entretien_nettoyage,marjane,,L,False
+12 chiffons en microfibres 35cmx35cm,99.95,Entretien_nettoyage,marjane,,,False
+12 sacs poubelle parfumés x35L - CHIKI NET,13.95,Entretien_nettoyage,marjane,,L,False
+2 boîtes de 25 sacs de congélation double glissière 1L - USE IT,39.95,Entretien_nettoyage,marjane,,L,False
+"2 boîtes de 50 sacs sandwich 16,5x14,9cm - USE IT",39.5,Entretien_nettoyage,marjane,,,False
+2 désodorisants aero orient l'oppie + relax zen 300ml - GLADE,54.95,Entretien_nettoyage,marjane,,L,False
+2 désodorisants aero rose + pure clean linen 300ml - GLADE,54.95,Entretien_nettoyage,marjane,,L,False
+2 désodorisants aero vanilla l'oppie + mugu 300ml - GLADE,54.95,Entretien_nettoyage,marjane,,L,False
+2 désodorisants jasmine + sea m&magnolia 300ml - GLADE,54.95,Entretien_nettoyage,marjane,,L,False
+"2 Eau de Javel citron x2,5L - MAXIS",19.95,Entretien_nettoyage,marjane,,L,False
+2 liquides vaisselle zeste citron 750ml + liquide vaisselle 300ml offert - MAXIS,22.25,Entretien_nettoyage,marjane,,L,False
+2 nettoyants ménagers 1L + eau de javel 1L offerte - EXET,25.95,Entretien_nettoyage,marjane,,L,False
+2 nettoyants ménagers 1L + Eau de javel 1L offerte - MAXIS,27.95,Entretien_nettoyage,marjane,,L,False
+2 nettoyants sol citron x900ml - DETTOL,53.95,Entretien_nettoyage,marjane,,L,False
+2 nettoyants sol jasmin x900ml - DETTOL,53.95,Entretien_nettoyage,marjane,,L,False
+2 nettoyants sol lavande x900ml - DETTOL,53.95,Entretien_nettoyage,marjane,,L,False
+2 nettoyants sol pine x900ml - DETTOL,53.95,Entretien_nettoyage,marjane,,L,False
+2 rouleaux de 20 sacs poubelle 60x75cm - FOLIA,42.95,Entretien_nettoyage,marjane,,L,False
+20 sacs de congélation petit modèle + 15 sacs moyen modèle - CHIKI PAK,21.95,Entretien_nettoyage,marjane,,L,False
+20 sacs poubelle parfumés x15L - CHIKI NET,15.95,Entretien_nettoyage,marjane,,L,False
+3 carrés vaisselle - VILEDA,24.9,Entretien_nettoyage,marjane,,L,False
+Filet de dinde fumé en tranches 100g - DINDY,11.5,Charcuterie_traiteur_mer,marjane,,L,False
+Filet de dinde fumé en tranches 100g - DINDY,11.5,Charcuterie_traiteur_mer,marjane,,L,False
+Filet de dinde fumé en tranches 100g - DINDY,11.5,Charcuterie_traiteur_mer,marjane,,L,False
+Luncheon au bœuf 3x300g - JAYDA,44.5,Charcuterie_traiteur_mer,marjane,,L,False
+Filets de saumon fumés Nature 100g - LES DOMAINES,63.95,Charcuterie_traiteur_mer,marjane,,L,False
+Jambon de dinde fumé en tranches 100g - DINDY,9.85,Charcuterie_traiteur_mer,marjane,,g,False
+Filets de saumon fumés Nature 150g - LES DOMAINES,93.95,Charcuterie_traiteur_mer,marjane,,L,False
+Délice de canard 180g - LA MAISON DU FOIE GRAS,37.5,Charcuterie_traiteur_mer,marjane,,L,False
+Pâté de canard de campagne 180g - LA MAISON DU FOIE GRAS,36.5,Charcuterie_traiteur_mer,marjane,,L,False
+Pâté de foie de volaille 180g - DINDY,11.95,Charcuterie_traiteur_mer,marjane,,L,False
+Rillettes de canard 180g - LA MAISON DU FOIE GRAS,43.95,Charcuterie_traiteur_mer,marjane,,L,False
+Salami de dinde 100g - DINDY,9.9,Charcuterie_traiteur_mer,marjane,,L,False
+Blanc de dinde light 100g - DEL PACHA,13.5,Charcuterie_traiteur_mer,marjane,,L,False
+Cornet de Poulet 100g,13.0,Charcuterie_traiteur_mer,marjane,,L,False
+Cuisse de dinde 100g - DEL PACHA,14.85,Charcuterie_traiteur_mer,marjane,,L,False
+Duo bœuf / poulet 100g,16.5,Charcuterie_traiteur_mer,marjane,,L,False
+Filet de dinde 100g - DEL PACHA,14.95,Charcuterie_traiteur_mer,marjane,,L,False
+Filet de dinde mavi 100g,10.0,Charcuterie_traiteur_mer,marjane,,L,False
+Jambon cuit fumé 100g,10.75,Charcuterie_traiteur_mer,marjane,,g,False
+Jambon cuit supérieur 100g - DINDY,11.5,Charcuterie_traiteur_mer,marjane,,g,False
+Jambon de bœuf suprême 100g,19.5,Charcuterie_traiteur_mer,marjane,,g,False
+Jambon de dinde aux fines herbes 100g,13.0,Charcuterie_traiteur_mer,marjane,,g,False
+Jambon de dinde paprika 100g - DEL PACHA,13.0,Charcuterie_traiteur_mer,marjane,,L,False
+Jambon duo fumé 100g - DINDY,15.95,Charcuterie_traiteur_mer,marjane,,g,False
+Marbré de poulet 100g,13.5,Charcuterie_traiteur_mer,marjane,,L,False
+Pepperoni 100g - DEL PACHA,16.5,Charcuterie_traiteur_mer,marjane,,L,False
+Suprême de dinde paprika 100g,12.0,Charcuterie_traiteur_mer,marjane,,g,False
+Suprême Filet Herbes 100g - DINDY,13.0,Charcuterie_traiteur_mer,marjane,,L,False
+Saucisson fumé à l’ail 100g - DINDY,5.95,Charcuterie_traiteur_mer,marjane,,L,False
+Kacher nature 100g - DINDY,4.5,Charcuterie_traiteur_mer,marjane,,g,False
+Kacher piquant 100g - DINDY,4.5,Charcuterie_traiteur_mer,marjane,,g,False
+Mortadelle fine aux herbes 100g,4.95,Charcuterie_traiteur_mer,marjane,,L,False
+Mortadelle fromage 100g - DINDY,4.95,Charcuterie_traiteur_mer,marjane,,L,False
+Roulade 100g - DINDY,5.5,Charcuterie_traiteur_mer,marjane,,L,False
+Saucisson de bœuf nature 100g - DINDY,5.95,Charcuterie_traiteur_mer,marjane,,g,False
+Saucisson de bœuf piquant 100g - DINDY,5.95,Charcuterie_traiteur_mer,marjane,,g,False
+Jambon de bœuf en tranches 100g - DINDY,17.5,Charcuterie_traiteur_mer,marjane,,g,False
+Rosbeef en tranches 100g - DINDY,21.2,Charcuterie_traiteur_mer,marjane,,g,False
+Salami de boeuf en tranches 100g - DEL PACHA,15.1,Charcuterie_traiteur_mer,marjane,,L,False
+Salami de bœuf en tranches 100g - DINDY,15.5,Charcuterie_traiteur_mer,marjane,,L,False
+Jambon de bœuf fumé en tranches 100g - MARJANE,16.5,Charcuterie_traiteur_mer,marjane,,g,False
+Rosette de dinde en tranches 100g - DEL PACHA,15.0,Charcuterie_traiteur_mer,marjane,,L,False
+Cuisse de dinde au poivre noir en tranches 100g - DINDY,11.2,Charcuterie_traiteur_mer,marjane,,g,False
+2 Cuisses de canard confites 240g et 340g - DOMAINE D'AGHBALOU,173.9,Charcuterie_traiteur_mer,marjane,,L,False
+2 paquets de tranches de cuisse de dinde fumée x80g - JAYDA,19.95,Charcuterie_traiteur_mer,marjane,,g,False
+2Paquets de tranches de jambon de dinde fumée 2x80g - JAYDA,20.95,Charcuterie_traiteur_mer,marjane,,g,False
+Anchois à La Provençale Fisher 750g - KING,123.95,Charcuterie_traiteur_mer,marjane,,L,False
+Anchois marinés à l'huile de tournesol 200g - LA MONEGASQUE,43.5,Charcuterie_traiteur_mer,marjane,,L,False
+Anchois marinés à l'orientale 100g - LA MONEGASQUE,26.2,Charcuterie_traiteur_mer,marjane,,L,False
+Anchois marinés à la provençale 200g - LA MONEGASQUE,43.5,Charcuterie_traiteur_mer,marjane,,L,False
+Baba ganoush traditionnel 180g - TERRA DÉLICES,17.95,Charcuterie_traiteur_mer,marjane,,L,False
+Baba ganoush zaalouk 180g - TERRA DÉLICES,17.95,Charcuterie_traiteur_mer,marjane,,L,False
+Baskin Robbins bac de crème glacée chocolat 120ml,27.9,Glaces_surgeles,marjane,,L,False
+Baskin Robbins bac de crème glacée chocolat 120ml,27.9,Glaces_surgeles,marjane,,L,False
+Baskin Robbins bac de crème glacée chocolat 120ml,27.9,Glaces_surgeles,marjane,,L,False
+Somosierra cônes de glace Magni lemon 4x120ml,29.95,Glaces_surgeles,marjane,,L,False
+Baskin Robbins bac de crème glacée vanille 120ml,27.9,Glaces_surgeles,marjane,,L,False
+Somosierra cônes de glace Magni chocolat 4x120ml,29.95,Glaces_surgeles,marjane,,L,False
+Somosierra cônes de glace Magni nata 4x120ml,30.95,Glaces_surgeles,marjane,,L,False
+Cocktail de fruit de mer 350g - FAYZ,16.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Adélie Bûche glacée 3 chocolats 564g,74.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Ananas coupé en morceaux 450g - PAQUITO,36.95,Glaces_surgeles,marjane,,g,False
+Nuggets de poulet pané 300g - LES DÉLICES DE LA FERMIÈRE,35.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Adélie Bûche glacée aux fruits exotiques 552g,74.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Adélie Bûche glacée façon crème brûlée 539g,69.95,Glaces_surgeles,marjane,,L,False
+Japanese fried chicken nature 300g - DINDY,45.0,Glaces_surgeles,marjane,,g,False
+Novita bac de crème glacée fraise 1L,35.95,Glaces_surgeles,marjane,,L,False
+Nuggets de poulet 250g - FRIPOZO,31.95,Glaces_surgeles,marjane,,L,False
+Marjane cônes de glace crème et fraise 4x120ml,31.95,Glaces_surgeles,marjane,,L,False
+Chaussons parmentier fromage frais fines herbes 750g - THIRIET,119.5,Glaces_surgeles,marjane,,g,False
+Baskin Robbins bac de crème glacée cookies 120ml,27.9,Glaces_surgeles,marjane,,L,False
+Bâtonnets de volaille surgelés 300g - DINDY,38.0,Glaces_surgeles,marjane,,L,False
+Intermarché - Adélie bâtonnets de glace colosse double chocolat x4 299g,44.95,Glaces_surgeles,marjane,,L,False
+Japanese chicken piment cumin 300g - DINDY,45.0,Glaces_surgeles,marjane,,g,False
+Cheesecake 2x80g - OREO,59.95,Glaces_surgeles,marjane,,g,False
+Cheesecake 2x85g - DAIM,59.95,Glaces_surgeles,marjane,,g,False
+Cheesecake 2x85g - TOBLERONE,59.95,Glaces_surgeles,marjane,,L,False
+Lava cake 2x90g - MILKA,59.95,Glaces_surgeles,marjane,,L,False
+Croquettes de pomme de terre 1Kg - ECOFROST,24.95,Glaces_surgeles,marjane,,kg,False
+Intermarché - Basilic bio 50g - SAINT ELOI,19.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Champignons de paris émincés bio 600g - SAINT ELOI,54.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Choux-fleurs en fleurettes bio 600g - SAINT ELOI,36.5,Glaces_surgeles,marjane,,L,False
+Intermarché - Ciboulette bio 50g - SAINT ELOI,19.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Coriandre bio 50g - SAINT ELOI,24.95,Glaces_surgeles,marjane,,L,False
+Intermarché - Frites au four 750g - SAINT ELOI,27.5,Glaces_surgeles,marjane,,L,False
+Marjane bâtonnets de glace vanille 3x120ml,31.95,Glaces_surgeles,marjane,,L,False
+10 mini croissants pur beurre 300g - THIRIET,49.95,Glaces_surgeles,marjane,,g,False
+6 fromages chevres panes 240g - THIRIET,64.5,Glaces_surgeles,marjane,,g,False
+Ananas en morceaux 450g - THIRIET,54.95,Glaces_surgeles,marjane,,g,False
+Anneaux de calamar 800g - KHAYRAT,63.25,Glaces_surgeles,marjane,,L,False
+Anneaux de calamars 350g - FAYZ,19.95,Glaces_surgeles,marjane,,L,False
+Asperges vertes 450g - THIRIET,99.95,Glaces_surgeles,marjane,,g,False
+Bac de crème glacée Fayz chocolat 1L,19.5,Glaces_surgeles,marjane,,L,False
+Bac de crème glacée Fayz fraise 1L,18.95,Glaces_surgeles,marjane,,L,False
+Bac de crème glacée Fayz vanille 1L,19.5,Glaces_surgeles,marjane,,L,False
+Bac de crème glacée Pingouin premium fraise 1L,48.7,Glaces_surgeles,marjane,,L,False
+Bac de crème glacée Somosierra stracciatella 470g,69.95,Glaces_surgeles,marjane,,L,False
+Baguette viennoise poulet à la vietnamienne 210g - YAMITA,33.2,Glaces_surgeles,marjane,,L,False
+Baguette viennoise poulet roti emmental 220g - YAMITA,33.75,Glaces_surgeles,marjane,,L,False
+Baguette viennoise saumon fumé 210g - YAMITA,36.2,Glaces_surgeles,marjane,,g,False
+Baguette viennoise thon crudités 220g - YAMITA,33.95,Glaces_surgeles,marjane,,g,False
+Baskin Robbins bac de crème glacée cookies 500ml,89.9,Glaces_surgeles,marjane,,L,False
+Baskin Robbins bac de crème glacée praliné 120ml,27.9,Glaces_surgeles,marjane,,L,False
+Baskin Robbins bac de crème glacée praliné 500ml,89.9,Glaces_surgeles,marjane,,L,False
+Horloge Temp/Humidi Fuction MF109250 BOX3 - CITYTEK,49.0,Objet Connectes,marjane,,L,False
+Horloge Temp/Humidi Fuction MF109250 BOX3 - CITYTEK,49.0,Objet Connectes,marjane,,L,False
+Horloge Temp/Humidi Fuction MF109250 BOX3 - CITYTEK,49.0,Objet Connectes,marjane,,L,False
+Smarthphone Galaxy A17 (5G) 8+256GB black - SAMSUNG,2990.0,Objet Connectes,marjane,,L,False
+AirPods 4 MXP63 - APPLE,1819.0,Objet Connectes,marjane,,L,False
+"Anneau light selfie 13"" Trepied MF109338 - CITYTEK",119.0,Objet Connectes,marjane,,L,False
+Apple Watch S8 GPS 41mm rouge MNP73B/A - APPLE,5990.0,Objet Connectes,marjane,,L,False
+Apple Watch SE GPS 44mm Starlight MNJX3B/A - APPLE,4200.0,Objet Connectes,marjane,,L,False
+Balance connecté smart Fat Glass MF109331 - CITYTEK,199.0,Objet Connectes,marjane,,L,False
+Barre de son HW-C450/MV - SAMSUNG,1999.95,Objet Connectes,marjane,,g,False
+"Brassard pour smartphone 6,8″ MF109436 - CITYTEK",49.0,Objet Connectes,marjane,,,False
+Câble 3en1 5V/2A MF109231 - CITYTEK,49.0,Objet Connectes,marjane,,L,False
+Câble 3en1 LED MF109323 2A - CITYTEK,49.0,Objet Connectes,marjane,,L,False
+Cable 544 Usb-C Tousb-C(Bio-Based 3Ft) Black Anke ANKER 54,149.0,Objet Connectes,marjane,,L,False
+Câble digital Type-C MF109409 - CITYTEK,79.0,Objet Connectes,marjane,,L,False
+Cable Eco Typ-C20W18W Dble Chrger Voitre Xtremema XTREMEMAC,299.0,Objet Connectes,marjane,,L,False
+Câble flexi lightning USB-A-MFI-2M-White - XTREMEMAC,269.0,Objet Connectes,marjane,,L,False
+Câble HDMI 4K avec ethernet 2m MF109373 - CITYTEK,49.0,Objet Connectes,marjane,,L,False
+Câble light IND LAMP DATA FC 15W3A MF109102 - CITYTEK,29.0,Objet Connectes,marjane,,L,False
+Câble lightening 3CL MF109063 - CITYTEK,39.0,Objet Connectes,marjane,,L,False
+Câble Lightening data 3A 1.5M nylon MF109066 - CITYTEK,69.0,Objet Connectes,marjane,,L,False
+Câble lightning plat en nylon 1.2M vert - XTREMEMAC,199.0,Objet Connectes,marjane,,L,False
+Câble LIGHTNING USB 1M blanc - ZATEC,34.9,Objet Connectes,marjane,,L,False
+Câble MICRO USB 1M blanc - ZATEC,34.9,Objet Connectes,marjane,,L,False
+Câble multifonction 6 en 1 MF109371 - CITYTEK,59.0,Objet Connectes,marjane,,L,False
+Câble OCD‑1525C Noir - ORAIMO,80.0,Objet Connectes,marjane,,L,False
+Cable Rotatif 90° Type C Mf109370C Citytek CITYTEK,39.0,Objet Connectes,marjane,,L,False
+Câble rotatif Lightning MF109370 90° - CITYTEK,29.0,Objet Connectes,marjane,,L,False
+Câble type C IND LAMP DATA FC 15W3A MF109101 - CITYTEK,29.0,Objet Connectes,marjane,,L,False
+Câble TYPE C Z-29 - ZATEC,34.9,Objet Connectes,marjane,,L,False
+Câble Type-C vers Lightning 3A 1m nylon MF109426 - CITYTEK,39.0,Objet Connectes,marjane,,L,False
+Câble Type-C vers Lightning avec indicateur MF109417 - CITYTEK,39.0,Objet Connectes,marjane,,L,False
+Câble TYPE-C VERS TYPE-C 3A EP-DA705BB noir - SAMSUNG,99.0,Objet Connectes,marjane,,L,False
+Câble Type-C vers Type-C avec indicateur MF109416 - CITYTEK,39.0,Objet Connectes,marjane,,L,False
+Câble type.C data 3A 1M nylon MF109067 - CITYTEK,79.0,Objet Connectes,marjane,,L,False
+Câble Type.C to Type.C 3A 1M nylon MF109064 - CITYTEK,39.0,Objet Connectes,marjane,,L,False
+Câble USB d'imprimante 2.0 3M noir - MEDIA RANGE,59.0,Objet Connectes,marjane,,L,False
+Caméra 360° Wifi Campro 1080P MF109309 BOX3 - CITYTEK,79.0,Objet Connectes,marjane,,,False
+Carte mémoire 16GO CLASS 10 - ZATEC,59.0,Objet Connectes,marjane,,L,False
+Carte mémoire MICRO SD 32GO CLASS 10 - ZATEC,109.0,Objet Connectes,marjane,,L,False
+Carte mémoire MICRO SD 64GO CLASS 10 - ZATEC,189.0,Objet Connectes,marjane,,L,False
+Carte MICROSD 32G - LEXAR,69.0,Objet Connectes,marjane,,L,False
+Cartouche d'encre 103 Ecotank bouteille encre cyan - EPSON,149.0,Objet Connectes,marjane,,L,False
+Cartouche d'encre 103 Ecotank bouteille encre jaune - EPSON,149.0,Objet Connectes,marjane,,L,False
+Cartouche d'encre CL-446 pour IMP PIXMA 2540S - CANON,309.0,Objet Connectes,marjane,,L,False
+Casque bluethooth WH-CH520 /BZ noir - SONY,549.0,Objet Connectes,marjane,,L,False
+Casque bluethooth WH-CH520 /LZ bleu - SONY,549.0,Objet Connectes,marjane,,L,False
+Casque bluetooth anc abricot mf109391a - CITYTEK,329.0,Objet Connectes,marjane,,L,False
+Casque bluetooth anc gris mf109391g - CITYTEK,329.0,Objet Connectes,marjane,,L,False
+Casque bluetooth anc noir mf109391b - CITYTEK,329.0,Objet Connectes,marjane,,L,False
+Casque bluetooth boost - ZATEC,179.0,Objet Connectes,marjane,,L,False
+Casque bluetooth enfants CAT MF109330 - CITYTEK,119.0,Objet Connectes,marjane,,L,False
+

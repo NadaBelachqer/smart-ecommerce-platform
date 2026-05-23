@@ -1,0 +1,65 @@
+<div class="app-layout">
+  <!-- Sidebar fixe -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2> Admin </h2>
+      <p>E-Commerce Platform</p>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <span class="icon">🏠</span>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/products" routerLinkActive="active" class="nav-item">
+        <span class="icon">📦</span>
+        <span>Produits</span>
+      </a>
+      <a routerLink="/inventory" routerLinkActive="active" class="nav-item">
+        <span class="icon">📊</span>
+        <span>Inventaire</span>
+      </a>
+      <a routerLink="/forecast" routerLinkActive="active" class="nav-item">
+        <span class="icon">🔮</span>
+        <span>Prédictions</span>
+      </a>
+      <a class="nav-item" (click)="comingSoon()">
+        <span class="icon">📈</span>
+        <span>Commandes</span>
+      </a>
+      <a class="nav-item" (click)="comingSoon()">
+        <span class="icon">👥</span>
+        <span>Utilisateurs</span>
+      </a>
+      <a class="nav-item" (click)="comingSoon()">
+        <span class="icon">⚙️</span>
+        <span>Paramètres</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-title">
+        <h1>{{ pageTitle }}</h1>
+        <p>{{ currentDate | date:'EEEE d MMMM yyyy' }}</p>
+      </div>
+      <div class="header-user">
+        <div class="user-info">
+          <span class="user-name">👑 {{ adminName }}</span>
+          <span class="user-role">Administrateur</span>
+        </div>
+        <button class="logout-btn" (click)="logout()">
+          Déconnexion
+        </button>
+      </div>
+    </header>
+
+    <!-- Zone dynamique pour le contenu des pages -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

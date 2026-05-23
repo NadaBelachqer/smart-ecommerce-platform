@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="card">
+    <h2>📝 Inscription Client</h2>
+    
+    <form (ngSubmit)="onSubmit()">
+      <div class="row">
+        <input type="text" [(ngModel)]="user.firstName" name="firstName" placeholder="Prénom" required>
+        <input type="text" [(ngModel)]="user.lastName" name="lastName" placeholder="Nom" required>
+      </div>
+      
+      <input type="email" [(ngModel)]="user.email" name="email" placeholder="Email" required>
+      <input type="password" [(ngModel)]="user.password" name="password" placeholder="Mot de passe" required>
+      <input type="text" [(ngModel)]="user.address" name="address" placeholder="Adresse">
+      <input type="text" [(ngModel)]="user.phone" name="phone" placeholder="Téléphone">
+      
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Inscription...' : 'S\'inscrire' }}
+      </button>
+    </form>
+    
+    <p>Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+  </div>
+</div>

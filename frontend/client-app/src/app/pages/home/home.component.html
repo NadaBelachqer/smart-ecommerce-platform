@@ -1,0 +1,148 @@
+<div class="promo-header">
+  <div class="promo-content">
+    <span class="promo-tag">🔥 OFFRE DE LA SEMAINE</span>
+    <p class="promo-text">Jusqu'à -30% sur une sélection de produits frais</p>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/">MonShop</a>
+    </div>
+    
+    <div class="nav-search">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text"  [(ngModel)]="searchKeyword"  placeholder="Rechercher un produit..."  (keyup.enter)="search()">
+        <button (click)="search()">Rechercher</button>
+      </div>
+    </div>
+    
+    <div class="nav-links">
+      <a routerLink="/" class="active">Accueil</a>
+      <a routerLink="/availability" class="nav-link">📦 Disponibilité</a>
+      <a routerLink="/cart" class="cart-link">
+        🛒 Panier 
+        <span class="badge">0</span>
+      </a>
+      
+      <ng-container *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" class="btn-outline">Connexion</a>
+        <a routerLink="/register" class="btn-primary">Inscription</a>
+      </ng-container>
+      
+      <ng-container *ngIf="authService.isLoggedIn()">
+        <div class="user-menu">
+          <span class="user-name">👋 {{ getUserDisplayName() }}</span>
+          <button class="btn-logout" (click)="logout()">Déconnexion</button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-section">
+  <div class="hero-content">
+    <h1>Products</h1>
+    <p class="hero-subtitle">high quality. low prices.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="shop-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Shop For</h3>
+      </div>
+      <nav class="categories-nav">
+        <button (click)="loadProducts()" class="category-link" [class.active]="!selectedCategory ">
+          All Categories
+        </button>
+        <button (click)="filterByCategory('Electronics')" class="category-link" [class.active]="selectedCategory  === 'Electronics'">
+          Électronique
+        </button>
+    
+        <button (click)="filterByCategory('Dairy')" class="category-link" [class.active]="selectedCategory  === 'Dairy'">
+          Produits laitiers
+        </button>
+        
+        <button (click)="filterByCategory('Fruits')" class="category-link" [class.active]="selectedCategory  === 'Fruits'">
+          Fruits 
+        </button>
+         <button (click)="filterByCategory('Légumes')" class="category-link" [class.active]="selectedCategory  === 'Légumes'">
+         Légumes
+        </button>
+        <button (click)="filterByCategory('Boissons')" class="category-link" [class.active]="selectedCategory  === 'Boissons'">
+          Boissons
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- Loading -->
+      <div *ngIf="loading" class="loading-skeleton">
+        <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text short"></div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage && !loading" class="error-banner">
+        <span class="error-icon">⚠️</span>
+        <span>{{ errorMessage }}</span>
+        <button (click)="loadProducts()" class="retry-link">Réessayer →</button>
+      </div>
+
+      <div *ngIf="!loading && !errorMessage && products.length > 0" class="products-section">
+        <div class="section-header">
+          <h2>{{ selectedCategory  ? selectedCategory  : 'New!' }}</h2>
+          <span class="products-count">{{ products.length }} products</span>
+        </div>
+        
+        <div class="products-grid">
+          <div *ngFor="let product of products" class="product-card">
+            <div class="product-image">
+              <img 
+                [src]="getImageUrl(product)" 
+                [alt]="product.name"
+                (error)="$event.target.src='https://placehold.co/300x300?text=Image+coming+soon'">
+              <button class="quick-view" [routerLink]="['/products', product.id]">Quick View</button>
+            </div>
+            
+            <div class="product-info">
+              <h3 class="product-title">{{ product.name }}</h3>
+              
+              <div class="price-section">
+                <div class="current-price">{{ product.sellingPrice }} DH</div>
+                <div class="price-unit" *ngIf="product.category">/ {{ product.category.toLowerCase() }}</div>
+              </div>
+              
+              <div class="product-footer">
+                <button class="add-to-cart" (click)="addToCart(product)">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+       <div class="view-more" *ngIf="hasMore">
+  <button (click)="loadMore()" class="view-more-link">
+    Load more 
+  </button>
+</div>
+      </div>
+
+      <div *ngIf="!loading && !errorMessage && products.length === 0" class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>No products found</h3>
+        <p>Try a different search or browse our categories</p>
+        <button (click)="loadProducts()" class="btn-primary">View all products</button>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="availability-container">
+  <div class="page-header">
+    <h1>📦 Disponibilité et Prédictions</h1>
+    <p>Consultez les prédictions de demande et les alertes de stock</p>
+  </div>
+
+  <!-- Messages d'erreur -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="availability-main">
+    <!-- Products List -->
+    <div class="products-section">
+      <h2>Tous les Produits</h2>
+      <div *ngIf="isLoading" class="loading">
+        Chargement...
+      </div>
+      <div *ngIf="!isLoading && products.length === 0" class="no-data">
+        Aucun produit disponible
+      </div>
+      <div class="products-list">
+        <div 
+          *ngFor="let product of products" 
+          (click)="selectProduct(product)"
+          [class.selected]="selectedProductId === product.id"
+          class="product-item">
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="category">{{ product.category }}</p>
+            <p class="price">{{ product.sellingPrice | currency:'EUR':'symbol':'1.2-2' }}</p>
+            <div *ngIf="getProductAlerts(product.id).length > 0" class="alert-badge">
+              ⚠️ {{ getProductAlerts(product.id).length }} alerte(s)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="details-section">
+      <div *ngIf="!selectedProductId" class="no-selection">
+        Sélectionnez un produit pour voir les prédictions et les alertes
+      </div>
+
+      <div *ngIf="selectedProduct" class="product-details">
+        <!-- Product Header -->
+        <div class="product-header">
+          <div class="product-title">
+            <h2>{{ selectedProduct.name }}</h2>
+            <p class="category">{{ selectedProduct.category }}</p>
+          </div>
+          <div class="product-price">
+            {{ selectedProduct.sellingPrice | currency:'EUR':'symbol':'1.2-2' }}
+          </div>
+        </div>
+
+        <!-- Alerts Section -->
+        <div *ngIf="getProductAlerts(selectedProduct.id).length > 0" class="alerts-section">
+          <h3>⚠️ Alertes ({{ getProductAlerts(selectedProduct.id).length }})</h3>
+          <div class="alerts-list">
+            <div *ngFor="let alert of getProductAlerts(selectedProduct.id)" class="alert-item">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-content">
+                <div class="alert-type">{{ alert.alertType }}</div>
+                <div class="alert-date">{{ formatDate(alert.createdAt) }}</div>
+              </div>
+              <div class="alert-status" [class]="alert.status.toLowerCase()">
+                {{ alert.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Forecast History -->
+        <div *ngIf="forecastHistory.length > 0" class="forecast-section">
+          <h3>📈 Prédictions de Demande</h3>
+          <div class="forecast-list">
+            <div *ngFor="let forecast of forecastHistory" class="forecast-item">
+              <div class="forecast-date">{{ formatDate(forecast.createdAt) }}</div>
+              <div class="forecast-data">
+                <div class="forecast-row">
+                  <span class="label">Ventes Prédites:</span>
+                  <span class="value">{{ formatNumber(forecast.predictedSales) }} unités</span>
+                </div>
+                <div class="forecast-row">
+                  <span class="label">Stock Recommandé:</span>
+                  <span class="value">{{ formatNumber(forecast.recommendedStock) }} unités</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="forecastHistory.length === 0" class="no-forecast">
+          Aucune prédiction disponible pour ce produit
+        </div>
+
+        <p class="product-description">
+          {{ selectedProduct.description }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

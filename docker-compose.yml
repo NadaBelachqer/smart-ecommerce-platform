@@ -1,0 +1,132 @@
+services:
+
+  mysql-auth:
+    image: mysql:8
+    container_name: mysql-auth
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: auth_db
+    ports:
+      - "3310:3306"
+    volumes:
+      - mysql_auth_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-product:
+    image: mysql:8
+    container_name: mysql-product
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: product_db
+    ports:
+      - "3311:3306"
+    volumes:
+      - mysql_product_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-inventory:
+    image: mysql:8
+    container_name: mysql-inventory
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: inventory_db
+    ports:
+      - "3312:3306"
+    volumes:
+      - mysql_inventory_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-forecast:
+    image: mysql:8
+    container_name: mysql-forecast
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: forecast_db
+    ports:
+      - "3313:3306"
+    volumes:
+      - mysql_forecast_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  auth-service:
+    build:
+      context: ./backend/auth-service/auth-service
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql-auth
+    networks:
+      - ecommerce-net
+
+  product-service:
+    build:
+      context: ./backend/product-service
+    container_name: product-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql-product
+    networks:
+      - ecommerce-net
+
+  inventory-service:
+    build:
+      context: ./backend/inventory-service
+    container_name: inventory-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql-inventory
+    networks:
+      - ecommerce-net
+
+  forecast-service:
+    build:
+      context: ./backend/forecast-service
+    container_name: forecast-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql-forecast
+      - ml-api
+    networks:
+      - ecommerce-net
+
+  ml-api:
+    build:
+      context: ./backend/ml-api
+    container_name: ml-api
+    ports:
+      - "5000:5000"
+    networks:
+      - ecommerce-net
+  api-gateway:
+    build:
+      context: ./backend/api-gateway/api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - product-service
+      - inventory-service
+      - forecast-service
+      - ml-api
+    networks:
+      - ecommerce-net
+
+volumes:
+  mysql_auth_data:
+  mysql_product_data:
+  mysql_inventory_data:
+  mysql_forecast_data:
+
+networks:
+  ecommerce-net:
+    driver: bridge
