@@ -2,33 +2,59 @@
   <!-- Sidebar fixe -->
   <aside class="sidebar">
     <div class="sidebar-header">
+      <div class="logo-icon">⚡</div>
       <h2> Admin </h2>
       <p>E-Commerce Platform</p>
     </div>
     
     <nav class="sidebar-nav">
       <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-        <span class="icon">🏠</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
         <span>Dashboard</span>
       </a>
       <a routerLink="/products" routerLinkActive="active" class="nav-item">
-        <span class="icon">📦</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
         <span>Produits</span>
       </a>
-      <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">📈</span>
+      <a routerLink="/orders" routerLinkActive="active" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 3H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4"></path>
+          <polyline points="9 3 9 7"></polyline>
+          <line x1="5" y1="14" x2="19" y2="14"></line>
+        </svg>
         <span>Commandes</span>
       </a>
       <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">📊</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18"></path>
+          <rect x="1" y="1" width="22" height="22" rx="2" ry="2"></rect>
+        </svg>
         <span>Stocks</span>
       </a>
       <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">👥</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
         <span>Utilisateurs</span>
       </a>
       <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">⚙️</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="1"></circle>
+          <path d="M12 1v6m0 6v6"></path>
+          <path d="M4.22 4.22l4.24 4.24m2.12 2.12l4.24 4.24"></path>
+          <path d="M1 12h6m6 0h6"></path>
+          <path d="M4.22 19.78l4.24-4.24m2.12-2.12l4.24-4.24"></path>
+        </svg>
         <span>Paramètres</span>
       </a>
     </nav>
@@ -38,18 +64,33 @@
   <main class="main-content">
     <!-- Header -->
     <header class="header">
-      <div class="header-title">
-        <h1>{{ pageTitle }}</h1>
-        <p>{{ currentDate | date:'EEEE d MMMM yyyy' }}</p>
-      </div>
-      <div class="header-user">
-        <div class="user-info">
-          <span class="user-name">👑 {{ adminName }}</span>
-          <span class="user-role">Administrateur</span>
+      <div class="header-left">
+        <div class="header-title">
+          <h1>{{ pageTitle }}</h1>
+          <span class="header-date">📅 {{ currentDate | date:'EEEE d MMMM yyyy' }}</span>
         </div>
-        <button class="logout-btn" (click)="logout()">
-          Déconnexion
-        </button>
+      </div>
+      
+      <div class="header-right">
+        <div class="header-stats">
+          <div class="stat-badge">
+            <span class="stat-icon">⚡</span>
+            <span class="stat-label">Actif</span>
+          </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="header-user">
+          <div class="user-avatar">👑</div>
+          <div class="user-info">
+            <span class="user-name">{{ adminName }}</span>
+            <span class="user-role">Administrateur</span>
+          </div>
+          <button class="logout-btn" (click)="logout()" title="Déconnexion">
+            🚪 Quitter
+          </button>
+        </div>
       </div>
     </header>
 
@@ -57,5 +98,47 @@
     <div class="page-content">
       <router-outlet></router-outlet>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Smart E-Commerce Platform</h3>
+          <p>Plateforme d'administration complète pour gérer votre boutique en ligne</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a routerLink="/dashboard">Tableau de bord</a></li>
+            <li><a routerLink="/products">Produits</a></li>
+            <li><a routerLink="/orders">Commandes</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Aide</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="#">Confidentialité</a></li>
+            <li><a href="#">Conditions</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 Smart E-Commerce. Tous droits réservés.</p>
+        <p>Admin Panel v1.0</p>
+      </div>
+    </footer>
   </main>
 </div>

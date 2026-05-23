@@ -1,0 +1,124 @@
+<div class="page-wrapper">
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <a routerLink="/" class="nav-brand">🛍️ MonShop</a>
+    <div class="nav-links">
+      <a routerLink="/" class="nav-link">Accueil</a>
+      <a routerLink="/cart" class="nav-link">🛒 Panier</a>
+    </div>
+  </nav>
+
+  <div class="orders-container">
+
+    <!-- HEADING -->
+    <div class="page-heading">
+      <div>
+        <h1 class="page-title">{{ authService.isAdmin() ? '📦 Toutes les commandes' : '📦 Mes commandes' }}</h1>
+        <p class="page-subtitle" *ngIf="!loading && !errorMessage">
+          {{ orders.length }} commande{{ orders.length > 1 ? 's' : '' }} trouvée{{ orders.length > 1 ? 's' : '' }}
+        </p>
+      </div>
+      <button class="btn-refresh" type="button" (click)="loadOrders()" [disabled]="loading">
+        🔄 Actualiser
+      </button>
+    </div>
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Chargement des commandes...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="errorMessage && !loading" class="error-banner">
+      ⚠️ {{ errorMessage }}
+    </div>
+
+    <!-- EMPTY -->
+    <div *ngIf="!loading && orders.length === 0 && !errorMessage" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h3>Aucune commande trouvée</h3>
+      <p>Les commandes liées à ce compte apparaîtront ici.</p>
+      <a routerLink="/" class="btn-gradient">Commencer mes achats</a>
+    </div>
+
+    <!-- ORDERS LIST -->
+    <div *ngIf="!loading && orders.length > 0" class="orders-list">
+      <div *ngFor="let order of orders; trackBy: trackByOrderId" class="order-card">
+
+        <!-- HEADER -->
+        <div class="order-header" (click)="toggleExpand(order.id)">
+          <div class="order-meta">
+            <span class="order-number">#{{ order.orderNumber || order.id }}</span>
+            <span [class]="'status-badge ' + statusClass(order.status)">{{ statusLabel(order.status) }}</span>
+          </div>
+
+          <div class="order-info">
+            <span class="order-date">🗓 {{ order.createdAt | date:'dd/MM/yyyy · HH:mm' }}</span>
+            <span class="order-total">{{ (order.totalAmount || 0).toFixed(2) }} DH</span>
+          </div>
+
+          <div class="order-actions">
+            <button
+              *ngIf="canDelete(order.status)"
+              type="button"
+              class="btn-delete"
+              [disabled]="deletingOrderId === order.id"
+              (click)="deleteOrder(order, $event)">
+              {{ deletingOrderId === order.id ? '...' : '🗑 Supprimer' }}
+            </button>
+            <span class="expand-icon">{{ expandedOrderId === order.id ? '▲' : '▼' }}</span>
+          </div>
+        </div>
+
+        <!-- DETAILS -->
+        <div *ngIf="expandedOrderId === order.id" class="order-details">
+          <div class="details-chips">
+            <div class="detail-chip">
+              <span class="chip-icon">📍</span>
+              <div>
+                <span class="chip-label">Livraison</span>
+                <span class="chip-value">{{ order.shippingAddress }}</span>
+              </div>
+            </div>
+            <div class="detail-chip">
+              <span class="chip-icon">💳</span>
+              <div>
+                <span class="chip-label">Paiement</span>
+                <span class="chip-value">{{ order.paymentMethod }}</span>
+              </div>
+            </div>
+            <div class="detail-chip" *ngIf="authService.isAdmin()">
+              <span class="chip-icon">👤</span>
+              <div>
+                <span class="chip-label">User ID</span>
+                <span class="chip-value">{{ order.userId }}</span>
+              </div>
+            </div>
+          </div>
+
+          <table class="items-table" *ngIf="order.items.length">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Qté</th>
+                <th>Prix unit.</th>
+                <th>Sous-total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of order.items">
+                <td class="product-name-cell">{{ item.productName || ('Produit #' + item.productId) }}</td>
+                <td><span class="qty-badge">{{ item.quantity }}</span></td>
+                <td>{{ (item.unitPrice || 0).toFixed(2) }} DH</td>
+                <td class="subtotal-cell">{{ (item.subtotal || 0).toFixed(2) }} DH</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,10 +27,15 @@ export class ProductService {
   }*/
 
     getAllProducts(page = 0, size = 6): Observable<any> {
-  return this.http.get<any>(
-    `${this.apiUrl}?page=${page}&size=${size}`
-  );
-}
+    return this.http.get<any>(`${this.apiUrl}?page=${page}&size=${size}`).pipe(
+      map(response => {
+        if (response?.content) {
+          response.content = this.normalizeImageUrls(response.content);
+        }
+        return response;
+      })
+    );
+  }
 
   
 

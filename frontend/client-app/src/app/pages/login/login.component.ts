@@ -30,7 +30,7 @@ export class LoginComponent {
         console.log('Connexion réussie:', response);
         this.authService.saveToken(response.token);
         this.loading = false;
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('Erreur de connexion:', err);
