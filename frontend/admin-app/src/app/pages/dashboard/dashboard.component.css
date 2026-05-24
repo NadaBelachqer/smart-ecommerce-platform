@@ -230,6 +230,8 @@
   gap: 16px;
   flex-wrap: wrap;
   padding: 24px;
+  position: relative;
+  z-index: 2;
 }
 
 .action-btn {

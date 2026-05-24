@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface InventoryResponseDTO {
@@ -37,6 +37,10 @@ export class InventoryService {
   private movementsUrl = 'http://localhost:8080/api/movements';
   private alertsUrl = 'http://localhost:8080/api/alerts';
 
+  private cache = new Map<string, Observable<any>>();
+
+  clearCache() { this.cache.clear(); }
+
   private getAuthHeaders() {
     const token = this.authService.getToken();
     return {
@@ -44,16 +48,19 @@ export class InventoryService {
     };
   }
 
-  // Get inventory for a specific product
   getInventory(productId: number): Observable<InventoryResponseDTO> {
-    return this.http.get<InventoryResponseDTO>(
-      `${this.apiUrl}/${productId}`,
-      { headers: this.getAuthHeaders() }
-    );
+    const key = `inventory-${productId}`;
+    if (!this.cache.has(key)) {
+      this.cache.set(key, this.http.get<InventoryResponseDTO>(`${this.apiUrl}/${productId}`, { headers: this.getAuthHeaders() }).pipe(shareReplay(1)));
+    }
+    return this.cache.get(key)!;
   }
 
   // Update stock level
   updateStock(productId: number, quantity: number): Observable<InventoryResponseDTO> {
+    // Vider le cache pour forcer le rechargement après mise à jour
+    this.cache.delete(`inventory-${productId}`);
+    this.cache.delete(`movements-${productId}`);
     return this.http.put<InventoryResponseDTO>(
       `${this.apiUrl}/stock?productId=${productId}&quantity=${quantity}`,
       {},
@@ -63,6 +70,9 @@ export class InventoryService {
 
   // Reserve stock for order
   reserveStock(productId: number, quantity: number): Observable<InventoryResponseDTO> {
+    // Vider le cache pour forcer le rechargement après réservation
+    this.cache.delete(`inventory-${productId}`);
+    this.cache.delete(`movements-${productId}`);
     return this.http.put<InventoryResponseDTO>(
       `${this.apiUrl}/reserve?productId=${productId}&quantity=${quantity}`,
       {},
@@ -70,35 +80,35 @@ export class InventoryService {
     );
   }
 
-  // Get movement history for a product
   getMovements(productId: number): Observable<Movement[]> {
-    return this.http.get<Movement[]>(
-      `${this.movementsUrl}/product/${productId}`,
-      { headers: this.getAuthHeaders() }
-    );
+    const key = `movements-${productId}`;
+    if (!this.cache.has(key)) {
+      this.cache.set(key, this.http.get<Movement[]>(`${this.movementsUrl}/product/${productId}`, { headers: this.getAuthHeaders() }).pipe(shareReplay(1)));
+    }
+    return this.cache.get(key)!;
   }
 
   // Get all movements
   getAllMovements(): Observable<Movement[]> {
-    return this.http.get<Movement[]>(
-      `${this.movementsUrl}`,
-      { headers: this.getAuthHeaders() }
-    );
+    if (!this.cache.has('movements')) {
+      this.cache.set('movements', this.http.get<Movement[]>(`${this.movementsUrl}`, { headers: this.getAuthHeaders() }).pipe(shareReplay(1)));
+    }
+    return this.cache.get('movements')!;
   }
 
-  // Get alerts for a product
   getAlerts(productId: number): Observable<Alert[]> {
-    return this.http.get<Alert[]>(
-      `${this.alertsUrl}/product/${productId}`,
-      { headers: this.getAuthHeaders() }
-    );
+    const key = `alerts-${productId}`;
+    if (!this.cache.has(key)) {
+      this.cache.set(key, this.http.get<Alert[]>(`${this.alertsUrl}/product/${productId}`, { headers: this.getAuthHeaders() }).pipe(shareReplay(1)));
+    }
+    return this.cache.get(key)!;
   }
 
   // Get all alerts
   getAllAlerts(): Observable<Alert[]> {
-    return this.http.get<Alert[]>(
-      `${this.alertsUrl}`,
-      { headers: this.getAuthHeaders() }
-    );
+    if (!this.cache.has('alerts')) {
+      this.cache.set('alerts', this.http.get<Alert[]>(`${this.alertsUrl}`, { headers: this.getAuthHeaders() }).pipe(shareReplay(1)));
+    }
+    return this.cache.get('alerts')!;
   }
 }

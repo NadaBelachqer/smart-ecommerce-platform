@@ -10,4 +10,8 @@ public class ForecastRequestDTO {
     private Integer dayOfWeek;
     private Integer promo;
     private Integer stockLevel;
+    private Double price;
+    private Double discount;
+    private Integer unitsSold;
+    private Integer unitsOrdered;
 }

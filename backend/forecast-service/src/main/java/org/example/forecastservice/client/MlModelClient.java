@@ -20,8 +20,8 @@ public class MlModelClient {
 
     public MlModelClient(RestTemplateBuilder builder) {
         this.restTemplate = builder
-                .connectTimeout(Duration.ofMillis(5000))
-                .readTimeout(Duration.ofMillis(30000))
+                .setConnectTimeout(Duration.ofMillis(5000))
+                .setReadTimeout(Duration.ofMillis(30000))
                 .build();
     }
 
@@ -35,6 +35,10 @@ public class MlModelClient {
         body.put("dayOfWeek", request.getDayOfWeek());
         body.put("promo", request.getPromo());
         body.put("stockLevel", request.getStockLevel());
+        body.put("price", request.getPrice());
+        body.put("discount", request.getDiscount());
+        body.put("unitsSold", request.getUnitsSold());
+        body.put("unitsOrdered", request.getUnitsOrdered());
 
         try {
             Map response = restTemplate.postForObject(url, body, Map.class);

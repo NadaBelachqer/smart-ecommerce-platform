@@ -9,6 +9,10 @@ export interface ForecastRequestDTO {
   dayOfWeek: number;
   promo: number;
   stockLevel: number;
+  price: number;
+  discount: number;
+  unitsSold: number;
+  unitsOrdered: number;
 }
 
 export interface ForecastResponseDTO {

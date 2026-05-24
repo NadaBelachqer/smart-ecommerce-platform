@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface Product {
@@ -46,6 +46,7 @@ export class ProductService {
   private authService = inject(AuthService);
   private apiUrl = 'http://localhost:8080/api';
   private imageBaseUrl = 'http://localhost:8080';
+  private productsCache = new Map<string, Observable<PageResponse<Product>>>();
 
   private getAuthHeaders() {
     const token = this.authService.getToken();
@@ -83,27 +84,21 @@ export class ProductService {
   keyword: string = '',
   category: string = ''
 ): Observable<PageResponse<Product>> {
-
-  let url = `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`;
-
-  if (keyword?.trim()) {
-    url += `&keyword=${encodeURIComponent(keyword.trim())}`;
+  const key = `${page}-${size}-${keyword}-${category}`;
+  if (!this.productsCache.has(key)) {
+    let url = `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`;
+    if (keyword?.trim()) url += `&keyword=${encodeURIComponent(keyword.trim())}`;
+    if (category?.trim()) url += `&category=${encodeURIComponent(category.trim())}`;
+    const req$ = this.http.get<PageResponse<Product>>(url, { headers: this.getAuthHeaders() }).pipe(
+      map(response => ({ ...response, content: this.normalizeImageUrls(response.content) })),
+      shareReplay(1)
+    );
+    this.productsCache.set(key, req$);
   }
-
-  if (category?.trim()) {
-    url += `&category=${encodeURIComponent(category.trim())}`;
-  }
-
-  return this.http.get<PageResponse<Product>>(
-    url,
-    { headers: this.getAuthHeaders() }
-  ).pipe(
-    map(response => ({
-      ...response,
-      content: this.normalizeImageUrls(response.content)
-    }))
-  );
+  return this.productsCache.get(key)!;
 }
+
+  clearProductsCache() { this.productsCache.clear(); }
 
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(
@@ -162,6 +157,6 @@ export class ProductService {
     return this.http.delete<void>(
       `${this.apiUrl}/products/admin/delete/${id}`,
       { headers: this.getAuthHeaders() }
-    );
+    ).pipe(tap(() => this.clearProductsCache()));
   }
 }

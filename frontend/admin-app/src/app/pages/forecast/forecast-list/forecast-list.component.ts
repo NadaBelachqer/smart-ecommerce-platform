@@ -1,9 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { timeout } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { timeout, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { ForecastService, ForecastRequestDTO, ForecastResponseDTO, ForecastHistory } from '../../../services/forecast.service';
 import { ProductService, Product, PageResponse } from '../../../services/product.service';
+import { InventoryService, Movement } from '../../../services/inventory.service';
 
 @Component({
   selector: 'app-forecast-list',
@@ -15,6 +18,9 @@ import { ProductService, Product, PageResponse } from '../../../services/product
 export class ForecastListComponent implements OnInit {
   private forecastService = inject(ForecastService);
   private productService = inject(ProductService);
+  private inventoryService = inject(InventoryService);
+  private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
@@ -35,6 +41,10 @@ export class ForecastListComponent implements OnInit {
   dayOfWeek: number = new Date().getDay();
   promoActive: boolean = false;
   stockLevel: number = 0;
+  price: number = 0;
+  discount: number = 0;
+  unitsSold: number = 0;
+  unitsOrdered: number = 0;
 
   ngOnInit(): void {
     this.loadProducts();
@@ -47,9 +57,11 @@ export class ForecastListComponent implements OnInit {
       timeout(8000)
     ).subscribe({
       next: (response: PageResponse<Product>) => {
-        this.products = response.content;
-        this.filteredProducts = response.content;
-        this.isLoadingProducts = false;
+        this.ngZone.run(() => {
+          this.products = response.content;
+          this.filteredProducts = response.content;
+          this.isLoadingProducts = false;
+        });
       },
       error: (err) => {
         const isTimeout = err?.name === 'TimeoutError';
@@ -77,9 +89,27 @@ export class ForecastListComponent implements OnInit {
   selectProduct(product: Product): void {
     this.selectedProduct = product;
     this.selectedProductId = product.id;
+    this.price = product.sellingPrice;
     this.currentPrediction = null;
     this.currentPredictionTime = null;
+    this.cdr.detectChanges();
     this.loadForecastHistory(product.id);
+    this.loadInventoryData(product.id);
+  }
+
+  loadInventoryData(productId: number): void {
+    forkJoin({
+      inventory: this.inventoryService.getInventory(productId).pipe(catchError(() => of(null))),
+      movements: this.inventoryService.getMovements(productId).pipe(catchError(() => of([])))
+    }).subscribe(({ inventory, movements }) => {
+      if (inventory) this.stockLevel = inventory.stockLevel;
+      const mvts = movements as Movement[];
+      const sales = mvts.filter(m => m.movementType === 'OUT').reduce((sum, m) => sum + m.quantity, 0);
+      const orders = mvts.filter(m => m.movementType === 'IN').reduce((sum, m) => sum + m.quantity, 0);
+      this.unitsSold = sales || 0;
+      this.unitsOrdered = orders || 0;
+      this.cdr.detectChanges();
+    });
   }
 
   loadForecastHistory(productId: number): void {
@@ -109,7 +139,11 @@ export class ForecastListComponent implements OnInit {
       month: this.month,
       dayOfWeek: this.dayOfWeek,
       promo: this.promoActive ? 1 : 0,
-      stockLevel: this.stockLevel || 0
+      stockLevel: this.stockLevel || 0,
+      price: this.price || 0,
+      discount: this.discount || 0,
+      unitsSold: this.unitsSold || 0,
+      unitsOrdered: this.unitsOrdered || 0
     };
 
     this.isLoadingPrediction = true;
@@ -123,6 +157,7 @@ export class ForecastListComponent implements OnInit {
         this.successMessage = 'Prédiction générée avec succès !';
         this.loadForecastHistory(this.selectedProductId!);
         this.isLoadingPrediction = false;
+        this.cdr.detectChanges();
         setTimeout(() => this.successMessage = null, 3000);
       },
       error: () => {

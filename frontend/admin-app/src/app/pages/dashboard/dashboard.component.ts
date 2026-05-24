@@ -1,7 +1,10 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
+import { InventoryService, Alert } from '../../services/inventory.service';
+import { ProductService, Product } from '../../services/product.service';
+import { forkJoin, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,12 +16,17 @@ import { OrderService } from '../../services/order.service';
 export class DashboardComponent implements OnInit {
   private orderService = inject(OrderService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
+  private inventoryService = inject(InventoryService);
+  private productService = inject(ProductService);
 
   orderCount = 0;
   orders: any[] = [];
   loadingOrders = false;
   errorMessage?: string;
   lastUpdated?: string;
+  lowStockProducts: { product: Product, stockLevel: number }[] = [];
+  alertCount = 0;
   
   // Statistiques
   confirmedOrders = 0;
@@ -26,8 +34,32 @@ export class DashboardComponent implements OnInit {
   totalRevenue = 0;
   averageOrderValue = 0;
 
+  navigate(path: string) {
+    this.router.navigateByUrl(path);
+  }
+
   ngOnInit() {
     this.loadOrderCount();
+    this.loadLowStockProducts();
+  }
+
+  loadLowStockProducts() {
+    this.productService.getProducts(0, 100).subscribe({
+      next: (response) => {
+        const products = response.content;
+        const requests = products.map(p =>
+          this.inventoryService.getInventory(p.id).pipe(catchError(() => of(null)))
+        );
+        forkJoin(requests).subscribe(inventories => {
+          this.lowStockProducts = products
+            .map((p, i) => ({ product: p, inv: inventories[i] }))
+            .filter(x => x.inv && x.inv.stockLevel <= x.inv.reorderThreshold)
+            .map(x => ({ product: x.product, stockLevel: x.inv!.stockLevel }));
+          this.alertCount = this.lowStockProducts.length;
+          this.cdr.detectChanges();
+        });
+      }
+    });
   }
 
   loadOrderCount() {

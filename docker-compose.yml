@@ -85,6 +85,19 @@ services:
     networks:
       - ecommerce-net
 
+  mysql-order:
+    image: mysql:8
+    container_name: mysql-order
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: order_db
+    ports:
+      - "3315:3306"
+    volumes:
+      - mysql_order_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
   forecast-service:
     build:
       context: ./backend/forecast-service
@@ -94,6 +107,25 @@ services:
     depends_on:
       - mysql-forecast
       - ml-api
+    networks:
+      - ecommerce-net
+
+  order-service:
+    build:
+      context: ./backend/order-service
+    container_name: order-service
+    ports:
+      - "8086:8084"
+    depends_on:
+      - mysql-order
+      - product-service
+      - inventory-service
+    environment:
+      - ORDER_DB_URL=jdbc:mysql://mysql-order:3306/order_db?useSSL=false&allowPublicKeyRetrieval=true
+      - ORDER_DB_USERNAME=root
+      - ORDER_DB_PASSWORD=root123
+      - PRODUCT_SERVICE_URL=http://product-service:8082/products
+      - INVENTORY_SERVICE_URL=http://inventory-service:8083
     networks:
       - ecommerce-net
 
@@ -117,6 +149,7 @@ services:
       - product-service
       - inventory-service
       - forecast-service
+      - order-service
       - ml-api
     networks:
       - ecommerce-net
@@ -126,6 +159,7 @@ volumes:
   mysql_product_data:
   mysql_inventory_data:
   mysql_forecast_data:
+  mysql_order_data:
 
 networks:
   ecommerce-net:

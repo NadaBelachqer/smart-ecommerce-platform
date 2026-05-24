@@ -31,12 +31,22 @@
         </svg>
         <span>Commandes</span>
       </a>
-      <a class="nav-item" (click)="comingSoon()">
+      <a routerLink="/inventory" routerLinkActive="active" class="nav-item">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 12h18M3 6h18M3 18h18"></path>
           <rect x="1" y="1" width="22" height="22" rx="2" ry="2"></rect>
         </svg>
         <span>Stocks</span>
+      </a>
+      <a routerLink="/forecast" routerLinkActive="active" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="1"></circle>
+          <path d="M12 1v6m0 6v6"></path>
+          <path d="M4.22 4.22l4.24 4.24m2.12 2.12l4.24 4.24"></path>
+          <path d="M1 12h6m6 0h6"></path>
+          <path d="M4.22 19.78l4.24-4.24m2.12-2.12l4.24-4.24"></path>
+        </svg>
+        <span>Prévision Demande</span>
       </a>
       <a class="nav-item" (click)="comingSoon()">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -46,16 +56,6 @@
           <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
         </svg>
         <span>Utilisateurs</span>
-      </a>
-      <a class="nav-item" (click)="comingSoon()">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="1"></circle>
-          <path d="M12 1v6m0 6v6"></path>
-          <path d="M4.22 4.22l4.24 4.24m2.12 2.12l4.24 4.24"></path>
-          <path d="M1 12h6m6 0h6"></path>
-          <path d="M4.22 19.78l4.24-4.24m2.12-2.12l4.24-4.24"></path>
-        </svg>
-        <span>Paramètres</span>
       </a>
     </nav>
   </aside>

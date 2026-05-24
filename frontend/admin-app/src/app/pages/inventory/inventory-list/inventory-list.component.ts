@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { catchError, timeout, finalize } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { InventoryService, InventoryResponseDTO, Movement, Alert } from '../../../services/inventory.service';
 import { ProductService, Product, PageResponse } from '../../../services/product.service';
 
@@ -19,6 +19,7 @@ export class InventoryListComponent implements OnInit {
   private productService = inject(ProductService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   inventories: Product[] = [];
   filteredInventories: Product[] = [];
@@ -32,9 +33,15 @@ export class InventoryListComponent implements OnInit {
   updateQuantity: number = 0;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  showLowStockOnly = false;
 
   ngOnInit(): void {
-    this.loadInventories();
+    this.route.queryParams.subscribe(params => {
+      if (params['filter'] === 'low') {
+        this.showLowStockOnly = true;
+      }
+      this.loadInventories();
+    });
   }
 
   loadInventories(): void {
@@ -45,8 +52,12 @@ export class InventoryListComponent implements OnInit {
     ).subscribe({
       next: (response: PageResponse<Product>) => {
         this.inventories = response.content;
-        this.filteredInventories = response.content;
-        this.isLoadingInventories = false;
+        if (this.showLowStockOnly) {
+          this.loadLowStockFilter(response.content);
+        } else {
+          this.filteredInventories = response.content;
+          this.isLoadingInventories = false;
+        }
       },
       error: (err) => {
         const isTimeout = err?.name === 'TimeoutError';
@@ -55,6 +66,20 @@ export class InventoryListComponent implements OnInit {
           : 'Impossible de joindre le backend (localhost:8080). Vérifiez que docker-compose up est lancé.';
         this.isLoadingInventories = false;
       }
+    });
+  }
+
+  loadLowStockFilter(products: Product[]): void {
+    const requests = products.map(p =>
+      this.inventoryService.getInventory(p.id).pipe(catchError(() => of(null)))
+    );
+    forkJoin(requests).subscribe(inventories => {
+      this.filteredInventories = products.filter((p, i) => {
+        const inv = inventories[i];
+        return inv && inv.stockLevel <= inv.reorderThreshold;
+      });
+      this.isLoadingInventories = false;
+      this.cdr.detectChanges();
     });
   }
 
@@ -81,45 +106,32 @@ export class InventoryListComponent implements OnInit {
     this.errorMessage = null;
 
     forkJoin({
-      inventory: this.inventoryService.getInventory(productId).pipe(
-        catchError(() => of(null))
-      ),
-      movements: this.inventoryService.getMovements(productId).pipe(
-        catchError(() => of([]))
-      ),
-      alerts: this.inventoryService.getAlerts(productId).pipe(
-        catchError(() => of([]))
-      )
-    }).pipe(
-      finalize(() => {
-        this.isLoadingDetails = false;
-      })
-    ).subscribe({
+      inventory: this.inventoryService.getInventory(productId).pipe(catchError(() => of(null))),
+      movements: this.inventoryService.getMovements(productId).pipe(catchError(() => of([]))),
+      alerts: this.inventoryService.getAlerts(productId).pipe(catchError(() => of([])))
+    }).subscribe({
       next: ({ inventory, movements, alerts }) => {
-        try {
-          if (inventory === null) {
-            this.errorMessage = 'Produit non trouvé dans l\'inventaire';
-            this.selectedInventory = null;
-          } else {
-            this.selectedInventory = inventory;
-          }
-
-          this.movements = Array.isArray(movements)
-            ? (movements as Movement[]).sort((a: Movement, b: Movement) => {
-                const timeA = a && a.createdAt ? new Date(a.createdAt).getTime() : 0;
-                const timeB = b && b.createdAt ? new Date(b.createdAt).getTime() : 0;
-                return isNaN(timeA) || isNaN(timeB) ? 0 : timeB - timeA;
-              })
-            : [];
-
-          this.selectedAlerts = Array.isArray(alerts) ? (alerts as Alert[]) : [];
-        } catch (err) {
-          console.error('Error parsing inventory details:', err);
-          this.errorMessage = 'Erreur lors de l\'affichage des détails';
+        if (inventory === null) {
+          this.errorMessage = 'Produit non trouvé dans l\'inventaire';
+          this.selectedInventory = null;
+        } else {
+          this.selectedInventory = inventory;
         }
+        this.movements = Array.isArray(movements)
+          ? (movements as Movement[]).sort((a, b) => {
+              const tA = a?.createdAt ? new Date(a.createdAt).getTime() : 0;
+              const tB = b?.createdAt ? new Date(b.createdAt).getTime() : 0;
+              return tB - tA;
+            })
+          : [];
+        this.selectedAlerts = Array.isArray(alerts) ? (alerts as Alert[]) : [];
+        this.isLoadingDetails = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Erreur lors du chargement des détails';
+        this.isLoadingDetails = false;
+        this.cdr.detectChanges();
       }
     });
   }

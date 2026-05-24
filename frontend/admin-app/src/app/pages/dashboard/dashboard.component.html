@@ -25,7 +25,7 @@
   <div class="stat-card">
     <div class="stat-icon">⚠️</div>
     <div class="stat-info">
-      <h3>0</h3>
+      <h3>{{ alertCount }}</h3>
       <p>Alertes stock</p>
     </div>
   </div>
@@ -62,11 +62,19 @@
   <div class="content-card">
     <div class="card-header">
       <h3>⚠️ Produits en stock critique</h3>
-      <a class="btn-link">Voir tout →</a>
+      <a class="btn-link" (click)="navigate('/inventory?filter=low')" style="cursor:pointer">Voir tout →</a>
     </div>
-    <div class="card-body empty-state">
-      <p>Aucune alerte stock</p>
-      <small>Les alertes apparaîtront ici</small>
+    <div class="card-body">
+      <div *ngIf="lowStockProducts.length === 0" class="empty-state">
+        <p>Aucune alerte stock</p>
+        <small>Les alertes apparaîtront ici</small>
+      </div>
+      <div *ngIf="lowStockProducts.length > 0" class="stats-table">
+        <div *ngFor="let item of lowStockProducts.slice(0, 4)" class="stat-row">
+          <div class="stat-label">⚠️ {{ item.product.name }}</div>
+          <div class="stat-value" style="color: #ef4444">{{ item.stockLevel }} unités</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -75,10 +83,10 @@
       <h3>🚀 Actions rapides</h3>
     </div>
     <div class="quick-actions">
-      <button class="action-btn" routerLink="/products/new">➕ Ajouter un produit</button>
-      <button class="action-btn">📊 Voir les rapports</button>
-      <button class="action-btn">👥 Gérer les utilisateurs</button>
-      <button class="action-btn">⚙️ Configuration</button>
+      <button class="action-btn" (click)="navigate('/products/new')">➕ Ajouter un produit</button>
+      <button class="action-btn" (click)="navigate('/orders')">📦 Voir les commandes</button>
+      <button class="action-btn" (click)="navigate('/inventory')">📊 Gérer le stock</button>
+      <button class="action-btn" (click)="navigate('/forecast')">🔮 Prévision demande</button>
     </div>
   </div>
 </div>
