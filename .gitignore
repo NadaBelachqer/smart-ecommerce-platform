@@ -1,0 +1,25 @@
+# IntelliJ
+.idea/
+
+# Maven
+target/
+
+# Angular
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+
+# archives
+*.rar
+
+# ML models
+*.pkl
+
+# logs
+*.log
+
+# environnement
+.env
