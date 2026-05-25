@@ -1,133 +1,203 @@
-<div class="page-container">
-  <div class="page-header">
-    <h1>📦 Gestion des Produits</h1>
-    <a routerLink="/products/new" class="btn-primary">➕ Nouveau produit</a>
+<div class="products-container">
+  <div class="products-header">
+    <div class="header-title">
+      <h1>Gestion des Produits</h1>
+      <p>Suivi en temps réel de votre inventaire, de vos marges et des analyses de tarification</p>
+    </div>
+    <a routerLink="/products/new" class="btn-primary">
+      <i class="fas fa-plus"></i>
+      <span>Nouveau produit</span>
+    </a>
   </div>
 
-  <div class="filters-bar">
-    <div class="search-box">
-      <input 
-        type="text" 
-        [(ngModel)]="searchKeyword" 
-        placeholder="🔍 Rechercher un produit..."
-        (input)="search()"
-        class="search-input">
-      <button (click)="search()" class="btn-search">Rechercher</button>
-    </div>
-    
-    <div class="category-filters">
-      <button 
-        (click)="resetFilters()" 
-        class="cat-filter" 
-        [class.active]="!selectedCategory">
-        Tous
+  <div class="filters-card">
+    <div class="filters-grid">
+      <div class="search-field">
+        <i class="fas fa-search"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="searchKeyword" 
+          placeholder="Rechercher par nom, SKU..."
+          (input)="search()"
+          class="search-input">
+      </div>
+
+      <div class="category-field">
+        <i class="fas fa-tags"></i>
+        <select [(ngModel)]="selectedCategory" (change)="filterByCategory(selectedCategory)" class="category-select">
+          <option value="">Toutes les catégories</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="size-field">
+        <i class="fas fa-list-ul"></i>
+        <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)" class="size-select">
+          <option [value]="10">10 lignes</option>
+          <option [value]="25">25 lignes</option>
+          <option [value]="50">50 lignes</option>
+          <option [value]="100">100 lignes</option>
+        </select>
+      </div>
+
+      <button (click)="resetFilters()" class="btn-reset" title="Réinitialiser les filtres">
+        <i class="fas fa-redo-alt"></i>
+        <span>Réinitialiser</span>
       </button>
-      <button 
-        *ngFor="let cat of categories" 
-        (click)="filterByCategory(cat)" 
-        class="cat-filter"
-        [class.active]="selectedCategory === cat">
-        {{ cat }}
-      </button>
-    </div>
-    
-    <div class="page-size-selector">
-      <label>Afficher :</label>
-      <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
-        <option [value]="10">10</option>
-        <option [value]="25">25</option>
-        <option [value]="50">50</option>
-        <option [value]="100">100</option>
-      </select>
     </div>
   </div>
 
-  <!-- LOADING -->
-  <div *ngIf="loading" class="loading">
+  <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
-    <p>⏳ Chargement...</p>
+    <p>Chargement du catalogue en cours...</p>
   </div>
 
-  <!-- ERROR -->
-  <div *ngIf="errorMessage" class="error">
-    {{ errorMessage }}
+  <div *ngIf="errorMessage" class="error-state">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>{{ errorMessage }}</p>
   </div>
 
-  <!-- EMPTY STATE -->
   <div *ngIf="!loading && !errorMessage && products.length === 0" class="empty-state">
-    <p>Aucun produit trouvé.</p>
-    <button (click)="resetFilters()" class="btn-primary">Voir tous les produits</button>
+    <div class="empty-icon-wrapper">
+      <i class="fas fa-box-open"></i>
+    </div>
+    <h3>Aucun produit enregistré</h3>
+    <p>Votre catalogue est vide. Commencez à ajouter ou importer des articles pour suivre vos marges.</p>
+    <a routerLink="/products/new" class="btn-primary">
+      <i class="fas fa-plus"></i>
+      <span>Créer un produit</span>
+    </a>
   </div>
 
-  <!-- TABLEAU -->
-  <div *ngIf="!loading && !errorMessage && products.length > 0" class="table-container">
-    <table class="product-table">
+  <div *ngIf="!loading && !errorMessage && products.length > 0" class="table-wrapper">
+    <table class="products-table">
       <thead>
         <tr>
-          <th>Image</th>
+          <th>Visuel</th>
           <th>SKU</th>
-          <th>Nom</th>
+          <th>Désignation</th>
           <th>Catégorie</th>
-          <th>Prix (DH)</th>
-          <th>Coût (DH)</th>
-          <th>Marge (DH)</th>
-          <th>Marge (%)</th>
-          <th>Date expiration</th>  <!-- ← NOUVELLE COLONNE -->
-          <th>Statut</th>            <!-- ← NOUVELLE COLONNE -->
-          <th>Actions</th>
+          <th class="text-right">Prix de vente</th>
+          <th class="text-right">Coût d'achat</th>
+          <th class="text-right">Marge nette</th>
+          <th class="text-center">%</th>
+          <th>Expiration</th>
+          <th class="text-center">Statut</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let product of products">
           <td class="image-cell">
-            <img 
-              *ngIf="product.imageUrl" 
-              [src]="getImageUrl(product.imageUrl)" 
-              [alt]="product.name"
-              class="product-thumbnail"
-              (error)="onImageError($event)">
-            <div *ngIf="!product.imageUrl" class="no-image">📷</div>
-           </td>
-           <td>{{ product.sku || '-' }}</td>
-          <td class="product-name">{{ product.name }}</td>
-          <td>{{ product.category || '-' }}</td>
-          <td class="price-cell">{{ product.sellingPrice | number:'1.2-2' }} DH</td>
-          <td class="cost-cell">{{ (product.cost || 0) | number:'1.2-2' }} DH</td>
-          <td class="margin-cell" [class]="getProfitabilityClass(product)">{{ getMargin(product) | number:'1.2-2' }} DH</td>
-          <td class="margin-percent-cell" [class]="getProfitabilityClass(product)">{{ getMarginPercentage(product) | number:'1.0-0' }}%</td>
+            <div class="product-image">
+              <img 
+                *ngIf="product.imageUrl" 
+                [src]="getImageUrl(product.imageUrl)" 
+                [alt]="product.name"
+                (error)="onImageError($event)">
+              <div *ngIf="!product.imageUrl" class="no-image">
+                <i class="fas fa-image"></i>
+              </div>
+            </div>
+          </td>
           
-          <!-- ← NOUVELLES CELLULES -->
-          <td class="expiration-cell">{{ product.expirationDate | date:'dd/MM/yyyy' }}</td>
-          <td class="status-cell">
-            <span class="status-badge" [class]="getExpirationClass(product.expirationDate || '')">
-              {{ getExpirationStatus(product.expirationDate || '') }}
+          <td class="sku-cell">
+            <span class="sku-badge">{{ product.sku || '-' }}</span>
+          </td>
+          
+          <td class="name-cell">
+            <div class="name-container">
+              <span class="product-title-text">{{ product.name }}</span>
+              <small *ngIf="product.description" class="product-desc-hint">
+                {{ product.description | slice:0:60 }}{{ product.description.length > 60 ? '...' : '' }}
+              </small>
+            </div>
+          </td>
+          
+          <td class="category-cell">
+            <span class="category-badge">{{ product.category || 'Générique' }}</span>
+          </td>
+          
+          <td class="price-cell text-right">
+            <span class="currency-amount">{{ product.sellingPrice | number:'1.2-2' }}</span>
+            <span class="currency-unit">DH</span>
+          </td>
+          
+          <td class="cost-cell text-right">
+            <span class="currency-amount">{{ (product.cost || 0) | number:'1.2-2' }}</span>
+            <span class="currency-unit">DH</span>
+          </td>
+          
+          <td class="margin-cell text-right" [class]="getProfitabilityClass(product)">
+            <span class="currency-amount">{{ getMargin(product) | number:'1.2-2' }}</span>
+            <span class="currency-unit">DH</span>
+          </td>
+          
+          <td class="margin-percent-cell text-center">
+            <span class="percentage-badge" [class]="getProfitabilityClass(product)">
+              {{ getMarginPercentage(product) | number:'1.0-0' }}%
             </span>
           </td>
           
-          <td class="actions">
-            <a [routerLink]="['/products', product.id, 'edit']" class="btn-edit">✏️ Modifier</a>
-            <button (click)="deleteProduct(product.id, product.name)" class="btn-delete">🗑️ Supprimer</button>
+          <td class="expiration-cell">
+            <span class="date-text">{{ product.expirationDate ? (product.expirationDate | date:'dd/MM/yyyy') : '-' }}</span>
+          </td>
+          
+          <td class="status-cell text-center">
+            <span class="status-badge" [class]="getExpirationClass(product.expirationDate || '')">
+              <i [class]="getExpirationIcon(product.expirationDate || '')"></i>
+              <span>{{ getExpirationStatus(product.expirationDate || '') }}</span>
+            </span>
+          </td>
+          
+          <td class="actions-cell text-center">
+            <div class="actions-group">
+              <a [routerLink]="['/products', product.id, 'edit']" class="action-btn edit" title="Modifier la fiche">
+                <i class="fas fa-pen"></i>
+              </a>
+              <a [routerLink]="['/products', product.id, 'pricing']" class="action-btn pricing" title="Optimisation prédictive (ML)">
+                <i class="fas fa-chart-line"></i>
+              </a>
+              <button type="button" (click)="deleteProduct(product.id, product.name)" class="action-btn delete" title="Retirer du stock">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- PAGINATION -->
-    <div class="pagination">
+    <div class="pagination-wrapper">
       <div class="pagination-info">
-        Affichage de {{ currentPage * pageSize + 1 }} à {{ Math.min((currentPage + 1) * pageSize, totalElements) }} sur {{ totalElements }} produits
+        <i class="fas fa-server"></i>
+        <span>
+          Affichage de <strong>{{ currentPage * pageSize + 1 }}</strong> à 
+          <strong>{{ Math.min((currentPage + 1) * pageSize, totalElements) }}</strong> sur 
+          <strong>{{ totalElements }}</strong> articles
+        </span>
       </div>
-      
+
       <div class="pagination-controls">
-        <button class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(0)">⏮ Premier</button>
-        <button class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">◀ Précédent</button>
-        
-        <button *ngFor="let page of getPaginationArray()" class="page-btn" [class.active]="page === currentPage" (click)="goToPage(page)">
+        <button type="button" class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(0)">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button type="button" class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+          <i class="fas fa-angle-left"></i>
+        </button>
+
+        <button type="button" *ngFor="let page of getPaginationArray()" 
+                class="page-btn num-btn" 
+                [class.active]="page === currentPage" 
+                (click)="goToPage(page)">
           {{ page + 1 }}
         </button>
-        
-        <button class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(currentPage + 1)">Suivant ▶</button>
-        <button class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(totalPages - 1)">Dernier ⏩</button>
+
+        <button type="button" class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(currentPage + 1)">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button type="button" class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(totalPages - 1)">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
       </div>
     </div>
   </div>

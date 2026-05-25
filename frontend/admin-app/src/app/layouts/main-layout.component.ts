@@ -14,6 +14,7 @@ export class MainLayoutComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   
+  isSidebarCollapsed = false;
   adminName = '';
   adminEmail = '';
   currentDate = new Date();
@@ -23,6 +24,13 @@ export class MainLayoutComponent implements OnInit {
     this.adminEmail = this.authService.getUserEmail() || '';
     this.adminName = this.adminEmail.split('@')[0];
     
+    // Récupérer l'état du sidebar
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    if (savedState !== null) {
+      this.isSidebarCollapsed = JSON.parse(savedState);
+    }
+    
+    // Mettre à jour le titre selon la route
     this.router.events.subscribe(() => {
       const currentUrl = this.router.url;
       if (currentUrl.includes('/dashboard')) {
@@ -35,11 +43,17 @@ export class MainLayoutComponent implements OnInit {
     });
   }
 
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isSidebarCollapsed));
+  }
+
   logout() {
     this.authService.logout();
   }
 
-  comingSoon() {
+  comingSoon(event: Event) {
+    event.preventDefault();
     alert('Cette fonctionnalité sera bientôt disponible !');
   }
 }

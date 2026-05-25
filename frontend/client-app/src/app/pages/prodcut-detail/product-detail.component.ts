@@ -72,4 +72,25 @@ export class ProductDetailComponent implements OnInit {
 
     return 'https://via.placeholder.com/400?text=No+Image';
   }
+
+  quantity: number = 1;
+
+  addToCart(product: Product) {
+    // 1. Récupérer le panier actuel depuis le localStorage
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    // 2. Vérifier si le produit est déjà dans le panier
+    const existingItem = cart.find((item: any) => item.product.id === product.id);
+    if (existingItem) {
+      // 3. Si oui, augmenter la quantité
+      existingItem.quantity += this.quantity;
+    } else {
+      // 4. Sinon, ajouter le produit avec la quantité
+      cart.push({ product, quantity: this.quantity });
+    }
+    // 5. Enregistrer le panier mis à jour dans le localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${product.name} ajouté au panier !`);
+  }
+
+  
 }

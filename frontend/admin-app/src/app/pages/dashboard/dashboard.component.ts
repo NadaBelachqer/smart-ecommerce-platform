@@ -10,4 +10,5 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  // Le dashboard contient seulement le contenu de la page d'accueil
 }

@@ -1,67 +1,169 @@
-<!-- Stats Cards -->
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-icon">💰</div>
-    <div class="stat-info">
-      <h3>0 DH</h3>
-      <p>Chiffre d'affaires</p>
+<div class="dashboard-analytics-view">
+  
+  <!-- Section En-tête de Performance -->
+  <div class="dashboard-summary-banner">
+    <div class="banner-welcome">
+      <h2>Vue d'ensemble de l'activité</h2>
+      <p>Indicateurs clés calculés en temps réel pour votre réseau de distribution.</p>
     </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon">📦</div>
-    <div class="stat-info">
-      <h3>0</h3>
-      <p>Commandes</p>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon">👥</div>
-    <div class="stat-info">
-      <h3>0</h3>
-      <p>Clients</p>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon">⚠️</div>
-    <div class="stat-info">
-      <h3>0</h3>
-      <p>Alertes stock</p>
-    </div>
-  </div>
-</div>
-
-<div class="content-grid">
-  <div class="content-card">
-    <div class="card-header">
-      <h3>📋 Dernières commandes</h3>
-      <a class="btn-link">Voir tout →</a>
-    </div>
-    <div class="card-body empty-state">
-      <p>Aucune commande récente</p>
-      <small>Les commandes apparaîtront ici</small>
+    <div class="banner-actions">
+      <button class="btn-secondary-action">
+        <i class="fa-solid fa-arrow-down-to-line"></i> Exporter le rapport
+      </button>
     </div>
   </div>
 
-  <div class="content-card">
-    <div class="card-header">
-      <h3>⚠️ Produits en stock critique</h3>
-      <a class="btn-link">Voir tout →</a>
+  <!-- Grille de KPIs Strictes -->
+  <div class="kpi-matrix-grid">
+    
+    <div class="kpi-card-wrapper">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Chiffre d'affaires</span>
+        <div class="kpi-icon-container blue-theme">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+      <div class="kpi-card-body">
+        <h3 class="kpi-value">0,00 DH</h3>
+        <div class="kpi-trend neutral">
+          <i class="fa-solid fa-minus"></i> <span>0% vs mois dernier</span>
+        </div>
+      </div>
     </div>
-    <div class="card-body empty-state">
-      <p>Aucune alerte stock</p>
-      <small>Les alertes apparaîtront ici</small>
+
+    <div class="kpi-card-wrapper">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Volume Commandes</span>
+        <div class="kpi-icon-container green-theme">
+          <i class="fa-solid fa-basket-shopping"></i>
+        </div>
+      </div>
+      <div class="kpi-card-body">
+        <h3 class="kpi-value">0</h3>
+        <div class="kpi-trend neutral">
+          <i class="fa-solid fa-minus"></i> <span>Aucune fluctuation</span>
+        </div>
+      </div>
     </div>
+
+    <div class="kpi-card-wrapper">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Nouveaux Clients</span>
+        <div class="kpi-icon-container purple-theme">
+          <i class="fa-solid fa-user-gear"></i>
+        </div>
+      </div>
+      <div class="kpi-card-body">
+        <h3 class="kpi-value">0</h3>
+        <div class="kpi-trend neutral">
+          <i class="fa-solid fa-minus"></i> <span>0 ce jour</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card-wrapper state-alert">
+      <div class="kpi-card-header">
+        <span class="kpi-title">Alertes Rupture Stock</span>
+        <div class="kpi-icon-container red-theme">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+      </div>
+      <div class="kpi-card-body">
+        <h3 class="kpi-value">0</h3>
+        <div class="kpi-trend stable">
+          <i class="fa-solid fa-check-double"></i> <span>Logistique saine</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="content-card full-width">
-    <div class="card-header">
-      <h3>🚀 Actions rapides</h3>
+  <!-- Grille Opérationnelle Basse -->
+  <div class="operational-control-grid">
+    
+    <!-- Liste Dernières Commandes -->
+    <div class="control-table-card">
+      <div class="table-card-header">
+        <div class="header-caption">
+          <h3>Flux des Commandes Récentes</h3>
+          <p>Les dernières transactions validées sur la plateforme.</p>
+        </div>
+        <a class="table-action-link">Historique <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      
+      <!-- État vide corporate -->
+      <div class="table-empty-state">
+        <div class="empty-state-icon">
+          <i class="fa-regular fa-folder-open"></i>
+        </div>
+        <h4>Aucun flux enregistré</h4>
+        <p>Les transactions clients apparaîtront ici dès validation de leur panier.</p>
+      </div>
     </div>
-    <div class="quick-actions">
-      <button class="action-btn" routerLink="/products/new">➕ Ajouter un produit</button>
-      <button class="action-btn">📊 Voir les rapports</button>
-      <button class="action-btn">👥 Gérer les utilisateurs</button>
-      <button class="action-btn">⚙️ Configuration</button>
+
+    <!-- Liste Ruptures de Stocks -->
+    <div class="control-table-card">
+      <div class="table-card-header">
+        <div class="header-caption">
+          <h3>Alerte Approvisionnement</h3>
+          <p>Articles nécessitant un réassort urgent auprès des fournisseurs.</p>
+        </div>
+        <a class="table-action-link" routerLink="/stock">Inventaire <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      
+      <!-- État vide corporate -->
+      <div class="table-empty-state">
+        <div class="empty-state-icon text-success">
+          <i class="fa-regular fa-circle-check"></i>
+        </div>
+        <h4>Seuils nominaux atteints</h4>
+        <p>Tous vos articles possèdent un niveau de stock conforme à la demande.</p>
+      </div>
     </div>
+
+    <!-- Actions Raccourcis Métier (Passage à 4 colonnes pour inclure les stocks) -->
+    <div class="control-table-card full-span-row">
+      <div class="table-card-header">
+        <div class="header-caption">
+          <h3>Console d'Actions Rapides</h3>
+          <p>Accès directs aux modules d'administration fréquents.</p>
+        </div>
+      </div>
+      <div class="quick-shortcut-bar">
+        <button class="shortcut-action-trigger" routerLink="/products/new">
+          <i class="fa-solid fa-plus-circle text-blue"></i>
+          <div class="shortcut-text">
+            <span>Nouvel Article</span>
+            <small>Créer une référence catalogue</small>
+          </div>
+        </button>
+
+        <!-- AJOUT : Raccourci vers les stocks -->
+        <button class="shortcut-action-trigger" routerLink="/stock">
+          <i class="fa-solid fa-cubes text-cyan"></i>
+          <div class="shortcut-text">
+            <span>Ajuster les Stocks</span>
+            <small>Niveaux, alertes et réassorts</small>
+          </div>
+        </button>
+        
+        <button class="shortcut-action-trigger">
+          <i class="fa-solid fa-chart-line text-green"></i>
+          <div class="shortcut-text">
+            <span>Rapports d'activité</span>
+            <small>Exporter les bilans financiers</small>
+          </div>
+        </button>
+
+        <button class="shortcut-action-trigger">
+          <i class="fa-solid fa-users-gear text-purple"></i>
+          <div class="shortcut-text">
+            <span>Droits d'accès</span>
+            <small>Gérer les comptes gestionnaires</small>
+          </div>
+        </button>
+      </div>
+    </div>
+
   </div>
 </div>

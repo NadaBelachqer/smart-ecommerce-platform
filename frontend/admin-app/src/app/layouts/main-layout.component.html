@@ -1,61 +1,115 @@
-<div class="app-layout">
-  <!-- Sidebar fixe -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h2> Admin </h2>
-      <p>E-Commerce Platform</p>
-    </div>
+<div class="admin-workspace">
+  <aside class="app-sidebar" [class.is-collapsed]="isSidebarCollapsed">
     
-    <nav class="sidebar-nav">
-      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-        <span class="icon">🏠</span>
-        <span>Dashboard</span>
+    <div class="sidebar-brand">
+      <div class="brand-identity">
+        <div class="brand-icon-wrapper">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <span class="brand-name" *ngIf="!isSidebarCollapsed">OptiCore <span class="text-accent">Retail</span></span>
+      </div>
+      <button class="sidebar-toggle-trigger" (click)="toggleSidebar()" title="Réduire le menu">
+        <i class="fa-solid" [class.fa-chevron-left]="!isSidebarCollapsed" [class.fa-chevron-right]="isSidebarCollapsed"></i>
+      </button>
+    </div>
+
+    <div class="navigation-container">
+      
+      <nav class="sidebar-navigation-group">
+        <div class="nav-section-title" *ngIf="!isSidebarCollapsed">Pilotage Central</div>
+        
+        <a routerLink="/dashboard" routerLinkActive="is-active" class="navigation-link">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Tableau de bord</span>
+        </a>
+        
+        <a routerLink="/products" routerLinkActive="is-active" class="navigation-link">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Catalogue Articles</span>
+        </a>
+
+        <a routerLink="/stock" routerLinkActive="is-active" class="navigation-link">
+          <i class="fa-solid fa-cubes"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Gestion de Stock</span>
+        </a>
+        
+        <a href="#" class="navigation-link is-disabled" (click)="comingSoon($event)">
+          <i class="fa-solid fa-receipt"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Commandes & Flux</span>
+        </a>
+      </nav>
+
+      <nav class="sidebar-navigation-group">
+        <div class="nav-section-title" *ngIf="!isSidebarCollapsed">Optimisation & IA</div>
+        
+        <a href="#" class="navigation-link is-disabled" (click)="comingSoon($event)">
+          <i class="fa-solid fa-calculator"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Pricing Dynamique</span>
+        </a>
+        
+        <a href="#" class="navigation-link is-disabled" (click)="comingSoon($event)">
+          <i class="fa-solid fa-magnifying-glass-chart"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Veille Concurrentielle</span>
+        </a>
+        
+        <a href="#" class="navigation-link is-disabled" (click)="comingSoon($event)">
+          <i class="fa-solid fa-timeline"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Prévisions de Vente</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-system-footer">
+      <a href="#" class="navigation-link is-disabled" (click)="comingSoon($event)">
+        <i class="fa-solid fa-sliders"></i>
+        <span class="link-label" *ngIf="!isSidebarCollapsed">Paramètres</span>
       </a>
-      <a routerLink="/products" routerLinkActive="active" class="nav-item">
-        <span class="icon">📦</span>
-        <span>Produits</span>
-      </a>
-      <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">📈</span>
-        <span>Commandes</span>
-      </a>
-      <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">📊</span>
-        <span>Stocks</span>
-      </a>
-      <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">👥</span>
-        <span>Utilisateurs</span>
-      </a>
-      <a class="nav-item" (click)="comingSoon()">
-        <span class="icon">⚙️</span>
-        <span>Paramètres</span>
-      </a>
-    </nav>
+      <button (click)="logout()" class="navigation-link btn-logout-action">
+        <i class="fa-solid fa-arrow-left-from-bracket"></i>
+        <span class="link-label" *ngIf="!isSidebarCollapsed">Déconnexion</span>
+      </button>
+    </div>
   </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <!-- Header -->
-    <header class="header">
-      <div class="header-title">
-        <h1>{{ pageTitle }}</h1>
-        <p>{{ currentDate | date:'EEEE d MMMM yyyy' }}</p>
-      </div>
-      <div class="header-user">
-        <div class="user-info">
-          <span class="user-name">👑 {{ adminName }}</span>
-          <span class="user-role">Administrateur</span>
+  <div class="workspace-container">
+    
+    <header class="workspace-top-bar">
+      <div class="top-bar-left">
+        <div class="page-context">
+          <h1 class="current-view-title">{{ pageTitle }}</h1>
+          <span class="current-date-badge">{{ currentDate | date:'EEEE d MMMM yyyy' }}</span>
         </div>
-        <button class="logout-btn" (click)="logout()">
-          Déconnexion
-        </button>
+        
+        <div class="global-search-bar">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" placeholder="Rechercher un produit, un SKU, une commande...">
+        </div>
+      </div>
+
+      <div class="top-bar-right">
+        <div class="scope-selector">
+          <i class="fa-solid fa-shop text-muted"></i>
+          <span class="scope-name">Tous les Magasins</span>
+          <i class="fa-solid fa-chevron-down scope-arrow"></i>
+        </div>
+        
+        <div class="action-notification-bell">
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge-count-alert">3</span>
+        </div>
+        
+        <div class="admin-profile-trigger">
+          <img [src]="'https://ui-avatars.com/api/?name=' + adminName + '&background=004f9f&color=fff&bold=true'" alt="Avatar">
+          <div class="profile-meta">
+            <span class="profile-name">{{ adminName }}</span>
+            <span class="profile-role">Administrateur</span>
+          </div>
+        </div>
       </div>
     </header>
 
-    <!-- Zone dynamique pour le contenu des pages -->
-    <div class="page-content">
+    <main class="workspace-view">
       <router-outlet></router-outlet>
-    </div>
-  </main>
+    </main>
+  </div>
 </div>

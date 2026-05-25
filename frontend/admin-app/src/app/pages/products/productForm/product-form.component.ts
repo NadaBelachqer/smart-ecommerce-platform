@@ -203,4 +203,8 @@ export class ProductFormComponent implements OnInit {
         }
       });
   }
+  getMarginPercent(): number {
+  if (!this.product.sellingPrice || !this.product.cost) return 0;
+  return ((this.product.sellingPrice - this.product.cost) / this.product.sellingPrice) * 100;
+}
 }

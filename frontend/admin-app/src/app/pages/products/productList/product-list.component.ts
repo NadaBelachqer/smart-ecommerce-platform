@@ -197,4 +197,16 @@ export class ProductListComponent implements OnInit {
     }
     return pages;
   }
+
+  // Ajoutez cette méthode dans votre ProductListComponent
+getExpirationIcon(expirationDate: string): string {
+  if (!expirationDate) return 'fas fa-question-circle';
+  if (this.isExpired(expirationDate)) return 'fas fa-times-circle';
+  const expDate = new Date(expirationDate);
+  const today = new Date();
+  const diffTime = expDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (diffDays <= 7) return 'fas fa-exclamation-triangle';
+  return 'fas fa-check-circle';
+}
 }

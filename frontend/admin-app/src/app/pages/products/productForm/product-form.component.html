@@ -1,178 +1,281 @@
-<div class="page-container">
-
-  <div class="page-header">
-    <h1>
-      {{ isEditMode ? '✏️ Modifier le produit' : '➕ Nouveau produit' }}
-    </h1>
-
-    <a routerLink="/products" class="btn-secondary">
-      ← Retour
+<div class="product-form-container">
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-icon-badge">
+        <i class="fas" [class.fa-pen]="isEditMode" [class.fa-plus]="!isEditMode"></i>
+      </div>
+      <div class="header-titles">
+        <h1>{{ isEditMode ? 'Modifier le produit' : 'Nouveau produit' }}</h1>
+        <p class="header-subtitle">Renseignez les informations de tarification et de logistique d'article</p>
+      </div>
+    </div>
+    <a routerLink="/products" class="btn-outline">
+      <i class="fas fa-arrow-left"></i>
+      <span>Retour au catalogue</span>
     </a>
   </div>
 
-  <div *ngIf="errorMessage" class="error">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="successMessage" class="success">
-    {{ successMessage }}
-  </div>
-
-  <!-- SECTION IMPORT CSV -->
-  <div class="csv-import-box">
-    <h3>📥 Importer une liste CSV</h3>
-
-    <input
-      type="file"
-      #csvInput
-      id="csvFileInput"
-      accept=".csv"
-      (change)="onCsvSelected($event)"
-      hidden
-    />
-
-    <button type="button" class="btn-upload" (click)="csvInput.click()">
-      Choisir fichier CSV
-    </button>
-
-    <p *ngIf="selectedCsvFile">
-      📄 {{ selectedCsvFile.name }}
-    </p>
-
-    <button
-      type="button"
-      class="btn-upload"
-      (click)="importCsv()"
-      [disabled]="!selectedCsvFile || loadingCsv">
-      {{ loadingCsv ? 'Import en cours...' : 'Importer CSV' }}
+  <div *ngIf="errorMessage" class="alert alert-error">
+    <i class="fas fa-exclamation-circle"></i>
+    <div class="alert-message-content">{{ errorMessage }}</div>
+    <button type="button" class="alert-close" (click)="errorMessage = ''">
+      <i class="fas fa-times"></i>
     </button>
   </div>
-  
-  <hr>
 
-  <!-- FORMULAIRE PRODUIT -->
-  <form *ngIf="!loadingPage" (ngSubmit)="onSubmit()" class="product-form">
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="fas fa-check-circle"></i>
+    <div class="alert-message-content">{{ successMessage }}</div>
+    <button type="button" class="alert-close" (click)="successMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
 
-    <div class="form-group">
-      <label>SKU</label>
-      <input type="text" [(ngModel)]="product.sku" name="sku" required />
+  <div class="form-grid-layout">
+    
+    <div class="main-form-column">
+      <form *ngIf="!loadingPage" (ngSubmit)="onSubmit()" class="card form-card">
+        <div class="card-header">
+          <i class="fas fa-box"></i>
+          <h3>Informations générales</h3>
+        </div>
+     
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                <i class="fas fa-barcode"></i>
+                SKU <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                [(ngModel)]="product.sku" 
+                name="sku" 
+                placeholder="EX: PRD-001"
+                class="form-control"
+                required />
+            </div>
+            <div class="form-group">
+              <label>
+                <i class="fas fa-tag"></i>
+                Nom de l'article <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                [(ngModel)]="product.name" 
+                name="name" 
+                placeholder="Nom complet du produit"
+                class="form-control"
+                required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-folder"></i>
+              Catégorie de vente
+            </label>
+            <input 
+              type="text" 
+              [(ngModel)]="product.category" 
+              name="category" 
+              placeholder="Ex: Électronique, Alimentation, Mode..."
+              class="form-control" />
+          </div>
+
+          <div class="c">
+            <h4 class="section-box-title"><i class="fas fa-calculator"></i> Métriques de tarification</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label>
+                  <i class="fas fa-money-bill-wave"></i>
+                  Prix de vente conseillé <span class="required">*</span>
+                </label>
+                <div class="input-with-unit">
+                  <input 
+                    type="number" 
+                    [(ngModel)]="product.sellingPrice" 
+                    name="sellingPrice" 
+                    step="0.01" 
+                    placeholder="0.00"
+                    class="form-control"
+                    required />
+                  <span class="unit">DH</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>
+                  <i class="fas fa-chart-line"></i>
+                  Coût d'achat initial
+                </label>
+                <div class="input-with-unit">
+                  <input 
+                    type="number" 
+                    [(ngModel)]="product.cost" 
+                    name="cost" 
+                    step="0.01" 
+                    placeholder="0.00"
+                    class="form-control" />
+                  <span class="unit">DH</span>
+                </div>
+                <small class="form-hint">Prix d'achat unitaire / coût de revient logistique</small>
+              </div>
+            </div>
+
+            <div *ngIf="product.sellingPrice && product.cost" class="margin-preview">
+              <div class="margin-info">
+                <span class="margin-label">Estimation de la marge brute</span>
+                <div class="margin-values">
+                  <span class="margin-amount">
+                    {{ product.sellingPrice - product.cost | number:'1.2-2' }} DH
+                  </span>
+                  <span class="margin-percent" [class.positive]="getMarginPercent() > 0" [class.negative]="getMarginPercent() < 0">
+                    <i class="fas" [class.fa-caret-up]="getMarginPercent() > 0" [class.fa-caret-down]="getMarginPercent() < 0"></i>
+                    {{ getMarginPercent() | number:'1.1-1' }}%
+                  </span>
+                </div>
+              </div>
+              <div class="margin-bar">
+                <div class="margin-bar-fill" [style.width.%]="getMarginPercent() > 100 ? 100 : (getMarginPercent() < 0 ? 0 : getMarginPercent())"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row align-items-end">
+            <div class="form-group">
+              <label>
+                <i class="fas fa-calendar-alt"></i>
+                Date de fin d'expiration
+              </label>
+              <input 
+                type="date" 
+                [(ngModel)]="expirationDateValue"
+                (ngModelChange)="onExpirationDateChange($event)"
+                name="expirationDate" 
+                class="form-control" />
+            </div>
+            <div class="form-group" *ngIf="expirationDateValue">
+              <div class="status-badge" [class.expired]="isExpired(expirationDateValue)" [class.warning]="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30" [class.valid]="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! > 30">
+                <i class="fas" [class.fa-times-circle]="isExpired(expirationDateValue)" [class.fa-exclamation-triangle]="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30" [class.fa-check-circle]="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! > 30"></i>
+                <span *ngIf="isExpired(expirationDateValue)">Produit expiré</span>
+                <span *ngIf="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30">
+                  Alerte : Expire dans {{ getDaysUntilExpiration(expirationDateValue) }} jrs
+                </span>
+                <span *ngIf="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! > 30">
+                  Stock conforme ({{ getDaysUntilExpiration(expirationDateValue) }} jrs restants)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-align-left"></i>
+              Description technique du produit
+            </label>
+            <textarea 
+              [(ngModel)]="product.description" 
+              name="description" 
+              rows="4"
+              placeholder="Saisissez les caractéristiques détaillées pour le Dynamic Pricing ou la facturation..."
+              class="form-control"></textarea>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a routerLink="/products" class="btn-cancel">
+            <span>Annuler</span>
+          </a>
+          <button type="submit" class="btn-save" [disabled]="loadingSubmit">
+            <i class="fas fa-save" [class.fa-spin]="loadingSubmit"></i>
+            <span>{{ loadingSubmit ? 'Enregistrement...' : 'Enregistrer le produit' }}</span>
+          </button>
+        </div>
+      </form>
     </div>
 
-    <div class="form-group">
-      <label>Nom</label>
-      <input type="text" [(ngModel)]="product.name" name="name" required />
-    </div>
+    <div class="side-media-column">
+      
+      <div class="card media-card">
+        <div class="card-header">
+          <i class="fas fa-image"></i>
+          <h3>Visuel produit</h3>
+        </div>
+        <div class="card-body">
+          <input
+            type="file"
+            #imageInput
+            id="imageFileInput"
+            accept="image/*"
+            (change)="onImageSelected($event)"
+            hidden
+          />
+          <div class="image-upload-wrapper">
+            <div class="image-preview-zone" *ngIf="imagePreview">
+              <img [src]="imagePreview" alt="Aperçu article">
+              <button type="button" class="image-remove-badge" (click)="$event.stopPropagation(); removeSelectedImage()" title="Supprimer la photo">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
 
-    <div class="form-group">
-      <label>Catégorie</label>
-      <input type="text" [(ngModel)]="product.category" name="category" />
-    </div>
+            <div class="upload-placeholder-zone" *ngIf="!imagePreview" (click)="imageInput.click()">
+              <div class="zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+              <p class="zone-text">Ajouter un visuel</p>
+              <span class="zone-hint">Format PNG, JPG (Max 5MB)</span>
+            </div>
 
-    <div class="form-row">
-      <div class="form-group half">
-        <label>💰 Prix de vente (DH)</label>
-        <input 
-          type="number" 
-          [(ngModel)]="product.sellingPrice" 
-          name="sellingPrice" 
-          step="0.01" 
-          required />
-      </div>
-
-      <div class="form-group half">
-        <label>🏭 Coût d'achat (DH)</label>
-        <input 
-          type="number" 
-          [(ngModel)]="product.cost" 
-          name="cost" 
-          step="0.01" />
-        <small class="form-text text-muted">Prix d'achat / coût de revient</small>
-      </div>
-    </div>
-
-    <!-- NOUVEAU CHAMP DATE D'EXPIRATION -->
-    <div class="form-row">
-      <div class="form-group half">
-        <label>📅 Date d'expiration</label>
-        <input 
-          type="date" 
-          [(ngModel)]="expirationDateValue"
-          (ngModelChange)="onExpirationDateChange($event)"
-          name="expirationDate" 
-          class="date-input" />
-        <small class="form-text text-muted">Date à laquelle le produit expire</small>
-      </div>
-
-      <!-- Affichage du statut d'expiration -->
-      <div class="form-group half" *ngIf="expirationDateValue">
-        <label>⚠️ Statut :</label>
-        <div class="expiration-status" [class.expired]="isExpired(expirationDateValue)" [class.soon]="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30">
-          <ng-container *ngIf="isExpired(expirationDateValue)">
-            🚫 PRODUIT EXPIRÉ
-          </ng-container>
-          <ng-container *ngIf="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! <= 30">
-            ⚠️ Expire dans {{ getDaysUntilExpiration(expirationDateValue) }} jours
-          </ng-container>
-          <ng-container *ngIf="!isExpired(expirationDateValue) && getDaysUntilExpiration(expirationDateValue)! > 30">
-            ✅ Valide ({{ getDaysUntilExpiration(expirationDateValue) }} jours restants)
-          </ng-container>
+            <div *ngIf="selectedImage && !imagePreview" class="compact-file-badge">
+              <i class="fas fa-image text-cyan"></i>
+              <span class="truncate-text">{{ selectedImage.name }}</span>
+              <button type="button" class="badge-remove" (click)="removeSelectedImage()"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- AFFICHAGE DE LA MARGE -->
-    <div class="form-group margin-preview" *ngIf="product.sellingPrice && product.cost">
-      <label>📊 Marge brute :</label>
-      <div class="margin-info">
-        <span class="margin-amount">{{ product.sellingPrice - product.cost }} DH</span>
-        <span class="margin-percent">
-          ({{ ((product.sellingPrice - product.cost) / product.sellingPrice * 100) | number:'1.0-0' }}%)
-        </span>
+      <div class="card import-card">
+        <div class="card-header">
+          <i class="fas fa-file-csv"></i>
+          <h3>Importation en lot</h3>
+        </div>
+        <div class="card-body">
+          <div class="import-area">
+            <input
+              type="file"
+              #csvInput
+              id="csvFileInput"
+              accept=".csv"
+              (change)="onCsvSelected($event)"
+              hidden
+            />
+            
+            <div class="file-drop-zone" (click)="csvInput.click()">
+              <i class="fas fa-file-excel text-cyan-icon"></i>
+              <p>Glissez ou importez un CSV</p>
+              <span class="file-hint">Respectez le template SKU</span>
+            </div>
+
+            <div *ngIf="selectedCsvFile" class="compact-file-badge">
+              <i class="fas fa-file-alt text-cyan"></i>
+              <span class="truncate-text">{{ selectedCsvFile.name }}</span>
+              <button type="button" class="badge-remove" (click)="selectedCsvFile = null; csvInput.value = ''">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="btn-primary-import"
+              (click)="importCsv()"
+              [disabled]="!selectedCsvFile || loadingCsv">
+              <i class="fas fa-upload" [class.fa-spin]="loadingCsv"></i>
+              <span>{{ loadingCsv ? 'Importation...' : 'Lancer l\'import' }}</span>
+            </button>
+          </div>
+        </div>
       </div>
+
     </div>
 
-    <div class="form-group">
-      <label>Description</label>
-      <textarea [(ngModel)]="product.description" name="description" rows="4"></textarea>
-    </div>
-
-    <!-- SECTION IMAGE -->
-    <div class="form-group">
-      <label>🖼️ Image du produit</label>
-
-      <input
-        type="file"
-        #imageInput
-        id="imageFileInput"
-        accept="image/*"
-        (change)="onImageSelected($event)"
-        hidden
-      />
-
-      <button type="button" class="btn-upload" (click)="imageInput.click()">
-        Choisir une image
-      </button>
-
-      <p *ngIf="selectedImage">
-        🖼️ {{ selectedImage.name }}
-      </p>
-
-      <div *ngIf="imagePreview" class="image-preview">
-        <img [src]="imagePreview" alt="Aperçu">
-        <button type="button" (click)="removeSelectedImage()">✖</button>
-      </div>
-    </div>
-
-    <!-- ACTIONS -->
-    <div class="form-actions">
-      <button type="submit" class="btn-save" [disabled]="loadingSubmit">
-        {{ loadingSubmit ? 'Enregistrement...' : 'Enregistrer' }}
-      </button>
-
-      <a routerLink="/products" class="btn-cancel">
-        Annuler
-      </a>
-    </div>
-
-  </form>
+  </div>
 </div>

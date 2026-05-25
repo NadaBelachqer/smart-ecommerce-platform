@@ -1,87 +1,101 @@
+<!-- BANDEAU PROMO STYLE RETAIL -->
 <div class="promo-header">
   <div class="promo-content">
-    <span class="promo-tag">🔥 OFFRE DE LA SEMAINE</span>
-    <p class="promo-text">Jusqu'à -30% sur une sélection de produits frais</p>
+    <span class="promo-tag"><i class="fa-solid fa-fire-flame-curved"></i> DEALS DU MOMENT</span>
+    <p class="promo-text">Jusqu'à -30% sur une sélection de produits frais et alimentation</p>
   </div>
 </div>
 
+<!-- NAVBAR PROFESSIONNELLE -->
 <nav class="navbar">
   <div class="nav-container">
     <div class="nav-brand">
-      <a routerLink="/">MonShop</a>
+      <a routerLink="/"><i class="fa-solid fa-cart-shopping-fast text-primary"></i> HyperShop</a>
     </div>
     
     <div class="nav-search">
       <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <input 
-          type="text"  [(ngModel)]="searchKeyword"  placeholder="Rechercher un produit..."  (keyup.enter)="search()">
+          type="text" 
+          [(ngModel)]="searchKeyword" 
+          placeholder="Rechercher un produit, une marque, un rayon..." 
+          (keyup.enter)="search()">
         <button (click)="search()">Rechercher</button>
       </div>
     </div>
     
     <div class="nav-links">
-      <a routerLink="/" class="active">Accueil</a>
-      <a routerLink="/cart" class="cart-link">
-        🛒 Panier 
-        <span class="badge">0</span>
+      <a routerLink="/" class="nav-item active">
+        <i class="fa-solid fa-house"></i> <span>Accueil</span>
+      </a>
+      <a routerLink="/cart" class="cart-link nav-item">
+        <div class="cart-icon-wrapper">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <span class="badge">0</span>
+        </div>
+        <span>Mon Panier</span>
       </a>
       
       <ng-container *ngIf="!authService.isLoggedIn()">
-        <a routerLink="/login" class="btn-outline">Connexion</a>
+        <a routerLink="/login" class="btn-outline">
+          <i class="fa-solid fa-user"></i> Connexion
+        </a>
         <a routerLink="/register" class="btn-primary">Inscription</a>
       </ng-container>
       
       <ng-container *ngIf="authService.isLoggedIn()">
         <div class="user-menu">
-          <span class="user-name">👋 {{ getUserDisplayName() }}</span>
-          <button class="btn-logout" (click)="logout()">Déconnexion</button>
+          <span class="user-name"><i class="fa-solid fa-circle-user"></i> {{ getUserDisplayName() }}</span>
+          <button class="btn-logout" (click)="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
         </div>
       </ng-container>
     </div>
   </div>
 </nav>
 
+<!-- HERO BANNER EN MODE CATALOGUE INTERACTIF -->
 <div class="hero-section">
   <div class="hero-content">
-    <h1>Products</h1>
-    <p class="hero-subtitle">high quality. low prices.</p>
+    <h1>Faites vos courses en ligne</h1>
+    <p class="hero-subtitle">La qualité grand livre, les prix bas garantis au quotidien.</p>
   </div>
 </div>
 
 <div class="container">
   <div class="shop-layout">
+    <!-- SIDEBAR DE RAYONS -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <h3>Shop For</h3>
+        <h3><i class="fa-solid fa-bars-staggered"></i> Tous nos rayons</h3>
       </div>
       <nav class="categories-nav">
-        <button (click)="loadProducts()" class="category-link" [class.active]="!selectedCategory ">
-          All Categories
+        <button (click)="loadProducts()" class="category-link" [class.active]="!selectedCategory">
+          <i class="fa-solid fa-border-all"></i> Tout le catalogue
         </button>
-        <button (click)="filterByCategory('Electronics')" class="category-link" [class.active]="selectedCategory  === 'Electronics'">
-          Électronique
+        <button (click)="filterByCategory('Electronics')" class="category-link" [class.active]="selectedCategory === 'Electronics'">
+          <i class="fa-solid fa-plug"></i> Électronique
         </button>
-    
-        <button (click)="filterByCategory('Dairy')" class="category-link" [class.active]="selectedCategory  === 'Dairy'">
-          Produits laitiers
+        <button (click)="filterByCategory('Dairy')" class="category-link" [class.active]="selectedCategory === 'Dairy'">
+          <i class="fa-solid fa-cheese"></i> Produits laitiers
         </button>
-        
-        <button (click)="filterByCategory('Fruits')" class="category-link" [class.active]="selectedCategory  === 'Fruits'">
-          Fruits 
+        <button (click)="filterByCategory('Fruits')" class="category-link" [class.active]="selectedCategory === 'Fruits'">
+          <i class="fa-solid fa-apple-whole"></i> Fruits
         </button>
-         <button (click)="filterByCategory('Légumes')" class="category-link" [class.active]="selectedCategory  === 'Légumes'">
-         Légumes
+        <button (click)="filterByCategory('Légumes')" class="category-link" [class.active]="selectedCategory === 'Légumes'">
+          <i class="fa-solid fa-carrot"></i> Légumes
         </button>
-        <button (click)="filterByCategory('Boissons')" class="category-link" [class.active]="selectedCategory  === 'Boissons'">
-          Boissons
+        <button (click)="filterByCategory('Boissons')" class="category-link" [class.active]="selectedCategory === 'Boissons'">
+          <i class="fa-solid fa-wine-bottle"></i> Boissons
         </button>
       </nav>
     </aside>
 
-    <!-- Main content -->
+    <!-- CONTENT AREA -->
     <main class="main-content">
-      <!-- Loading -->
+      <!-- SKELETON LOADER -->
       <div *ngIf="loading" class="loading-skeleton">
         <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]">
           <div class="skeleton-image"></div>
@@ -90,57 +104,66 @@
         </div>
       </div>
 
+      <!-- BANNER ERREUR -->
       <div *ngIf="errorMessage && !loading" class="error-banner">
-        <span class="error-icon">⚠️</span>
+        <i class="fa-solid fa-triangle-exclamation error-icon"></i>
         <span>{{ errorMessage }}</span>
-        <button (click)="loadProducts()" class="retry-link">Réessayer →</button>
+        <button (click)="loadProducts()" class="retry-link">Réessayer <i class="fa-solid fa-arrow-right"></i></button>
       </div>
 
+      <!-- GRID PRODUITS -->
       <div *ngIf="!loading && !errorMessage && products.length > 0" class="products-section">
         <div class="section-header">
-          <h2>{{ selectedCategory  ? selectedCategory  : 'New!' }}</h2>
-          <span class="products-count">{{ products.length }} products</span>
+          <h2><i class="fa-solid fa-tags text-accent"></i> {{ selectedCategory ? selectedCategory : 'Sélection de la semaine' }}</h2>
+          <span class="products-count">{{ products.length }} articles trouvés</span>
         </div>
         
         <div class="products-grid">
           <div *ngFor="let product of products" class="product-card">
+            <!-- Étiquette promotionnelle simulée ou badge exclu -->
+            <span class="product-badge" *ngIf="product.sellingPrice < 50">Prix Bas</span>
+            
             <div class="product-image">
               <img 
                 [src]="getImageUrl(product)" 
                 [alt]="product.name"
-                (error)="$event.target.src='https://placehold.co/300x300?text=Image+coming+soon'">
-              <button class="quick-view" [routerLink]="['/products', product.id]">Quick View</button>
+                (error)="$event.target.src='https://placehold.co/300x300?text=Image+indisponible'">
+              <button class="quick-view" [routerLink]="['/products', product.id]">
+                <i class="fa-solid fa-eye"></i> Aperçu rapide
+              </button>
             </div>
             
             <div class="product-info">
+              <span class="product-category-tag" *ngIf="product.category">{{ product.category }}</span>
               <h3 class="product-title">{{ product.name }}</h3>
               
               <div class="price-section">
-                <div class="current-price">{{ product.sellingPrice }} DH</div>
+                <div class="current-price">{{ product.sellingPrice }} <span class="currency">DH</span></div>
                 <div class="price-unit" *ngIf="product.category">/ {{ product.category.toLowerCase() }}</div>
               </div>
               
               <div class="product-footer">
                 <button class="add-to-cart" (click)="addToCart(product)">
-                  Add to Cart
+                  <i class="fa-solid fa-cart-plus"></i> Ajouter au panier
                 </button>
               </div>
             </div>
           </div>
         </div>
         
-       <div class="view-more" *ngIf="hasMore">
-  <button (click)="loadMore()" class="view-more-link">
-    Load more 
-  </button>
-</div>
+        <div class="view-more" *ngIf="hasMore">
+          <button (click)="loadMore()" class="view-more-link">
+            Afficher plus de produits <i class="fa-solid fa-chevron-down"></i>
+          </button>
+        </div>
       </div>
 
+      <!-- EMPTY STATE PRO -->
       <div *ngIf="!loading && !errorMessage && products.length === 0" class="empty-state">
-        <div class="empty-icon">📭</div>
-        <h3>No products found</h3>
-        <p>Try a different search or browse our categories</p>
-        <button (click)="loadProducts()" class="btn-primary">View all products</button>
+        <div class="empty-icon"><i class="fa-solid fa-basket-shopping-minus"></i></div>
+        <h3>Aucun article trouvé</h3>
+        <p>Nous n'avons pas trouvé de correspondance. Modifiez vos critères ou parcourez nos rayons.</p>
+        <button (click)="loadProducts()" class="btn-primary">Voir tous les produits</button>
       </div>
     </main>
   </div>

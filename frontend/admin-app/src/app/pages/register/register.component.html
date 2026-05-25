@@ -1,66 +1,146 @@
-<div class="register-container">
-
-  <div class="register-card">
-
-    <div class="header">
-      <div class="logo">🧾</div>
-      <h1>Create Admin Account</h1>
-      <p>eCommerce Platform</p>
-    </div>
-
-    <div *ngIf="successMessage" class="success-box">
-      {{ successMessage }}
-    </div>
-
-    <form (ngSubmit)="onSubmit()" class="form">
-
-      <div class="row">
-        <div class="input-group">
-          <label>First name</label>
-          <input type="text" [(ngModel)]="user.firstName" name="firstName" required>
+<!-- register.component.html -->
+<div class="register-wrapper">
+  <div class="register-container">
+    <!-- Section gauche - Formulaire -->
+    <div class="register-form">
+      <div class="form-container">
+        <div class="form-header">
+          <div class="header-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h2>Créer un compte administrateur</h2>
+          <p>Rejoignez la plateforme d'optimisation e-commerce</p>
         </div>
 
-        <div class="input-group">
-          <label>Last name</label>
-          <input type="text" [(ngModel)]="user.lastName" name="lastName" required>
+        <div *ngIf="successMessage" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          {{ successMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()" class="form">
+          <div class="row">
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <input 
+                type="text" 
+                [(ngModel)]="user.firstName" 
+                name="firstName"
+                placeholder="Prénom"
+                required>
+              <div class="input-border"></div>
+            </div>
+
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <input 
+                type="text" 
+                [(ngModel)]="user.lastName" 
+                name="lastName"
+                placeholder="Nom"
+                required>
+              <div class="input-border"></div>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <input 
+              type="email" 
+              [(ngModel)]="user.email" 
+              name="email"
+              placeholder="Email professionnel"
+              required
+              autocomplete="email">
+            <div class="input-border"></div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <input 
+              type="password" 
+              [(ngModel)]="user.password" 
+              name="password"
+              placeholder="Mot de passe (min. 6 caractères)"
+              required
+              minlength="6">
+            <div class="input-border"></div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <input 
+              type="text" 
+              [(ngModel)]="user.address" 
+              name="address"
+              placeholder="Adresse">
+            <div class="input-border"></div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <input 
+              type="tel" 
+              [(ngModel)]="user.phone" 
+              name="phone"
+              placeholder="Téléphone">
+            <div class="input-border"></div>
+          </div>
+
+          <div *ngIf="errorMessage" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+          </div>
+
+          <button type="submit" class="btn-register" [disabled]="loading">
+            <i class="fas" [class.fa-spinner]="loading" [class.fa-user-plus]="!loading" [class.fa-pulse]="loading"></i>
+            {{ loading ? 'Création en cours...' : 'Créer un compte' }}
+          </button>
+        </form>
+
+        <div class="form-footer">
+          <div class="divider">
+            <span>ou</span>
+          </div>
+          <p class="login-link">
+            Vous avez déjà un compte ? <a routerLink="/login">Se connecter</a>
+          </p>
         </div>
       </div>
-
-      <div class="input-group">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="user.email" name="email" required>
-      </div>
-
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" [(ngModel)]="user.password" name="password" required minlength="6">
-      </div>
-
-      <div class="input-group">
-        <label>Address</label>
-        <input type="text" [(ngModel)]="user.address" name="address">
-      </div>
-
-      <div class="input-group">
-        <label>Phone</label>
-        <input type="tel" [(ngModel)]="user.phone" name="phone">
-      </div>
-
-      <div *ngIf="errorMessage" class="error-box">
-        {{ errorMessage }}
-      </div>
-
-      <button type="submit" class="btn-primary" [disabled]="loading">
-        {{ loading ? 'Creating account...' : 'Create account' }}
-      </button>
-
-    </form>
-
-    <div class="footer">
-      Already have an account?
-      <a routerLink="/login">Sign in</a>
     </div>
 
+    <!-- Section droite - Carrousel dynamique -->
+    <div class="register-carousel">
+      <div class="carousel-container">
+        <div class="carousel-slide" *ngFor="let slide of slides; let i = index" [class.active]="currentSlide === i">
+          <div class="slide-content">
+            <div class="slide-icon-large">
+              <i [class]="slide.icon"></i>
+            </div>
+            <h2 class="slide-title">{{ slide.title }}</h2>
+            <p class="slide-description">{{ slide.description }}</p>
+          </div>
+        </div>
+        
+        <div class="carousel-dots">
+          <button *ngFor="let slide of slides; let i = index" 
+                  class="dot" 
+                  [class.active]="currentSlide === i"
+                  (click)="goToSlide(i)">
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-
 </div>

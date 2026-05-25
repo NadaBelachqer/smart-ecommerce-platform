@@ -1,43 +1,92 @@
-<div class="login-container">
-  <div class="login-card">
-    <div class="logo">
-      <h1> Administration</h1>
-      <p>Plateforme E-Commerce</p>
+<!-- login.component.html -->
+<div class="login-wrapper">
+  <div class="login-container">
+    <!-- Section gauche - Carrousel dynamique avec grandes images -->
+    <div class="login-carousel">
+      <div class="carousel-container">
+        <div class="carousel-slide" *ngFor="let slide of slides; let i = index" [class.active]="currentSlide === i">
+          <div class="slide-content">
+            <!-- Grande image centrée -->
+            <div class="slide-image">
+           <!--<img [src]="slide.image" [alt]="slide.title">-->
+<i [class]="slide.icon" style="font-size: 120px; color: #ffd700;"></i>
+            </div>
+            <!-- Titre -->
+            <h2 class="slide-title">{{ slide.title }}</h2>
+            <!-- Description comme dans la capture d'écran -->
+            <p class="slide-description">{{ slide.description }}</p>
+          </div>
+        </div>
+        
+        <!-- Indicateurs du carrousel -->
+        <div class="carousel-dots">
+          <button *ngFor="let slide of slides; let i = index" 
+                  class="dot" 
+                  [class.active]="currentSlide === i"
+                  (click)="goToSlide(i)">
+          </button>
+        </div>
+      </div>
     </div>
-    
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>Email</label>
-        <input 
-          type="email" 
-          [(ngModel)]="email" 
-          name="email"
-          placeholder="admin@exemple.com" 
-          required>
+
+    <!-- Section droite - Formulaire -->
+    <div class="login-form">
+      <div class="form-container">
+        <div class="form-header">
+          <div class="header-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h2>Connexion administrateur</h2>
+          <p>Accédez à votre tableau de bord</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <input 
+              type="email" 
+              [(ngModel)]="email" 
+              name="email"
+              placeholder="Email professionnel"
+              required
+              autocomplete="email">
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <input 
+              type="password" 
+              [(ngModel)]="password" 
+              name="password"
+              placeholder="Mot de passe"
+              required
+              autocomplete="current-password">
+          </div>
+          
+          <div *ngIf="errorMessage" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+          </div>
+          
+          <button type="submit" [disabled]="loading" class="btn-login">
+            <i class="fas" [class.fa-spinner]="loading" [class.fa-sign-in-alt]="!loading" [class.fa-pulse]="loading"></i>
+            {{ loading ? 'Connexion en cours...' : 'Se connecter' }}
+          </button>
+        </form>
+
+        <div class="form-footer">
+          <div class="divider">
+            <span>ou</span>
+          </div>
+          <p class="register-link">
+            Pas encore de compte ? <a routerLink="/register">Créer un compte</a>
+          </p>
+        </div>
       </div>
-      
-      <div class="form-group">
-        <label>Mot de passe</label>
-        <input 
-          type="password" 
-          [(ngModel)]="password" 
-          name="password"
-          placeholder="••••••" 
-          required>
-      </div>
-      
-      <div *ngIf="errorMessage" class="error-message">
-         {{ errorMessage }}
-      </div>
-      
-      <button type="submit" [disabled]="loading">
-        {{ loading ? 'Connexion...' : 'Se connecter' }}
-      </button>
-    </form>
-    
-    <!-- Lien vers la page d'inscription - AJOUTÉ -->
-    <div class="register-link">
-      <p>Pas encore de compte ? <a routerLink="/register">Créer un compte</a></p>
     </div>
   </div>
 </div>

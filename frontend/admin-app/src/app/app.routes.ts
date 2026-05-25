@@ -6,6 +6,7 @@ import { ProductListComponent } from './pages/products/productList/product-list.
 import { ProductFormComponent } from './pages/products/productForm/product-form.component';
 import { MainLayoutComponent } from './layouts/main-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { PricingOptimizerComponent } from './pages/pricing/pricing-optimizer/pricing-optimizer.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,8 +21,11 @@ export const routes: Routes = [
       { path: 'products', component: ProductListComponent },
       { path: 'products/new', component: ProductFormComponent },
       { path: 'products/:id/edit', component: ProductFormComponent },
+      { path: 'products/:id/pricing', component: PricingOptimizerComponent },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
+      
     ]
   },
   { path: '**', redirectTo: '/login' }
 ];
+
