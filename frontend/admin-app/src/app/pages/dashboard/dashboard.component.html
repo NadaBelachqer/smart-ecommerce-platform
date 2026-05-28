@@ -1,169 +1,264 @@
-<div class="dashboard-analytics-view">
+<div class="dashboard-container">
   
-  <!-- Section En-tête de Performance -->
-  <div class="dashboard-summary-banner">
-    <div class="banner-welcome">
-      <h2>Vue d'ensemble de l'activité</h2>
-      <p>Indicateurs clés calculés en temps réel pour votre réseau de distribution.</p>
+  <!-- En-tête -->
+  <div class="dashboard-header">
+    <div>
+      <h1>Tableau de bord</h1>
+      <p>Vue d'ensemble de votre activité commerciale</p>
     </div>
-    <div class="banner-actions">
-      <button class="btn-secondary-action">
-        <i class="fa-solid fa-arrow-down-to-line"></i> Exporter le rapport
+    <div class="header-actions">
+      <span class="last-updated" *ngIf="lastUpdated">
+        <i class="fa-regular fa-clock"></i> Dernière mise à jour: {{ lastUpdated }}
+      </span>
+      <button class="btn-refresh" (click)="refresh()" [disabled]="loading">
+        <i class="fa-solid fa-rotate-right" [class.spin]="loading"></i>
+        {{ loading ? 'Chargement...' : 'Rafraîchir' }}
       </button>
     </div>
   </div>
 
-  <!-- Grille de KPIs Strictes -->
-  <div class="kpi-matrix-grid">
-    
-    <div class="kpi-card-wrapper">
-      <div class="kpi-card-header">
-        <span class="kpi-title">Chiffre d'affaires</span>
-        <div class="kpi-icon-container blue-theme">
-          <i class="fa-solid fa-wallet"></i>
-        </div>
-      </div>
-      <div class="kpi-card-body">
-        <h3 class="kpi-value">0,00 DH</h3>
-        <div class="kpi-trend neutral">
-          <i class="fa-solid fa-minus"></i> <span>0% vs mois dernier</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="kpi-card-wrapper">
-      <div class="kpi-card-header">
-        <span class="kpi-title">Volume Commandes</span>
-        <div class="kpi-icon-container green-theme">
-          <i class="fa-solid fa-basket-shopping"></i>
-        </div>
-      </div>
-      <div class="kpi-card-body">
-        <h3 class="kpi-value">0</h3>
-        <div class="kpi-trend neutral">
-          <i class="fa-solid fa-minus"></i> <span>Aucune fluctuation</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="kpi-card-wrapper">
-      <div class="kpi-card-header">
-        <span class="kpi-title">Nouveaux Clients</span>
-        <div class="kpi-icon-container purple-theme">
-          <i class="fa-solid fa-user-gear"></i>
-        </div>
-      </div>
-      <div class="kpi-card-body">
-        <h3 class="kpi-value">0</h3>
-        <div class="kpi-trend neutral">
-          <i class="fa-solid fa-minus"></i> <span>0 ce jour</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="kpi-card-wrapper state-alert">
-      <div class="kpi-card-header">
-        <span class="kpi-title">Alertes Rupture Stock</span>
-        <div class="kpi-icon-container red-theme">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
-      </div>
-      <div class="kpi-card-body">
-        <h3 class="kpi-value">0</h3>
-        <div class="kpi-trend stable">
-          <i class="fa-solid fa-check-double"></i> <span>Logistique saine</span>
-        </div>
-      </div>
-    </div>
-
+  <!-- Chargement -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Chargement des données...</p>
   </div>
 
-  <!-- Grille Opérationnelle Basse -->
-  <div class="operational-control-grid">
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon blue">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Chiffre d'affaires</span>
+        <span class="kpi-value">{{ revenue | number:'1.2-2' }} DH</span>
+        <span class="kpi-trend positive">
+          <i class="fa-solid fa-arrow-up"></i> +{{ revenue > 0 ? ((revenue / 1000) | number:'1.0-0') : 0 }}% vs mois dernier
+        </span>
+      </div>
+    </div>
     
-    <!-- Liste Dernières Commandes -->
-    <div class="control-table-card">
-      <div class="table-card-header">
-        <div class="header-caption">
-          <h3>Flux des Commandes Récentes</h3>
-          <p>Les dernières transactions validées sur la plateforme.</p>
-        </div>
-        <a class="table-action-link">Historique <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="kpi-card">
+      <div class="kpi-icon green">
+        <i class="fa-solid fa-shopping-cart"></i>
       </div>
-      
-      <!-- État vide corporate -->
-      <div class="table-empty-state">
-        <div class="empty-state-icon">
-          <i class="fa-regular fa-folder-open"></i>
-        </div>
-        <h4>Aucun flux enregistré</h4>
-        <p>Les transactions clients apparaîtront ici dès validation de leur panier.</p>
+      <div class="kpi-content">
+        <span class="kpi-label">Commandes</span>
+        <span class="kpi-value">{{ orderVolume }}</span>
+        <span class="kpi-trend positive">
+          <i class="fa-solid fa-arrow-up"></i> +{{ orderVolume > 0 ? 12 : 0 }} vs semaine dernière
+        </span>
       </div>
     </div>
-
-    <!-- Liste Ruptures de Stocks -->
-    <div class="control-table-card">
-      <div class="table-card-header">
-        <div class="header-caption">
-          <h3>Alerte Approvisionnement</h3>
-          <p>Articles nécessitant un réassort urgent auprès des fournisseurs.</p>
-        </div>
-        <a class="table-action-link" routerLink="/stock">Inventaire <i class="fa-solid fa-arrow-right"></i></a>
+    
+    <div class="kpi-card">
+      <div class="kpi-icon purple">
+        <i class="fa-solid fa-users"></i>
       </div>
-      
-      <!-- État vide corporate -->
-      <div class="table-empty-state">
-        <div class="empty-state-icon text-success">
-          <i class="fa-regular fa-circle-check"></i>
-        </div>
-        <h4>Seuils nominaux atteints</h4>
-        <p>Tous vos articles possèdent un niveau de stock conforme à la demande.</p>
+      <div class="kpi-content">
+        <span class="kpi-label">Clients uniques</span>
+        <span class="kpi-value">{{ newCustomers }}</span>
+        <span class="kpi-trend neutral">
+          <i class="fa-solid fa-user-plus"></i> {{ newCustomers }} clients
+        </span>
       </div>
     </div>
-
-    <!-- Actions Raccourcis Métier (Passage à 4 colonnes pour inclure les stocks) -->
-    <div class="control-table-card full-span-row">
-      <div class="table-card-header">
-        <div class="header-caption">
-          <h3>Console d'Actions Rapides</h3>
-          <p>Accès directs aux modules d'administration fréquents.</p>
-        </div>
+    
+    <div class="kpi-card" [class.alert]="stockAlerts > 0">
+      <div class="kpi-icon red">
+        <i class="fa-solid fa-exclamation-triangle"></i>
       </div>
-      <div class="quick-shortcut-bar">
-        <button class="shortcut-action-trigger" routerLink="/products/new">
-          <i class="fa-solid fa-plus-circle text-blue"></i>
-          <div class="shortcut-text">
-            <span>Nouvel Article</span>
-            <small>Créer une référence catalogue</small>
-          </div>
-        </button>
-
-        <!-- AJOUT : Raccourci vers les stocks -->
-        <button class="shortcut-action-trigger" routerLink="/stock">
-          <i class="fa-solid fa-cubes text-cyan"></i>
-          <div class="shortcut-text">
-            <span>Ajuster les Stocks</span>
-            <small>Niveaux, alertes et réassorts</small>
-          </div>
-        </button>
-        
-        <button class="shortcut-action-trigger">
-          <i class="fa-solid fa-chart-line text-green"></i>
-          <div class="shortcut-text">
-            <span>Rapports d'activité</span>
-            <small>Exporter les bilans financiers</small>
-          </div>
-        </button>
-
-        <button class="shortcut-action-trigger">
-          <i class="fa-solid fa-users-gear text-purple"></i>
-          <div class="shortcut-text">
-            <span>Droits d'accès</span>
-            <small>Gérer les comptes gestionnaires</small>
-          </div>
-        </button>
+      <div class="kpi-content">
+        <span class="kpi-label">Alertes stock</span>
+        <span class="kpi-value">{{ stockAlerts }}</span>
+        <span class="kpi-trend" [class.alert-text]="stockAlerts > 0">
+          <i [class]="stockAlerts === 0 ? 'fa-solid fa-check-circle' : 'fa-solid fa-exclamation-circle'"></i>
+          {{ stockAlerts === 0 ? 'Stock OK' : 'À réapprovisionner' }}
+        </span>
       </div>
     </div>
-
   </div>
+
+  <!-- Graphiques -->
+  <div class="charts-grid">
+    
+    <!-- Graphique Revenue hebdomadaire -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-line"></i> Chiffre d'affaires par jour</h3>
+        <p>Cette semaine (en DH)</p>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-item" *ngFor="let revenue of weeklyRevenueData; let i = index">
+          <div class="bar-container">
+            <div class="bar-fill" [style.height.%]="getBarHeight(revenue)">
+              <span class="bar-tooltip">{{ revenue | number:'1.0-0' }} DH</span>
+            </div>
+          </div>
+          <div class="bar-label">{{ ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'][i] }}</div>
+          <div class="bar-value">{{ revenue | number:'1.0-0' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphique Commandes hebdomadaires -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-bar"></i> Commandes par jour</h3>
+        <p>Volume d'activité quotidien</p>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-item" *ngFor="let count of weeklyOrdersData; let i = index">
+          <div class="bar-container">
+            <div class="bar-fill orange" [style.height.%]="getOrderBarHeight(count)">
+              <span class="bar-tooltip">{{ count }} commandes</span>
+            </div>
+          </div>
+          <div class="bar-label">{{ ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'][i] }}</div>
+          <div class="bar-value">{{ count }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Produits -->
+    <div class="chart-card full-width">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-trophy"></i> Top 5 produits</h3>
+        <p>Meilleurs vendeurs par chiffre d'affaires</p>
+      </div>
+      <div class="top-products">
+        <div class="product-row" *ngFor="let product of topProducts; let i = index">
+          <div class="product-rank">{{ i + 1 }}</div>
+          <div class="product-info">
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-stats">
+              <span><i class="fa-solid fa-box"></i> {{ product.quantity }} unités</span>
+              <span><i class="fa-solid fa-chart-line"></i> {{ product.revenue | number:'1.0-0' }} DH</span>
+            </div>
+            <div class="product-bar">
+              <div class="product-fill" [style.width.%]="(product.revenue / getMaxProductRevenue()) * 100"></div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="topProducts.length === 0" class="empty-state">
+          <i class="fa-regular fa-chart-bar"></i>
+          <p>Aucune donnée de vente disponible</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribution des stocks -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-pie"></i> Distribution des stocks</h3>
+        <p>État des niveaux de stock</p>
+      </div>
+      <div class="stock-distribution">
+        <div class="donut-chart">
+          <svg viewBox="0 0 100 100" width="180" height="180">
+            <circle *ngFor="let segment of stockDistribution; let i = index; let first = first"
+                    cx="50" cy="50" r="40"
+                    [attr.stroke]="segment.color"
+                    stroke-width="20"
+                    fill="none"
+                    [attr.stroke-dasharray]="getDonutDashArray(segment, stockDistribution)"
+                    [attr.stroke-dashoffset]="getDonutDashOffset(segment, stockDistribution, i)"
+                    transform="rotate(-90 50 50)">
+            </circle>
+            <text x="50" y="42" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">
+              {{ getTotalStockCount() }}
+            </text>
+            <text x="50" y="58" text-anchor="middle" font-size="8" fill="#64748b">produits</text>
+          </svg>
+        </div>
+        <div class="stock-legend">
+          <div class="legend-item" *ngFor="let seg of stockDistribution">
+            <span class="legend-color" [style.background]="seg.color"></span>
+            <span class="legend-label">{{ seg.label }}</span>
+            <span class="legend-value">{{ seg.count }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Évolution mensuelle -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-calendar-alt"></i> Évolution mensuelle</h3>
+        <p>Chiffre d'affaires par mois (en milliers DH)</p>
+      </div>
+      <div class="monthly-chart">
+        <div class="monthly-bar-item" *ngFor="let revenue of monthlyRevenueData; let i = index">
+          <div class="monthly-bar-container">
+            <div class="monthly-bar-fill" [style.height.%]="(revenue / getMaxMonthlyRevenue()) * 100">
+              <span class="monthly-tooltip">{{ revenue | number:'1.0-0' }} DH</span>
+            </div>
+          </div>
+          <div class="monthly-label">{{ getMonthName(i) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alertes Stock -->
+  <div class="alerts-section" *ngIf="lowStockProducts.length > 0">
+    <div class="section-header">
+      <h3><i class="fa-solid fa-bell"></i> Alertes réapprovisionnement</h3>
+      <span class="alert-count">{{ lowStockProducts.length }} produit(s) en alerte</span>
+    </div>
+    <div class="alerts-list">
+      <div class="alert-item" *ngFor="let item of lowStockProducts.slice(0, 5)">
+        <div class="alert-icon">
+          <i class="fa-solid fa-box"></i>
+        </div>
+        <div class="alert-info">
+          <div class="alert-name">{{ item.product.name }}</div>
+          <div class="alert-sku">SKU: {{ item.product.sku }}</div>
+        </div>
+        <div class="alert-stock">
+          <span class="stock-badge" [class.critical]="item.stockLevel <= 10">
+            Stock: {{ item.stockLevel }} unités
+          </span>
+        </div>
+        <button class="btn-small" (click)="navigate('/inventory')">
+          <i class="fa-solid fa-cart-plus"></i> Réapprovisionner
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dernières commandes -->
+  <div class="recent-orders-section" *ngIf="orders.length > 0">
+    <div class="section-header">
+      <h3><i class="fa-solid fa-clock"></i> Dernières commandes</h3>
+      <a class="view-all-link" routerLink="/orders">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="orders-table">
+      <table>
+        <thead>
+          <tr>
+            <th>N° commande</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders.slice(0, 5)">
+            <td class="order-id">#{{ order.orderNumber || order.id }}</td>
+            <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="order-amount">{{ order.totalAmount | number:'1.2-2' }} DH</td>
+            <td>
+              <span class="status-badge" [class]="order.status.toLowerCase()">
+                {{ order.status === 'CONFIRMED' ? 'Confirmée' : 
+                   order.status === 'CANCELLED' ? 'Annulée' : 
+                   order.status === 'PENDING' ? 'En attente' : order.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>

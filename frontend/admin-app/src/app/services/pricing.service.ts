@@ -39,7 +39,7 @@ export interface PricingHistory {
 export class PricingService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
-  private apiUrl = 'http://localhost:8086/pricing';
+  private apiUrl = 'http://localhost:8080/api/pricing';
 
   private getAuthHeaders() {
     const token = this.authService.getToken();

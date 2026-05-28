@@ -1,5 +1,5 @@
-package org.example.forecastservice.client;
 
+package org.example.forcasteservice.client;
 
 import org.example.forecastservice.dto.request.ForecastRequestDTO;
 import org.springframework.stereotype.Component;

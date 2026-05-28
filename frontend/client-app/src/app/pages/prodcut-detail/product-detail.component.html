@@ -1,148 +1,95 @@
-<div class="container">
-  <!-- Fil d'ariane & Bouton retour -->
-  <div class="detail-navigation">
-    <a routerLink="/" class="back-link">
-      <i class="fa-solid fa-chevron-left"></i> Retour au catalogue
-    </a>
-    <span class="breadcrumb" *ngIf="product?.category">
-      Accueil / Rayon {{ product?.category }} / {{ product?.name }}
-    </span>
-  </div>
+<div class="page-wrapper">
 
-  <!-- État de chargement -->
-  <div *ngIf="loading" class="loading-state">
-    <div class="spinner"></div>
-    <p>Chargement des détails du produit...</p>
-  </div>
-
-  <!-- État d'erreur -->
-  <div *ngIf="errorMessage" class="error-state">
-    <i class="fa-solid fa-triangle-exclamation error-icon"></i>
-    <p>{{ errorMessage }}</p>
-    <a routerLink="/" class="btn-primary">Retourner à la boutique</a>
-  </div>
-
-  <!-- Fiche Produit Premium -->
-  <div *ngIf="!loading && !errorMessage && product" class="product-container">
-    
-    <!-- SECTION GAUCHE : VISUEL -->
-    <div class="product-gallery-section">
-      <div class="image-card">
-        <span class="badge-promo-exclusive" *ngIf="product.sellingPrice < 50">Meilleur Prix</span>
-        <img 
-          [src]="getImageUrl()" 
-          [alt]="product.name"
-          (error)="$event.target.src='https://placehold.co/600x600?text=Image+indisponible'">
-      </div>
-      <div class="gallery-benefits">
-        <div class="benefit"><i class="fa-solid fa-shield-check"></i> Produit 100% Garanti</div>
-        <div class="benefit"><i class="fa-solid fa-arrow-rotate-left"></i> Retours faciles sous 14 jours</div>
-      </div>
+  <!-- NAV -->
+  <nav class="top-nav">
+    <a routerLink="/" class="nav-brand">🛍️ MonShop</a>
+    <div class="nav-links">
+      <a routerLink="/" class="nav-link">← Retour aux produits</a>
     </div>
-    
-    <!-- SECTION DROITE : INFORMATIONS ET ACHAT -->
-    <div class="product-info-section">
-      
-      <!-- En-tête : Titre & Badges -->
-      <div class="info-header">
-        <span class="category-pill" *ngIf="product.category">{{ product.category }}</span>
-        <h1 class="product-main-title">{{ product.name }}</h1>
-        
-        <div class="product-rating-mock">
-          <div class="stars">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half-stroke"></i>
-          </div>
-          <span class="rating-text">(4.5) · 12 avis clients</span>
-        </div>
-      </div>
-      
-      <!-- Hub du Prix & Avantages Économiques -->
-      <div class="price-hub-card">
-        <div class="price-row">
-          <div class="main-price">
-            <span class="amount">{{ product.sellingPrice }}</span>
-            <span class="currency">DH</span>
-            <span class="unit" *ngIf="product.category">/ {{ product.category.toLowerCase() }}</span>
-          </div>
-          
-          <!-- Badge de fidélité fictif style grand supermarché -->
-          <div class="loyalty-bonus">
-            <i class="fa-solid fa-credit-card"></i>
-            <span>+{{ (product.sellingPrice * 0.05).toFixed(1) }} DH cumulés sur votre carte</span>
-          </div>
-        </div>
+  </nav>
 
-        <div class="delivery-status">
-          <span class="status-indicator online"></span>
-          <span class="status-text">Disponible immédiatement en magasin et en Drive</span>
+  <div class="detail-container">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Chargement du produit...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="errorMessage" class="error-state">
+      <span class="error-icon">⚠️</span>
+      <p>{{ errorMessage }}</p>
+      <a routerLink="/" class="btn-gradient">Retour à l'accueil</a>
+    </div>
+
+    <!-- PRODUCT -->
+    <div *ngIf="!loading && !errorMessage && product" class="product-detail">
+
+      <!-- GALLERY -->
+      <div class="product-gallery">
+        <div class="image-wrapper">
+          <img
+            [src]="getImageUrl()"
+            [alt]="product.name"
+            (error)="$event.target.src='https://placehold.co/600x600?text=Image+coming+soon'">
+          <div class="image-badge" *ngIf="product.category">{{ product.category }}</div>
         </div>
       </div>
 
-      <!-- Zone d'action (Achat / Quantité) -->
-      <div class="actions-panel">
-        <div class="quantity-picker">
-          <span class="picker-label">Qté</span>
-          <div class="picker-control">
-            <button type="button" class="ctrl-btn"><i class="fa-solid fa-minus"></i></button>
-            <input type="text" class="ctrl-input" value="1" readonly>
-            <button type="button" class="ctrl-btn"><i class="fa-solid fa-plus"></i></button>
+      <!-- INFO -->
+      <div class="product-info">
+
+        <div class="product-header">
+          <span class="product-category" *ngIf="product.category">{{ product.category }}</span>
+          <h1 class="product-name">{{ product.name }}</h1>
+        </div>
+
+        <div class="price-block">
+          <span class="price-amount">{{ product.sellingPrice }}</span>
+          <span class="price-currency">DH</span>
+          <span class="price-unit" *ngIf="product.category">/ {{ product.category.toLowerCase() }}</span>
+        </div>
+
+        <div class="stock-row">
+          <span class="stock-badge in-stock">✓ En stock</span>
+          <span class="sku-badge" *ngIf="product.sku">SKU : {{ product.sku }}</span>
+        </div>
+
+        <div class="product-description">
+          <h3>Description</h3>
+          <p>{{ product.description || 'Aucune description disponible pour ce produit.' }}</p>
+        </div>
+
+        <div class="meta-grid" *ngIf="product.category || product.sku">
+          <div class="meta-item" *ngIf="product.category">
+            <span class="meta-icon">🏷</span>
+            <div>
+              <span class="meta-label">Catégorie</span>
+              <span class="meta-value">{{ product.category }}</span>
+            </div>
+          </div>
+          <div class="meta-item" *ngIf="product.sku">
+            <span class="meta-icon">📦</span>
+            <div>
+              <span class="meta-label">Référence</span>
+              <span class="meta-value">{{ product.sku }}</span>
+            </div>
           </div>
         </div>
-        
-        <button class="btn-add-to-cart-premium" (click)="addToCart(product)">
-          <i class="fa-solid fa-cart-plus"></i> Ajouter au panier
+
+        <button class="add-to-cart-btn" (click)="addToCart()" [class.added]="addedToCart">
+          <span *ngIf="!addedToCart">🛒 Ajouter au panier</span>
+          <span *ngIf="addedToCart">✅ Ajouté au panier !</span>
         </button>
-      </div>
 
-      <!-- Services de Livraison Enseigne -->
-      <div class="services-grid">
-        <div class="service-box">
-          <i class="fa-solid fa-clock-three"></i>
-          <div>
-            <h4>Drive 2h</h4>
-            <p>Retrait gratuit en magasin</p>
-          </div>
+        <div class="trust-badges">
+          <div class="trust-item">🚚 <span>Livraison gratuite</span></div>
+          <div class="trust-item">🔒 <span>Paiement sécurisé</span></div>
+          <div class="trust-item">↩️ <span>Retour facile</span></div>
         </div>
-        <div class="service-box">
-          <i class="fa-solid fa-truck-fast"></i>
-          <div>
-            <h4>Livraison Express</h4>
-            <p>Chez vous dès demain</p>
-          </div>
-        </div>
-      </div>
 
-      <!-- Spécifications Techniques sous forme de tableau propre -->
-      <div class="specs-block">
-        <h3><i class="fa-solid fa-circle-info"></i> Fiche technique</h3>
-        <table class="specs-table">
-          <tr *ngIf="product.category">
-            <td class="spec-label">Rayon / Type</td>
-            <td class="spec-value">{{ product.category }}</td>
-          </tr>
-          <tr *ngIf="product.sku">
-            <td class="spec-label">Code article (SKU)</td>
-            <td class="spec-value code-value">{{ product.sku }}</td>
-          </tr>
-          <tr>
-            <td class="spec-label">Conditionnement</td>
-            <td class="spec-value">Vendu à l'unité</td>
-          </tr>
-        </table>
       </div>
-
-      <!-- Description Textuelle -->
-      <div class="description-block">
-        <h3><i class="fa-solid fa-align-left"></i> Description de l'article</h3>
-        <p class="description-text">
-          {{ product.description || 'Cet article de qualité a été sélectionné avec soin par nos équipes de distribution pour répondre au mieux à vos exigences quotidiennes. Retrouvez toutes ses qualités nutritionnelles ou techniques en magasin.' }}
-        </p>
-      </div>
-
     </div>
   </div>
 </div>

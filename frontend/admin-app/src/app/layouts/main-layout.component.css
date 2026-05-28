@@ -17,7 +17,7 @@
 .admin-workspace {
   display: flex;
   min-height: 100vh;
-  background-color: #f8fafc;        /* Fond de page clair pour faire ressortir les KPIs blancs */
+  background-color: #f8fafc;
 }
 
 .workspace-container {
@@ -83,7 +83,7 @@
 }
 
 .brand-name .text-accent {
-  color: #f43f5e; /* Identité Retail vive */
+  color: #f43f5e;
 }
 
 .sidebar-toggle-trigger {
@@ -380,6 +380,52 @@
 /* ==================== CONTENT VIEW INJECTION AREA ==================== */
 .workspace-view {
   flex: 1;
-  padding: 107px 32px 32px 32px; /* 75px TopBar + 32px de marge pour un rendu propre */
+  padding: 107px 32px 32px 32px;
   overflow-y: auto;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .workspace-top-bar {
+    padding: 0 20px;
+  }
+  
+  .top-bar-left {
+    gap: 16px;
+  }
+  
+  .global-search-bar {
+    max-width: 250px;
+  }
+  
+  .scope-name {
+    display: none;
+  }
+  
+  .profile-meta {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-view {
+    padding: 107px 16px 16px 16px;
+  }
+  
+  .top-bar-left {
+    gap: 12px;
+  }
+  
+  .current-view-title {
+    font-size: 16px;
+  }
+  
+  .global-search-bar {
+    max-width: 180px;
+  }
+  
+  .scope-selector,
+  .action-notification-bell {
+    display: none;
+  }
 }

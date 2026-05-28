@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
@@ -67,20 +67,36 @@ export class ProductService {
     keyword: string = '',
     category: string = ''
   ): Observable<PageResponse<Product>> {
-    let url = `${this.apiUrl}/products/admin/list?page=${page}&size=${size}`;
-
-    if (keyword?.trim()) {
-      url += `&keyword=${encodeURIComponent(keyword.trim())}`;
+    // CORRECTION: Utiliser le bon endpoint /products (sans /admin/list)
+    let url = `${this.apiUrl}/products`;
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    
+    if (keyword && keyword.trim()) {
+      params = params.set('keyword', keyword.trim());
     }
-    if (category?.trim()) {
-      url += `&category=${encodeURIComponent(category.trim())}`;
+    if (category && category.trim()) {
+      params = params.set('category', category.trim());
     }
+    
+    console.log('📡 Appel API produits:', url, params.toString());
+    
+    return this.http.get<PageResponse<Product>>(url, { 
+      headers: this.getAuthHeaders(),
+      params: params
+    }).pipe(map(response => ({
+      ...response,
+      content: this.normalizeImageUrls(response.content)
+    })));
+  }
 
-    return this.http.get<PageResponse<Product>>(url, { headers: this.getAuthHeaders() })
-      .pipe(map(response => ({
-        ...response,
-        content: this.normalizeImageUrls(response.content)
-      })));
+  // Garder cette méthode pour la compatibilité si nécessaire
+  getProductsAdmin(page: number = 0, size: number = 10): Observable<PageResponse<Product>> {
+    return this.http.get<PageResponse<Product>>(`${this.apiUrl}/products/admin/list`, { 
+      headers: this.getAuthHeaders(),
+      params: new HttpParams().set('page', page).set('size', size)
+    });
   }
 
   getProductById(id: number): Observable<Product> {

@@ -4,6 +4,7 @@ import joblib
 import pandas as pd
 from pricing_engine import router as pricing_router
 
+
 # -----------------------------
 # INIT API
 # -----------------------------
@@ -12,6 +13,7 @@ app = FastAPI(
     description="Prediction demand using LightGBM",
     version="1.0"
 )
+
 app.include_router(
     pricing_router,
     prefix="/api/v1/pricing",
@@ -26,16 +28,15 @@ model = joblib.load("champion_lightgbm_model.pkl")
 # LOAD DATA CONTEXT
 # -----------------------------
 df_context = pd.read_csv("sales_final.csv")
-
-# ✨ LA MAGIE EST ICI : On remplace tous les espaces par des tirets du bas (_)
-# Ainsi, "Product ID" devient "Product_ID", exactement comme le modèle l'exige !
 df_context.columns = df_context.columns.str.replace(' ', '_')
 
-# supprimer target si présente
 if "Demand" in df_context.columns:
     X_context = df_context.drop(columns=["Demand"])
 else:
     X_context = df_context
+
+# Index par Product_ID pour recherche instantanée
+X_context_indexed = {pid: grp for pid, grp in X_context.groupby("Product_ID")}
 
 # -----------------------------
 # REQUEST MODEL (JAVA DTO)
@@ -46,6 +47,10 @@ class ForecastRequest(BaseModel):
     dayOfWeek: int
     promo: int
     stockLevel: float
+    price: float = 0.0
+    discount: float = 0.0
+    unitsSold: int = 0
+    unitsOrdered: int = 0
 
 # -----------------------------
 # HEALTH CHECK
@@ -62,9 +67,9 @@ def predict(data: ForecastRequest):
 
     try:
         
-        product_history = X_context[X_context["Product_ID"] == data.productId]
+        product_history = X_context_indexed.get(data.productId)
 
-        if product_history.empty:
+        if product_history is None or product_history.empty:
             raise HTTPException(status_code=404, detail="Product not found")
 
         
@@ -75,8 +80,15 @@ def predict(data: ForecastRequest):
         last_known_state["DayOfWeek"] = data.dayOfWeek
         last_known_state["Promotion"] = data.promo
         last_known_state["Inventory_Level"] = data.stockLevel
-
-        # 📊 4. recalcul feature métier
+        last_known_state["Price"] = data.price if data.price > 0 else last_known_state["Price"]
+        last_known_state["Discount"] = data.discount / 100.0
+        last_known_state["Units_Sold"] = data.unitsSold if data.unitsSold > 0 else last_known_state["Units_Sold"]
+        last_known_state["Units_Ordered"] = data.unitsOrdered if data.unitsOrdered > 0 else last_known_state["Units_Ordered"]
+        last_known_state["Rolling_7"] = data.unitsSold if data.unitsSold > 0 else last_known_state["Rolling_7"]
+        last_known_state["Lag_1"] = data.unitsSold if data.unitsSold > 0 else last_known_state["Lag_1"]
+        # Saison calculee depuis le mois
+        season_map = {12: 0, 1: 0, 2: 0, 3: 1, 4: 1, 5: 1, 6: 2, 7: 2, 8: 2, 9: 3, 10: 3, 11: 3}
+        last_known_state["Seasonality_enc"] = season_map.get(data.month, 1)
         last_known_state["Stock_Ratio"] = data.stockLevel / (last_known_state["Units_Sold"] + 1)
 
         # 📦 5. transformer en dataframe

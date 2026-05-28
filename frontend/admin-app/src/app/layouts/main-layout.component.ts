@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -31,14 +31,22 @@ export class MainLayoutComponent implements OnInit {
     }
     
     // Mettre à jour le titre selon la route
-    this.router.events.subscribe(() => {
-      const currentUrl = this.router.url;
-      if (currentUrl.includes('/dashboard')) {
-        this.pageTitle = 'Tableau de bord';
-      } else if (currentUrl.includes('/products')) {
-        this.pageTitle = 'Gestion des produits';
-      } else {
-        this.pageTitle = 'Administration';
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const currentUrl = event.url;
+        if (currentUrl.includes('/dashboard')) {
+          this.pageTitle = 'Tableau de bord';
+        } else if (currentUrl.includes('/products')) {
+          this.pageTitle = 'Catalogue Articles';
+        } else if (currentUrl.includes('/orders')) {
+          this.pageTitle = 'Commandes & Flux';
+        } else if (currentUrl.includes('/inventory') || currentUrl.includes('/stock')) {
+          this.pageTitle = 'Gestion de Stock';
+        } else if (currentUrl.includes('/forecast')) {
+          this.pageTitle = 'Prévisions de Vente';
+        } else {
+          this.pageTitle = 'Administration';
+        }
       }
     });
   }
@@ -48,12 +56,14 @@ export class MainLayoutComponent implements OnInit {
     localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isSidebarCollapsed));
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 
-  comingSoon(event: Event) {
-    event.preventDefault();
-    alert('Cette fonctionnalité sera bientôt disponible !');
+  comingSoon(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
+    alert('✨ Cette fonctionnalité sera bientôt disponible ! ✨');
   }
 }

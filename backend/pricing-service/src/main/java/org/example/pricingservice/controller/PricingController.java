@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/pricing")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")  // ← AJOUTER CETTE LIGNE
 
 public class PricingController {
 

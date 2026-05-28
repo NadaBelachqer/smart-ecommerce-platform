@@ -1,0 +1,158 @@
+<div class="inventory-container">
+  <div class="page-header">
+    <h1>Gestion de l'Inventaire</h1>
+    <p>Suivez et gérez le stock de vos produits</p>
+  </div>
+
+  <div *ngIf="successMessage" class="message success">✓ {{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="message error">
+    ✗ {{ errorMessage }}
+    <button class="btn-retry" (click)="loadInventories()">↻ Réessayer</button>
+  </div>
+
+  <div class="inventory-main">
+
+    <!-- Products List -->
+    <div class="products-section">
+      <h2>Produits <span class="count-badge">{{ filteredInventories.length }}</span></h2>
+
+      <div class="search-bar">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          placeholder="Rechercher par nom, SKU, catégorie…">
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <div *ngIf="isLoadingInventories" class="loading">Chargement des produits…</div>
+      <div *ngIf="!isLoadingInventories && filteredInventories.length === 0" class="no-data">
+        Aucun produit trouvé
+      </div>
+
+      <div class="products-list">
+        <div
+          *ngFor="let inv of filteredInventories"
+          (click)="selectProduct(inv.id)"
+          [class.selected]="selectedProductId === inv.id"
+          class="product-item">
+          <div class="product-info">
+            <h3>{{ inv.name }}</h3>
+            <p class="sku">{{ inv.sku }}</p>
+            <p class="category">{{ inv.category }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Details -->
+    <div class="details-section">
+      <div *ngIf="!selectedProductId" class="no-selection">
+        <div class="no-selection-icon">📦</div>
+        <p>Sélectionnez un produit pour voir les détails d'inventaire</p>
+      </div>
+
+      <div *ngIf="selectedProductId && isLoadingDetails" class="loading">Chargement des détails…</div>
+
+      <div *ngIf="selectedInventory && !isLoadingDetails">
+
+        <!-- Stock Status Card -->
+        <div class="status-card" [ngClass]="getStockStatusClass(selectedInventory)">
+          <div class="status-card-header">
+            <h3>État du Stock</h3>
+            <span class="status-pill" [ngClass]="getStockStatusClass(selectedInventory)">
+              {{ getStockStatus(selectedInventory) }}
+            </span>
+          </div>
+
+          <div class="stock-numbers">
+            <div class="stock-number-item">
+              <span class="stock-label">Stock total</span>
+              <strong class="stock-value">{{ selectedInventory.stockLevel }}</strong>
+              <span class="stock-unit">unités</span>
+            </div>
+            <div class="stock-divider"></div>
+            <div class="stock-number-item">
+              <span class="stock-label">Réservé</span>
+              <strong class="stock-value reserved">{{ selectedInventory.reservedStock }}</strong>
+              <span class="stock-unit">unités</span>
+            </div>
+            <div class="stock-divider"></div>
+            <div class="stock-number-item highlight">
+              <span class="stock-label">Disponible</span>
+              <strong class="stock-value available">{{ getAvailableStock(selectedInventory) }}</strong>
+              <span class="stock-unit">unités</span>
+            </div>
+          </div>
+
+          <div class="stock-bar-container">
+            <div class="stock-bar-label">
+              <span>Niveau vs seuil ({{ selectedInventory.reorderThreshold }} unités)</span>
+              <span>{{ selectedInventory.stockLevel }} / {{ selectedInventory.reorderThreshold * 3 }}</span>
+            </div>
+            <div class="stock-bar-track">
+              <div class="stock-bar-fill" [ngClass]="getStockStatusClass(selectedInventory)"
+                   [style.width.%]="getStockPercent(selectedInventory)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Update Form -->
+        <div class="update-form">
+          <h3>Gérer le Stock</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Quantité à modifier :</label>
+              <input
+                type="number"
+                min="1"
+                [(ngModel)]="updateQuantity"
+                placeholder="Ex: 50">
+            </div>
+            <div class="form-actions">
+              <button (click)="updateStock()" class="btn-primary" [disabled]="updateQuantity <= 0">
+                + Ajouter au Stock
+              </button>
+              <button (click)="reserveStock()" class="btn-secondary" [disabled]="updateQuantity <= 0">
+                Réserver Stock
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div *ngIf="selectedAlerts.length > 0" class="alerts-section">
+          <h3>Alertes <span class="count-badge danger">{{ selectedAlerts.length }}</span></h3>
+          <div class="alerts-list">
+            <div *ngFor="let alert of selectedAlerts" class="alert-item">
+              <div class="alert-type">{{ alert.alertType }}</div>
+              <div class="alert-date">{{ formatDate(alert.createdAt) }}</div>
+              <div class="alert-status" [ngClass]="getAlertStatusClass(alert.status)">
+                {{ alert.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movements History -->
+        <div class="movements-section">
+          <h3>Historique des Mouvements
+            <span *ngIf="movements.length > 0" class="count-badge">{{ movements.length }}</span>
+          </h3>
+          <div *ngIf="movements.length === 0" class="no-data">Aucun mouvement enregistré</div>
+          <div *ngIf="movements.length > 0" class="movements-list">
+            <div *ngFor="let movement of movements" class="movement-item">
+              <span class="movement-type" [ngClass]="movement.movementType.toLowerCase()">
+                {{ getMovementTypeLabel(movement.movementType) }}
+              </span>
+              <span class="movement-quantity">{{ movement.quantity }} unités</span>
+              <span class="movement-date">{{ formatDate(movement.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,199 @@
+<div class="forecast-container">
+  <div class="page-header">
+    <h1>Prédiction de Demande</h1>
+    <p>Utilisez le ML pour prévoir la demande et optimiser votre stock</p>
+  </div>
+
+  <div *ngIf="successMessage" class="message success">✓ {{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="message error">
+    ✗ {{ errorMessage }}
+    <button class="btn-retry" (click)="loadProducts()">↻ Réessayer</button>
+  </div>
+
+  <div class="forecast-main">
+
+    <!-- Products List -->
+    <div class="products-section">
+      <h2>Produits <span class="count-badge">{{ filteredProducts.length }}</span></h2>
+
+      <div class="search-bar">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          placeholder="Rechercher un produit…">
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <div *ngIf="isLoadingProducts" class="loading">Chargement des produits…</div>
+      <div *ngIf="!isLoadingProducts && filteredProducts.length === 0" class="no-data">
+        Aucun produit trouvé
+      </div>
+
+      <div class="products-list">
+        <div
+          *ngFor="let product of filteredProducts"
+          (click)="selectProduct(product)"
+          [class.selected]="selectedProductId === product.id"
+          class="product-item">
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="sku">{{ product.sku }}</p>
+            <p class="price">{{ product.sellingPrice | currency:'EUR':'symbol':'1.2-2' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forecast Section -->
+    <div class="forecast-section">
+      <div *ngIf="!selectedProductId" class="no-selection">
+        <div class="no-selection-icon">🔮</div>
+        <p>Sélectionnez un produit pour générer une prédiction</p>
+      </div>
+
+      <div *ngIf="selectedProduct" class="forecast-content">
+
+        <!-- Product Header -->
+        <div class="product-header">
+          <div>
+            <h2>{{ selectedProduct.name }}</h2>
+            <span class="category-badge">{{ selectedProduct.category }}</span>
+            <p class="description">{{ selectedProduct.description }}</p>
+          </div>
+        </div>
+
+        <!-- Prediction Form -->
+        <div class="prediction-form">
+          <h3>Paramètres de Prédiction</h3>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Mois</label>
+              <select [(ngModel)]="month">
+                <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">
+                  {{ getMonthName(m) }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Jour de la semaine</label>
+              <select [(ngModel)]="dayOfWeek">
+                <option *ngFor="let d of [0,1,2,3,4,5,6]" [value]="d">
+                  {{ getDayName(d) }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Stock actuel (unités)</label>
+              <input type="number" min="0" [(ngModel)]="stockLevel" placeholder="Ex: 200">
+            </div>
+
+            <div class="form-group">
+              <label>Prix (€)</label>
+              <input type="number" [(ngModel)]="price" readonly style="background:#f5f5f5; cursor:not-allowed">
+            </div>
+
+            <div class="form-group">
+              <label>Remise (%)</label>
+              <input type="number" min="0" max="100" [(ngModel)]="discount" placeholder="Ex: 10">
+            </div>
+
+            <div class="form-group">
+              <label>Ventes récentes (unités vendues)</label>
+              <input type="number" min="0" [(ngModel)]="unitsSold" placeholder="Ex: 150">
+            </div>
+
+            <div class="form-group">
+              <label>Commandes récentes (unités commandées)</label>
+              <input type="number" min="0" [(ngModel)]="unitsOrdered" placeholder="Ex: 200">
+            </div>
+
+            <div class="form-group">
+              <label>Promotion en cours</label>
+              <div class="toggle-row">
+                <label class="toggle-switch">
+                  <input type="checkbox" [(ngModel)]="promoActive">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label" [class.active]="promoActive">
+                  {{ promoActive ? 'Oui — promotion active' : 'Non' }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <button
+            (click)="predictDemand()"
+            [disabled]="isLoadingPrediction"
+            class="btn-predict">
+            <span *ngIf="!isLoadingPrediction">Générer la Prédiction</span>
+            <span *ngIf="isLoadingPrediction" class="loading-btn">
+              <span class="spinner"></span> Prédiction en cours…
+            </span>
+          </button>
+        </div>
+
+        <!-- Prediction Result -->
+        <div *ngIf="currentPrediction" class="prediction-result" [ngClass]="getRecommendationClass(currentPrediction)">
+          <h3>Résultats de la Prédiction</h3>
+          <div class="prediction-cards">
+            <div class="prediction-card">
+              <div class="card-label">Ventes prédites</div>
+              <div class="card-value">{{ formatNumber(currentPrediction.predictedSales) }}</div>
+              <div class="card-unit">unités</div>
+            </div>
+            <div class="prediction-card main-card">
+              <div class="card-label">Stock recommandé</div>
+              <div class="card-value">{{ formatNumber(currentPrediction.recommendedStock) }}</div>
+              <div class="card-unit">unités</div>
+              <div class="card-message">{{ getRecommendationMessage(currentPrediction) }}</div>
+            </div>
+          </div>
+          <div class="prediction-meta">
+            Prédiction générée le {{ formatDate(currentPredictionTime!) }}
+          </div>
+        </div>
+
+        <!-- Forecast History -->
+        <div class="history-section">
+          <h3>Historique des Prédictions
+            <span *ngIf="forecastHistory.length > 0" class="count-badge">{{ forecastHistory.length }}</span>
+          </h3>
+
+          <div *ngIf="isLoadingHistory" class="loading">Chargement de l'historique…</div>
+
+          <div *ngIf="!isLoadingHistory && forecastHistory.length === 0" class="no-data">
+            Aucune prédiction antérieure pour ce produit
+          </div>
+
+          <div *ngIf="forecastHistory.length > 0" class="history-table">
+            <div class="table-header">
+              <div>Date</div>
+              <div>Ventes prédites</div>
+              <div>Stock recommandé</div>
+              <div>Statut</div>
+            </div>
+            <div class="table-body">
+              <div *ngFor="let item of forecastHistory" class="table-row" [ngClass]="getHistoryRowClass(item)">
+                <div class="cell">{{ formatDate(item.createdAt) }}</div>
+                <div class="cell">{{ formatNumber(item.predictedSales) }}</div>
+                <div class="cell">{{ formatNumber(item.recommendedStock) }}</div>
+                <div class="cell">
+                  <span class="status-chip" [ngClass]="getHistoryRowClass(item)">
+                    {{ item.recommendedStock < item.predictedSales ? 'Risque rupture' :
+                       item.recommendedStock > item.predictedSales * 1.5 ? 'Surstock' : 'Optimal' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

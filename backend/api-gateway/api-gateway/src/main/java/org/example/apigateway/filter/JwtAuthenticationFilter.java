@@ -39,6 +39,10 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             System.out.println("🖼️ Route publique (images)");
             return chain.filter(exchange);
         }
+        if (path.startsWith("/api/forecast")) {
+            System.out.println("📊 Route publique (forecast)");
+            return chain.filter(exchange);
+        }
 
         System.out.println("🔒 Route protégée: " + path);
 
@@ -61,8 +65,17 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         System.out.println("Token valide");
 
         String email = jwtUtil.extractEmail(token);
+        Long userId = jwtUtil.extractUserId(token);
+
+        if (userId == null) {
+            System.out.println("Token valide mais userId manquant");
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+
         ServerHttpRequest mutatedRequest = request.mutate()
                 .header("X-User-Email", email)
+                .header("X-User-Id", userId.toString())
                 .build();
 
         return chain.filter(exchange.mutate().request(mutatedRequest).build());
