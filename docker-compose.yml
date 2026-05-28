@@ -1,10 +1,12 @@
 services:
 
+  # ==================== BASES DE DONNÉES ====================
+  
   mysql-auth:
     image: mysql:8
     container_name: mysql-auth
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: auth_db
     ports:
       - "3310:3306"
@@ -12,12 +14,16 @@ services:
       - mysql_auth_data:/var/lib/mysql
     networks:
       - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   mysql-product:
     image: mysql:8
     container_name: mysql-product
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: product_db
     ports:
       - "3311:3306"
@@ -25,12 +31,16 @@ services:
       - mysql_product_data:/var/lib/mysql
     networks:
       - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   mysql-inventory:
     image: mysql:8
     container_name: mysql-inventory
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: inventory_db
     ports:
       - "3312:3306"
@@ -38,6 +48,63 @@ services:
       - mysql_inventory_data:/var/lib/mysql
     networks:
       - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-forecast:
+    image: mysql:8
+    container_name: mysql-forecast
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: forecast_db
+    ports:
+      - "3313:3306"
+    volumes:
+      - mysql_forecast_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-order:
+    image: mysql:8
+    container_name: mysql-order
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: order_db
+    ports:
+      - "3315:3306"
+    volumes:
+      - mysql_order_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-pricing:
+    image: mysql:8
+    container_name: mysql-pricing
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: pricing_db
+    ports:
+      - "3314:3306"
+    volumes:
+      - mysql_pricing_data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # ==================== SERVICES BACKEND ====================
 
   auth-service:
     build:
@@ -46,9 +113,14 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - mysql-auth
+      mysql-auth:
+        condition: service_healthy
     networks:
       - ecommerce-net
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-auth:3306/auth_db?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root123
 
   product-service:
     build:
@@ -57,9 +129,14 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - mysql-product
+      mysql-product:
+        condition: service_healthy
     networks:
       - ecommerce-net
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-product:3306/product_db?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root123
 
   inventory-service:
     build:
@@ -68,10 +145,105 @@ services:
     ports:
       - "8083:8083"
     depends_on:
-      - mysql-inventory
+      mysql-inventory:
+        condition: service_healthy
+    networks:
+      - ecommerce-net
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-inventory:3306/inventory_db?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root123
+
+  order-service:
+    build:
+      context: ./backend/order-service
+    container_name: order-service
+    ports:
+      - "8086:8084"
+    depends_on:
+      mysql-order:
+        condition: service_healthy
+      product-service:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+    environment:
+      - ORDER_DB_URL=jdbc:mysql://mysql-order:3306/order_db?useSSL=false&allowPublicKeyRetrieval=true
+      - ORDER_DB_USERNAME=root
+      - ORDER_DB_PASSWORD=root123
+      - PRODUCT_SERVICE_URL=http://product-service:8082/products
+      - INVENTORY_SERVICE_URL=http://inventory-service:8083
     networks:
       - ecommerce-net
 
+  # ==================== ML API (Forecast + Pricing) ====================
+  ml-api:
+    build:
+      context: ./backend/ml-api
+    container_name: ml-api
+    ports:
+      - "5000:5000"
+    networks:
+      - ecommerce-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      timeout: 10s
+      retries: 5
+
+  # ==================== SERVICES DE PRÉVISION ====================
+  
+  forecast-service:
+    build:
+      context: ./backend/forecast-service
+    container_name: forecast-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      mysql-forecast:
+        condition: service_healthy
+      ml-api:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-forecast:3306/forecast_db?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root123
+      - ML_API_URL=http://ml-api:5000
+    networks:
+      - ecommerce-net
+
+  # ==================== SERVICE DE TARIFICATION ====================
+  
+  pricing-service:
+    build:
+      context: ./backend/pricing-service
+    container_name: pricing-service
+    ports:
+      - "8087:8087"
+    depends_on:
+      mysql-pricing:
+        condition: service_healthy
+      ml-api:
+        condition: service_healthy
+      product-service:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+    environment:
+      - SERVER_PORT=8087
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-pricing:3306/pricing_db?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root123
+      - PRODUCT_SERVICE_URL=http://product-service:8082
+      - INVENTORY_SERVICE_URL=http://inventory-service:8083
+      - ML_API_URL=http://ml-api:5000
+      - SERPAPI_KEY=${SERPAPI_KEY}           # ← NOUVEAU - Clé API SerpAPI
+      - SERPAPI_ENABLED=true                 # ← NOUVEAU
+      - PRICING_FALLBACK_ENABLED=true        # ← NOUVEAU
+    networks:
+      - ecommerce-net
+
+  # ==================== API GATEWAY ====================
+  
   api-gateway:
     build:
       context: ./backend/api-gateway/api-gateway
@@ -83,13 +255,24 @@ services:
       - auth-service
       - product-service
       - inventory-service
+      - forecast-service
+      - order-service
+      - pricing-service
+      - ml-api
     networks:
       - ecommerce-net
+
+# ==================== VOLUMES ====================
 
 volumes:
   mysql_auth_data:
   mysql_product_data:
   mysql_inventory_data:
+  mysql_forecast_data:
+  mysql_order_data:
+  mysql_pricing_data:
+
+# ==================== RÉSEAU ====================
 
 networks:
   ecommerce-net:

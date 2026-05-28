@@ -1,0 +1,31 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Maven / Spring Boot
+target/
+*.jar
+*.war
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (Angular)
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# ML models 
+*.pkl
+
+# Environment files (sécurité)
+.env

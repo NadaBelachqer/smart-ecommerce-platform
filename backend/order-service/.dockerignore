@@ -1,0 +1,13 @@
+target/
+!target/order-service-1.0.0.jar
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+*.log
+.idea/
+*.iml
+.vscode/
+node_modules/
+postman/

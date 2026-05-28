@@ -2,6 +2,7 @@ package org.example.productservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,6 +16,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true)
     private String sku;
 
@@ -28,6 +30,12 @@ public class Product {
 
     @Column(name = "selling_price")
     private Double sellingPrice;
+
+    @Column(name = "cost")
+    private Double cost;
+
+    @Column(name = "expiration_date")
+    private LocalDate expirationDate;
 
     @Column(name = "image_url")
     private String imageUrl;

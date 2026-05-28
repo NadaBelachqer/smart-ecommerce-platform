@@ -1,0 +1,182 @@
+<div class="pricing-optimizer">
+  <div class="optimizer-header">
+    <div class="header-left">
+      <a [routerLink]="['/products']" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        <span>Retour au catalogue</span>
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="loadingProduct" class="loading-container">
+    <div class="spinner"></div>
+    <p>Analyse des données produit...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-alert">
+    <div class="alert-message">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+    <button type="button" class="alert-close" (click)="errorMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div *ngIf="product" class="product-card">
+    <div class="product-visual">
+      <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name">
+      <div class="product-image-placeholder" *ngIf="!product.imageUrl">
+        <i class="fas fa-box"></i>
+      </div>
+    </div>
+ 
+    <div class="product-details">
+      <div class="product-identity">
+        <h2>{{ product.name }}</h2>
+        <span class="product-sku">SKU: {{ product.sku || '-' }}</span>
+      </div>
+ 
+      <div class="product-metrics">
+        <div class="metric-item">
+          <span class="metric-label">Prix de vente actuel</span>
+          <span class="metric-value">{{ product.sellingPrice | number:'1.2-2' }} <small>DH</small></span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Coût de revient</span>
+          <span class="metric-value">{{ (product.cost || 0) | number:'1.2-2' }} <small>DH</small></span>
+        </div>
+        <div class="metric-item" *ngIf="product.expirationDate">
+          <span class="metric-label">Date limite d'expiration</span>
+          <span class="metric-value font-mono">{{ product.expirationDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="optimize-button" (click)="optimize()" [disabled]="loadingOptimize">
+      <i [class]="loadingOptimize ? 'fas fa-spinner fa-spin' : 'fas fa-wand-magic-sparkles'"></i>
+      <span>{{ loadingOptimize ? 'Calcul IA en cours...' : 'Optimiser le prix' }}</span>
+    </button>
+  </div>
+
+  <div *ngIf="pricingResult" class="results-section">
+    <div class="section-header">
+      <h2>Recommandation du modèle prédictif</h2>
+      <span class="strategy-badge" [class]="getStrategyClass(pricingResult.strategy)">
+        {{ pricingResult.strategy_label }}
+      </span>
+    </div>
+
+    <div class="kpi-dashboard">
+      <div class="kpi-card primary">
+        <div class="kpi-content">
+          <span class="kpi-label">Prix Optimal Conseillé</span>
+          <div class="kpi-value">{{ pricingResult.optimal_price | number:'1.2-2' }} <span class="currency">DH</span></div>
+          <div class="kpi-diff" [class.positive]="getPriceDiff() >= 0" [class.negative]="getPriceDiff() < 0">
+            <i [class]="getPriceDiff() >= 0 ? 'fas fa-arrow-trend-up' : 'fas fa-arrow-trend-down'"></i>
+            <span>{{ getPriceDiff() >= 0 ? '+' : '' }}{{ getPriceDiff() | number:'1.2-2' }} DH ({{ getPriceDiffPercent() | number:'1.1-1' }}%)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Indice de prix concurrent</span>
+          <div class="kpi-value-standard">{{ pricingResult.competitor_price | number:'1.2-2' }} <span class="unit">DH</span></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Volume de ventes estimé</span>
+          <div class="kpi-value-standard">{{ pricingResult.expected_demand | number:'1.0-0' }} <span class="unit">unités</span></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Chiffre d'affaires estimé</span>
+          <div class="kpi-value-standard">{{ pricingResult.expected_revenue | number:'1.2-2' }} <span class="unit">DH</span></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Marge nette globale estimée</span>
+          <div class="kpi-value-standard profit">{{ pricingResult.expected_profit | number:'1.2-2' }} <span class="unit">DH</span></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-content">
+          <span class="kpi-label">Fiabilité de la prédiction</span>
+          <div class="kpi-value-standard" [class]="getScoreClass(pricingResult.score)">
+            {{ pricingResult.score | number:'1.0-0' }}%
+          </div>
+          <div class="score-bar">
+            <div class="score-fill" [style.width.%]="pricingResult.score" [class]="getScoreClass(pricingResult.score)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-bar">
+      <button type="button" class="btn-secondary" (click)="optimize()" [disabled]="loadingOptimize">
+        <i class="fas fa-arrows-rotate" [class.fa-spin]="loadingOptimize"></i>
+        <span>Actualiser les simulations</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="history.length > 0" class="history-section">
+    <div class="section-header">
+      <div class="title-with-count">
+        <h2>Historique des simulations de prix</h2>
+        <span class="history-count">{{ history.length }} simulations</span>
+      </div>
+    </div>
+    <div class="history-table-wrapper">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date d'analyse</th>
+            <th>Orientation Stratégique</th>
+            <th class="text-right">Prix initial</th>
+            <th class="text-right">Prix cible IA</th>
+            <th class="text-right">Prix marché</th>
+            <th class="text-center">Élasticité (Demande)</th>
+            <th class="text-right">Profit projeté</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of history">
+            <td class="date-cell font-mono">
+              {{ h.created_at | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td>
+              <span class="strategy-tag" [class]="getStrategyClass(h.strategy)">
+                {{ h.strategy_label }}
+              </span>
+            </td>
+            <td class="text-right">{{ h.current_price | number:'1.2-2' }} DH</td>
+            <td class="text-right font-semibold text-brand">{{ h.optimal_price | number:'1.2-2' }} DH</td>
+            <td class="text-right text-muted">{{ h.competitor_price | number:'1.2-2' }} DH</td>
+            <td class="text-center font-medium">{{ h.expected_demand | number:'1.0-0' }} u</td>
+            <td class="text-right font-semibold text-success">{{ h.expected_profit | number:'1.2-2' }} DH</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="!loadingHistory && history.length === 0 && product && !loadingProduct" class="empty-state">
+    <div class="empty-icon-wrapper">
+      <i class="fas fa-brain"></i>
+    </div>
+    <h3>Moteur de prix non initialisé</h3>
+    <p>Aucun modèle prédictif n'a encore été exécuté pour ce produit. Lancez l'algorithme pour calculer le prix optimal basé sur la demande et la concurrence.</p>
+    <button type="button" class="btn-primary" (click)="optimize()">
+      <span>Calculer le prix optimal</span>
+    </button>
+  </div>
+</div>

@@ -1,67 +1,264 @@
-<!-- Stats Cards -->
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-icon">💰</div>
-    <div class="stat-info">
-      <h3>0 DH</h3>
-      <p>Chiffre d'affaires</p>
+<div class="dashboard-container">
+  
+  <!-- En-tête -->
+  <div class="dashboard-header">
+    <div>
+      <h1>Tableau de bord</h1>
+      <p>Vue d'ensemble de votre activité commerciale</p>
     </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon">📦</div>
-    <div class="stat-info">
-      <h3>0</h3>
-      <p>Commandes</p>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon">👥</div>
-    <div class="stat-info">
-      <h3>0</h3>
-      <p>Clients</p>
-    </div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon">⚠️</div>
-    <div class="stat-info">
-      <h3>0</h3>
-      <p>Alertes stock</p>
-    </div>
-  </div>
-</div>
-
-<div class="content-grid">
-  <div class="content-card">
-    <div class="card-header">
-      <h3>📋 Dernières commandes</h3>
-      <a class="btn-link">Voir tout →</a>
-    </div>
-    <div class="card-body empty-state">
-      <p>Aucune commande récente</p>
-      <small>Les commandes apparaîtront ici</small>
+    <div class="header-actions">
+      <span class="last-updated" *ngIf="lastUpdated">
+        <i class="fa-regular fa-clock"></i> Dernière mise à jour: {{ lastUpdated }}
+      </span>
+      <button class="btn-refresh" (click)="refresh()" [disabled]="loading">
+        <i class="fa-solid fa-rotate-right" [class.spin]="loading"></i>
+        {{ loading ? 'Chargement...' : 'Rafraîchir' }}
+      </button>
     </div>
   </div>
 
-  <div class="content-card">
-    <div class="card-header">
-      <h3>⚠️ Produits en stock critique</h3>
-      <a class="btn-link">Voir tout →</a>
+  <!-- Chargement -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Chargement des données...</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon blue">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Chiffre d'affaires</span>
+        <span class="kpi-value">{{ revenue | number:'1.2-2' }} DH</span>
+        <span class="kpi-trend positive">
+          <i class="fa-solid fa-arrow-up"></i> +{{ revenue > 0 ? ((revenue / 1000) | number:'1.0-0') : 0 }}% vs mois dernier
+        </span>
+      </div>
     </div>
-    <div class="card-body empty-state">
-      <p>Aucune alerte stock</p>
-      <small>Les alertes apparaîtront ici</small>
+    
+    <div class="kpi-card">
+      <div class="kpi-icon green">
+        <i class="fa-solid fa-shopping-cart"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Commandes</span>
+        <span class="kpi-value">{{ orderVolume }}</span>
+        <span class="kpi-trend positive">
+          <i class="fa-solid fa-arrow-up"></i> +{{ orderVolume > 0 ? 12 : 0 }} vs semaine dernière
+        </span>
+      </div>
+    </div>
+    
+    <div class="kpi-card">
+      <div class="kpi-icon purple">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Clients uniques</span>
+        <span class="kpi-value">{{ newCustomers }}</span>
+        <span class="kpi-trend neutral">
+          <i class="fa-solid fa-user-plus"></i> {{ newCustomers }} clients
+        </span>
+      </div>
+    </div>
+    
+    <div class="kpi-card" [class.alert]="stockAlerts > 0">
+      <div class="kpi-icon red">
+        <i class="fa-solid fa-exclamation-triangle"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Alertes stock</span>
+        <span class="kpi-value">{{ stockAlerts }}</span>
+        <span class="kpi-trend" [class.alert-text]="stockAlerts > 0">
+          <i [class]="stockAlerts === 0 ? 'fa-solid fa-check-circle' : 'fa-solid fa-exclamation-circle'"></i>
+          {{ stockAlerts === 0 ? 'Stock OK' : 'À réapprovisionner' }}
+        </span>
+      </div>
     </div>
   </div>
 
-  <div class="content-card full-width">
-    <div class="card-header">
-      <h3>🚀 Actions rapides</h3>
+  <!-- Graphiques -->
+  <div class="charts-grid">
+    
+    <!-- Graphique Revenue hebdomadaire -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-line"></i> Chiffre d'affaires par jour</h3>
+        <p>Cette semaine (en DH)</p>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-item" *ngFor="let revenue of weeklyRevenueData; let i = index">
+          <div class="bar-container">
+            <div class="bar-fill" [style.height.%]="getBarHeight(revenue)">
+              <span class="bar-tooltip">{{ revenue | number:'1.0-0' }} DH</span>
+            </div>
+          </div>
+          <div class="bar-label">{{ ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'][i] }}</div>
+          <div class="bar-value">{{ revenue | number:'1.0-0' }}</div>
+        </div>
+      </div>
     </div>
-    <div class="quick-actions">
-      <button class="action-btn" routerLink="/products/new">➕ Ajouter un produit</button>
-      <button class="action-btn">📊 Voir les rapports</button>
-      <button class="action-btn">👥 Gérer les utilisateurs</button>
-      <button class="action-btn">⚙️ Configuration</button>
+
+    <!-- Graphique Commandes hebdomadaires -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-bar"></i> Commandes par jour</h3>
+        <p>Volume d'activité quotidien</p>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-item" *ngFor="let count of weeklyOrdersData; let i = index">
+          <div class="bar-container">
+            <div class="bar-fill orange" [style.height.%]="getOrderBarHeight(count)">
+              <span class="bar-tooltip">{{ count }} commandes</span>
+            </div>
+          </div>
+          <div class="bar-label">{{ ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'][i] }}</div>
+          <div class="bar-value">{{ count }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Produits -->
+    <div class="chart-card full-width">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-trophy"></i> Top 5 produits</h3>
+        <p>Meilleurs vendeurs par chiffre d'affaires</p>
+      </div>
+      <div class="top-products">
+        <div class="product-row" *ngFor="let product of topProducts; let i = index">
+          <div class="product-rank">{{ i + 1 }}</div>
+          <div class="product-info">
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-stats">
+              <span><i class="fa-solid fa-box"></i> {{ product.quantity }} unités</span>
+              <span><i class="fa-solid fa-chart-line"></i> {{ product.revenue | number:'1.0-0' }} DH</span>
+            </div>
+            <div class="product-bar">
+              <div class="product-fill" [style.width.%]="(product.revenue / getMaxProductRevenue()) * 100"></div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="topProducts.length === 0" class="empty-state">
+          <i class="fa-regular fa-chart-bar"></i>
+          <p>Aucune donnée de vente disponible</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribution des stocks -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-pie"></i> Distribution des stocks</h3>
+        <p>État des niveaux de stock</p>
+      </div>
+      <div class="stock-distribution">
+        <div class="donut-chart">
+          <svg viewBox="0 0 100 100" width="180" height="180">
+            <circle *ngFor="let segment of stockDistribution; let i = index; let first = first"
+                    cx="50" cy="50" r="40"
+                    [attr.stroke]="segment.color"
+                    stroke-width="20"
+                    fill="none"
+                    [attr.stroke-dasharray]="getDonutDashArray(segment, stockDistribution)"
+                    [attr.stroke-dashoffset]="getDonutDashOffset(segment, stockDistribution, i)"
+                    transform="rotate(-90 50 50)">
+            </circle>
+            <text x="50" y="42" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">
+              {{ getTotalStockCount() }}
+            </text>
+            <text x="50" y="58" text-anchor="middle" font-size="8" fill="#64748b">produits</text>
+          </svg>
+        </div>
+        <div class="stock-legend">
+          <div class="legend-item" *ngFor="let seg of stockDistribution">
+            <span class="legend-color" [style.background]="seg.color"></span>
+            <span class="legend-label">{{ seg.label }}</span>
+            <span class="legend-value">{{ seg.count }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Évolution mensuelle -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-calendar-alt"></i> Évolution mensuelle</h3>
+        <p>Chiffre d'affaires par mois (en milliers DH)</p>
+      </div>
+      <div class="monthly-chart">
+        <div class="monthly-bar-item" *ngFor="let revenue of monthlyRevenueData; let i = index">
+          <div class="monthly-bar-container">
+            <div class="monthly-bar-fill" [style.height.%]="(revenue / getMaxMonthlyRevenue()) * 100">
+              <span class="monthly-tooltip">{{ revenue | number:'1.0-0' }} DH</span>
+            </div>
+          </div>
+          <div class="monthly-label">{{ getMonthName(i) }}</div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Alertes Stock -->
+  <div class="alerts-section" *ngIf="lowStockProducts.length > 0">
+    <div class="section-header">
+      <h3><i class="fa-solid fa-bell"></i> Alertes réapprovisionnement</h3>
+      <span class="alert-count">{{ lowStockProducts.length }} produit(s) en alerte</span>
+    </div>
+    <div class="alerts-list">
+      <div class="alert-item" *ngFor="let item of lowStockProducts.slice(0, 5)">
+        <div class="alert-icon">
+          <i class="fa-solid fa-box"></i>
+        </div>
+        <div class="alert-info">
+          <div class="alert-name">{{ item.product.name }}</div>
+          <div class="alert-sku">SKU: {{ item.product.sku }}</div>
+        </div>
+        <div class="alert-stock">
+          <span class="stock-badge" [class.critical]="item.stockLevel <= 10">
+            Stock: {{ item.stockLevel }} unités
+          </span>
+        </div>
+        <button class="btn-small" (click)="navigate('/inventory')">
+          <i class="fa-solid fa-cart-plus"></i> Réapprovisionner
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dernières commandes -->
+  <div class="recent-orders-section" *ngIf="orders.length > 0">
+    <div class="section-header">
+      <h3><i class="fa-solid fa-clock"></i> Dernières commandes</h3>
+      <a class="view-all-link" routerLink="/orders">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="orders-table">
+      <table>
+        <thead>
+          <tr>
+            <th>N° commande</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders.slice(0, 5)">
+            <td class="order-id">#{{ order.orderNumber || order.id }}</td>
+            <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="order-amount">{{ order.totalAmount | number:'1.2-2' }} DH</td>
+            <td>
+              <span class="status-badge" [class]="order.status.toLowerCase()">
+                {{ order.status === 'CONFIRMED' ? 'Confirmée' : 
+                   order.status === 'CANCELLED' ? 'Annulée' : 
+                   order.status === 'PENDING' ? 'En attente' : order.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { ProductService, Product } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -15,10 +16,12 @@ export class ProductDetailComponent implements OnInit {
   private productService = inject(ProductService);
   private route = inject(ActivatedRoute);
   private cdr = inject(ChangeDetectorRef);
+  private cartService = inject(CartService);
 
   product: Product | null = null;
   loading = true;
   errorMessage = '';
+  addedToCart = false;
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -57,6 +60,14 @@ export class ProductDetailComponent implements OnInit {
   }
 
   
+  addToCart() {
+    if (this.product) {
+      this.cartService.add(this.product);
+      this.addedToCart = true;
+      setTimeout(() => this.addedToCart = false, 2000);
+    }
+  }
+
   getImageUrl(): string {
     if (!this.product?.imageUrl) {
       return 'https://via.placeholder.com/400?text=No+Image';
@@ -72,4 +83,10 @@ export class ProductDetailComponent implements OnInit {
 
     return 'https://via.placeholder.com/400?text=No+Image';
   }
+
+  quantity: number = 1;
+
+
+
+  
 }

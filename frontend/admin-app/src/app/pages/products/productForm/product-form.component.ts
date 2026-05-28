@@ -19,13 +19,10 @@ export class ProductFormComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   selectedImage: File | null = null;
-
   imagePreview: string | null = null;
-
   isEditMode = false;
   productId: number | null = null;
-    selectedCsvFile: File | null = null;
-
+  selectedCsvFile: File | null = null;
 
   loadingPage = false;
   loadingSubmit = false;
@@ -40,8 +37,13 @@ export class ProductFormComponent implements OnInit {
     category: '',
     description: '',
     sellingPrice: 0,
+    cost: 0,
+    expirationDate: '',  // ← NOUVEAU
     imageUrl: ''
   };
+
+  // Pour l'affichage de la date dans le formulaire
+  expirationDateValue: string = '';
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -65,7 +67,12 @@ export class ProductFormComponent implements OnInit {
     this.productService.getProductById(this.productId)
       .subscribe({
         next: (data) => {
-          this.product = { ...data };
+          this.product = {
+            ...data,
+            cost: data.cost || 0,
+            expirationDate: data.expirationDate || ''
+          };
+          this.expirationDateValue = this.product.expirationDate || '';
           this.loadingPage = false;
           this.cdr.detectChanges();
         },
@@ -78,77 +85,91 @@ export class ProductFormComponent implements OnInit {
       });
   }
 
-  
-
-  onImageSelected(event:Event){
-    const input =event.target as HTMLInputElement;
-    if(input.files && input.files.length>0){
-      this.selectedImage=input.files[0];
-      this.successMessage='';
-      this.errorMessage='';
-     const reader=new FileReader();
-     reader.onload= ()=>{
-      this.imagePreview=reader.result as string;
-      this.cdr.detectChanges();
-     };
-     reader.readAsDataURL(this.selectedImage);
-      
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImage = input.files[0];
+      this.successMessage = '';
+      this.errorMessage = '';
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(this.selectedImage);
     }
   }
 
-
-
-onCsvSelected(event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    this.selectedCsvFile = input.files[0];
-
-    this.successMessage = '';
-    this.errorMessage = '';
-    input.value = '';
+  onExpirationDateChange(value: string) {
+    this.product.expirationDate = value;
   }
-}
+
+  isExpired(expirationDate: string): boolean {
+    if (!expirationDate) return false;
+    const today = new Date();
+    const expDate = new Date(expirationDate);
+    return expDate < today;
+  }
+
+  getDaysUntilExpiration(expirationDate: string): number | null {
+    if (!expirationDate) return null;
+    const today = new Date();
+    const expDate = new Date(expirationDate);
+    const diffTime = expDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+  onCsvSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedCsvFile = input.files[0];
+      this.successMessage = '';
+      this.errorMessage = '';
+      input.value = '';
+    }
+  }
+
   importCsv() {
-  if (!this.selectedCsvFile) {
-    this.errorMessage = 'Veuillez sélectionner un fichier CSV';
-    return;
+    if (!this.selectedCsvFile) {
+      this.errorMessage = 'Veuillez sélectionner un fichier CSV';
+      return;
+    }
+
+    this.loadingCsv = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    this.productService.importProductsCsv(this.selectedCsvFile)
+      .pipe(finalize(() => {
+        this.loadingCsv = false;
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: (message) => {
+          this.successMessage = message || 'Import CSV réussi !';
+          this.selectedCsvFile = null;
+          const fileInput = document.getElementById('csvFileInput') as HTMLInputElement;
+          if (fileInput) fileInput.value = '';
+          setTimeout(() => {
+            this.router.navigate(['/products']);
+          }, 1500);
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = err.error?.message || 'Erreur lors de l\'import CSV';
+        }
+      });
   }
 
-  this.loadingCsv = true;
-  this.errorMessage = '';
-  this.successMessage = '';
-
-  this.productService.importProductsCsv(this.selectedCsvFile)
-    .pipe(finalize(() => {
-      this.loadingCsv = false;
-      this.cdr.detectChanges();
-    }))
-    .subscribe({
-      next: (message) => {
-        this.successMessage = message || 'Import CSV réussi !';
-        this.selectedCsvFile = null;
-        const fileInput = document.getElementById('csvFileInput') as HTMLInputElement;
-        if (fileInput) fileInput.value = '';
-        setTimeout(() => {
-          this.router.navigate(['/products']);
-        }, 1500);
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = err.error?.message || 'Erreur lors de l’import CSV';
-      }
-    });
-}
-
- removeSelectedImage() {
-  this.imagePreview = null;
-  this.selectedImage = null;
-
-  const imageInput = document.getElementById('imageFileInput') as HTMLInputElement;
-  if (imageInput) {
-    imageInput.value = '';
+  removeSelectedImage() {
+    this.imagePreview = null;
+    this.selectedImage = null;
+    const imageInput = document.getElementById('imageFileInput') as HTMLInputElement;
+    if (imageInput) {
+      imageInput.value = '';
+    }
   }
-}
 
   onSubmit() {
     this.loadingSubmit = true;
@@ -182,5 +203,8 @@ onCsvSelected(event: Event) {
         }
       });
   }
-  
+  getMarginPercent(): number {
+  if (!this.product.sellingPrice || !this.product.cost) return 0;
+  return ((this.product.sellingPrice - this.product.cost) / this.product.sellingPrice) * 100;
+}
 }

@@ -23,9 +23,15 @@ export class RegisterComponent {
     address: '',
     phone: ''
   };
+  
   errorMessage = '';
   successMessage = '';
   loading = false;
+  showPassword = false;
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     this.loading = true;
@@ -37,7 +43,7 @@ export class RegisterComponent {
     this.authService.registerAdmin(this.user).subscribe({
       next: (response) => {
         console.log('Compte admin créé:', response);
-        this.successMessage = ' Compte administrateur créé avec succès ! Redirection...';
+        this.successMessage = 'Compte administrateur créé avec succès ! Redirection...';
         
         this.authService.saveToken(response.token);
         
@@ -55,7 +61,7 @@ export class RegisterComponent {
         } else if (err.error?.message) {
           this.errorMessage = err.error.message;
         } else {
-          this.errorMessage = ' Erreur lors de la création du compte admin.';
+          this.errorMessage = 'Erreur lors de la création du compte admin.';
         }
       }
     });

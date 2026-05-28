@@ -132,7 +132,6 @@ public class ProductService {
     }
 
 
-
     public Page<ProductResponseDTO> getFilteredProducts(
             int page,
             int size,

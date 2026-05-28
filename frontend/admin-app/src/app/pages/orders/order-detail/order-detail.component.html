@@ -1,0 +1,113 @@
+<div class="back-link">
+  <a routerLink="/orders">← Retour aux commandes</a>
+</div>
+
+<div *ngIf="loading" class="loading">Chargement...</div>
+<div *ngIf="errorMessage" class="alert-error">{{ errorMessage }}</div>
+<div *ngIf="successMessage" class="alert-success">{{ successMessage }}</div>
+
+<div *ngIf="order && !loading" class="detail-layout">
+
+  <!-- Header principal -->
+  <div class="card header-card">
+    <div class="card-header-main">
+      <div class="order-info">
+        <h1>{{ order.orderNumber }}</h1>
+        <span class="badge" [ngClass]="getStatusClass(order.status)">{{ order.status }}</span>
+      </div>
+      <div class="amount-display">
+        <span class="label-small">Montant total</span>
+        <span class="amount-large">{{ order.totalAmount | number:'1.2-2' }} MAD</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille des infos principales -->
+  <div class="card">
+    <h4>📋 Informations</h4>
+    <div class="info-grid">
+      <div class="info-item">
+        <label>👤 Client (ID)</label>
+        <span>{{ order.userId }}</span>
+      </div>
+      <div class="info-item">
+        <label>💳 Paiement</label>
+        <span>{{ order.paymentMethod }}</span>
+      </div>
+      <div class="info-item">
+        <label>📍 Adresse de livraison</label>
+        <span>{{ order.shippingAddress }}</span>
+      </div>
+      <div class="info-item">
+        <label>📅 Créée le</label>
+        <span>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="info-item">
+        <label>🔄 Mise à jour</label>
+        <span>{{ order.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Changer statut -->
+  <div class="card" *ngIf="order.status !== 'CANCELLED'">
+    <h4>🔀 Changer le statut</h4>
+    <div *ngIf="canChangeStatus(); else noTransition" class="status-form">
+      <select [(ngModel)]="selectedStatus" class="status-select">
+        <option [value]="order.status" disabled>{{ order.status }} (actuel)</option>
+        <option *ngFor="let s of getAvailableStatuses()" [value]="s">{{ s }}</option>
+      </select>
+      <button class="btn-primary" (click)="updateStatus()" [disabled]="updating || selectedStatus === order.status">
+        {{ updating ? '⏳ Mise à jour...' : '✓ Confirmer' }}
+      </button>
+    </div>
+    <ng-template #noTransition>
+      <p class="no-transition">⚠️ Aucune transition possible depuis <strong>{{ order.status }}</strong></p>
+    </ng-template>
+  </div>
+
+  <!-- Articles -->
+  <div class="card">
+    <h4>📦 Articles ({{ order.items.length }})</h4>
+    <div class="table-wrapper">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Qté</th>
+            <th>Prix unitaire</th>
+            <th>Sous-total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.items">
+            <td><strong>{{ item.productName }}</strong></td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitPrice | number:'1.2-2' }} MAD</td>
+            <td class="amount">{{ item.subtotal | number:'1.2-2' }} MAD</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="total-label">Total commande</td>
+            <td class="total-value">{{ order.totalAmount | number:'1.2-2' }} MAD</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card danger-zone-card">
+    <div class="danger-zone">
+      <div>
+        <h4 style="margin: 0 0 8px 0;">🗑️ Zone de danger</h4>
+        <p style="margin: 0; color: var(--text-secondary); font-size: 13px;">Annuler cette commande définitivement</p>
+      </div>
+      <button class="btn-danger" (click)="deleteOrder()" [disabled]="!canDelete()" [title]="!canDelete() ? 'Impossible d\'annuler une commande ' + order.status : 'Annuler cette commande'">
+        🗑 Annuler
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService, Product, PageResponse } from '../../../services/product.service';
+import { ProductService, Product } from '../../../services/product.service';
 import { finalize } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
   private cdr = inject(ChangeDetectorRef);
 
-    Math = Math;
+  Math = Math;
 
   products: Product[] = [];
   loading = false;
@@ -27,8 +27,8 @@ export class ProductListComponent implements OnInit {
   pageSize = 10;
   totalPages = 0;
   totalElements = 0;
-    searchKeyword = '';
-    selectedCategory = '';
+  searchKeyword = '';
+  selectedCategory = '';
   categories: string[] = [];
 
   private imageBaseUrl = 'http://localhost:8080';
@@ -38,38 +38,87 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-  this.loading = true;
-  this.errorMessage = '';
+    this.loading = true;
+    this.errorMessage = '';
 
-  this.productService.getProducts(
-    this.currentPage,
-    this.pageSize,
-    this.searchKeyword,
-    this.selectedCategory
-  )
-  .pipe(
-    finalize(() => {
+    this.productService.getProducts(
+      this.currentPage,
+      this.pageSize,
+      this.searchKeyword,
+      this.selectedCategory
+    )
+    .pipe(finalize(() => {
       this.loading = false;
       this.cdr.detectChanges();
-    })
-  )
-  .subscribe({
-    next: (response: PageResponse<Product>) => {
-      console.log('Données reçues :', response);
+    }))
+    .subscribe({
+      next: (response) => {
+        this.products = response.content;
+        this.totalPages = response.totalPages;
+        this.totalElements = response.totalElements;
+        this.currentPage = response.number;
+        this.extractCategories(response.content);
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Erreur lors du chargement des produits';
+      }
+    });
+  }
 
-      this.products = response.content;
-      this.totalPages = response.totalPages;
-      this.totalElements = response.totalElements;
-      this.currentPage = response.number;
-
-      this.extractCategories(response.content);
-    },
-    error: (err) => {
-      console.error(err);
-      this.errorMessage = 'Erreur lors du chargement des produits';
+  // Méthodes pour les marges
+  getMargin(product: Product): number {
+    if (product.sellingPrice && product.cost) {
+      return product.sellingPrice - product.cost;
     }
-  });
-}
+    return 0;
+  }
+
+  getMarginPercentage(product: Product): number {
+    if (product.sellingPrice && product.cost && product.sellingPrice > 0) {
+      return ((product.sellingPrice - product.cost) / product.sellingPrice) * 100;
+    }
+    return 0;
+  }
+
+  getProfitabilityClass(product: Product): string {
+    const margin = this.getMarginPercentage(product);
+    if (margin >= 40) return 'profit-high';
+    if (margin >= 20) return 'profit-medium';
+    if (margin > 0) return 'profit-low';
+    return 'profit-negative';
+  }
+
+  // ← NOUVELLES MÉTHODES POUR L'EXPIRATION
+  isExpired(expirationDate: string): boolean {
+    if (!expirationDate) return false;
+    const today = new Date();
+    const expDate = new Date(expirationDate);
+    return expDate < today;
+  }
+
+  getExpirationStatus(expirationDate: string): string {
+    if (!expirationDate) return 'N/A';
+    if (this.isExpired(expirationDate)) return 'Expiré';
+    const expDate = new Date(expirationDate);
+    const today = new Date();
+    const diffTime = expDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays <= 7) return 'Expire bientôt!';
+    return 'Valide';
+  }
+
+  getExpirationClass(expirationDate: string): string {
+    if (!expirationDate) return '';
+    if (this.isExpired(expirationDate)) return 'expired';
+    const expDate = new Date(expirationDate);
+    const today = new Date();
+    const diffTime = expDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays <= 7) return 'expiring-soon';
+    return 'valid';
+  }
+
   extractCategories(products: Product[]) {
     const uniqueCategories = [...new Set(products.map(p => p.category).filter(c => c))];
     this.categories = uniqueCategories;
@@ -107,12 +156,8 @@ export class ProductListComponent implements OnInit {
   }
 
   getImageUrl(imagePath: string): string {
-    if (!imagePath) {
-      return '';
-    }
-    if (imagePath.startsWith('http')) {
-      return imagePath;
-    }
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http')) return imagePath;
     return `${this.imageBaseUrl}${imagePath}`;
   }
 
@@ -152,4 +197,16 @@ export class ProductListComponent implements OnInit {
     }
     return pages;
   }
+
+  // Ajoutez cette méthode dans votre ProductListComponent
+getExpirationIcon(expirationDate: string): string {
+  if (!expirationDate) return 'fas fa-question-circle';
+  if (this.isExpired(expirationDate)) return 'fas fa-times-circle';
+  const expDate = new Date(expirationDate);
+  const today = new Date();
+  const diffTime = expDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (diffDays <= 7) return 'fas fa-exclamation-triangle';
+  return 'fas fa-check-circle';
+}
 }

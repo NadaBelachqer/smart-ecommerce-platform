@@ -6,6 +6,11 @@ import { ProductListComponent } from './pages/products/productList/product-list.
 import { ProductFormComponent } from './pages/products/productForm/product-form.component';
 import { MainLayoutComponent } from './layouts/main-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { OrderListComponent } from './pages/orders/order-list/order-list.component';
+import { OrderDetailComponent } from './pages/orders/order-detail/order-detail.component';
+import { ForecastListComponent } from './pages/forecast/forecast-list/forecast-list.component';
+import { InventoryListComponent } from './pages/inventory/inventory-list/inventory-list.component';
+import { PricingOptimizerComponent } from './pages/pricing/pricing-optimizer/pricing-optimizer.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,6 +25,11 @@ export const routes: Routes = [
       { path: 'products', component: ProductListComponent },
       { path: 'products/new', component: ProductFormComponent },
       { path: 'products/:id/edit', component: ProductFormComponent },
+      { path: 'products/:id/pricing', component: PricingOptimizerComponent },
+      { path: 'orders', component: OrderListComponent },
+      { path: 'orders/:id', component: OrderDetailComponent },
+      { path: 'forecast', component: ForecastListComponent },
+      { path: 'inventory', component: InventoryListComponent },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]
   },
