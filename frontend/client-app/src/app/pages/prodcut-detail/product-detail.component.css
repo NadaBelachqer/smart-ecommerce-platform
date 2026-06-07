@@ -1,20 +1,17 @@
-.page-wrapper { min-height: 100vh; background: #f5f3ff; }
+.page-wrapper { min-height: 100vh; background: #eaf4f8; }
 
 /* NAV */
 .top-nav {
-  background: white; border-bottom: 1px solid #ede9fe;
-  padding: 14px 32px; display: flex; justify-content: space-between;
+  background: white; border-bottom: 1px solid #cce8f0;
+  padding: 6px 32px; display: flex; justify-content: space-between;
   align-items: center; position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 2px 12px rgba(124,58,237,0.07);
+  box-shadow: 0 2px 12px rgba(30,120,150,0.08);
 }
-.nav-brand {
-  font-size: 20px; font-weight: 800; text-decoration: none;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
+.nav-brand { text-decoration: none; display: flex; align-items: center; }
+.nav-logo { height: 90px; width: auto; object-fit: contain; }
 .nav-links { display: flex; gap: 24px; }
 .nav-link { color: #6b7280; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-.nav-link:hover { color: #7c3aed; }
+.nav-link:hover { color: #1e7896; }
 
 /* CONTAINER */
 .detail-container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
@@ -24,7 +21,7 @@
 .loading-state p { color: #9ca3af; font-size: 14px; }
 .spinner {
   width: 48px; height: 48px;
-  border: 3px solid #ede9fe; border-top-color: #7c3aed;
+  border: 3px solid #cce8f0; border-top-color: #1e7896;
   border-radius: 50%; animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -33,13 +30,13 @@
 .error-state {
   text-align: center; padding: 60px 20px;
   background: white; border-radius: 16px;
-  border: 1px solid #ede9fe;
+  border: 1px solid #cce8f0;
 }
 .error-icon { font-size: 52px; display: block; margin-bottom: 16px; }
 .error-state p { color: #ef4444; font-size: 16px; margin-bottom: 24px; }
 .btn-gradient {
   display: inline-block;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #1e7896, #1e9696);
   color: white; padding: 12px 28px; border-radius: 50px;
   text-decoration: none; font-weight: 700;
 }
@@ -52,8 +49,8 @@
   background: white;
   border-radius: 20px;
   padding: 40px;
-  border: 1px solid #ede9fe;
-  box-shadow: 0 4px 24px rgba(124,58,237,0.08);
+  border: 1px solid #cce8f0;
+  box-shadow: 0 4px 24px rgba(30,120,150,0.09);
 }
 
 /* GALLERY */
@@ -61,20 +58,33 @@
 
 .image-wrapper {
   position: relative;
-  background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+  background: linear-gradient(135deg, #eaf4f8, #d4eef5);
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #ede9fe;
+  border: 1px solid #cce8f0;
 }
 .image-wrapper img { width: 100%; height: auto; display: block; transition: transform 0.4s ease; }
 .image-wrapper:hover img { transform: scale(1.03); }
 
 .image-badge {
   position: absolute; top: 16px; left: 16px;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #1e5a78, #1e9696);
   color: white; font-size: 11px; font-weight: 700;
   padding: 4px 12px; border-radius: 50px;
   text-transform: uppercase; letter-spacing: 0.6px;
+}
+
+.detail-discount-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: white;
+  background: linear-gradient(135deg, #dc2626, #f97316);
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 10px 22px rgba(220, 38, 38, 0.28);
 }
 
 /* PRODUCT INFO */
@@ -84,7 +94,7 @@
 
 .product-category {
   display: inline-block;
-  background: #f5f3ff; color: #7c3aed;
+  background: #eaf4f8; color: #1e7896;
   font-size: 12px; font-weight: 700;
   padding: 4px 12px; border-radius: 50px;
   text-transform: uppercase; letter-spacing: 0.6px;
@@ -92,24 +102,59 @@
 }
 
 .product-name {
-  font-size: 32px; font-weight: 800; color: #1e1b4b;
+  font-size: 32px; font-weight: 800; color: #1e3a5f;
   margin: 0; line-height: 1.2; letter-spacing: -0.8px;
+}
+
+.promo-detail-note {
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #c2410c;
+  background: #ffedd5;
+  border: 1px solid #fdba74;
+  font-size: 13px;
+  font-weight: 900;
 }
 
 /* PRICE */
 .price-block {
   display: flex; align-items: baseline; gap: 6px;
   padding: 20px; border-radius: 14px;
-  background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
-  border: 1px solid #ede9fe;
+  background: linear-gradient(135deg, #eaf4f8, #d4eef5);
+  border: 1px solid #cce8f0;
 }
+
+.price-block.promo-price-block {
+  background:
+    radial-gradient(circle at top left, rgba(251, 191, 36, 0.23), transparent 42%),
+    linear-gradient(135deg, #fff7ed, #fef2f2);
+  border-color: #fdba74;
+}
+
+.detail-old-price {
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: line-through;
+  margin-right: 6px;
+}
+
+.promo-price-block .price-amount {
+  background: none;
+  -webkit-text-fill-color: #dc2626;
+  color: #dc2626;
+}
+
+.promo-price-block .price-currency { color: #dc2626; }
+
 .price-amount {
   font-size: 42px; font-weight: 900;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #1e5a78, #1e9696);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   line-height: 1;
 }
-.price-currency { font-size: 22px; font-weight: 700; color: #7c3aed; }
+.price-currency { font-size: 22px; font-weight: 700; color: #1e7896; }
 .price-unit { font-size: 14px; color: #9ca3af; margin-left: 4px; }
 
 /* STOCK */
@@ -142,17 +187,17 @@
 
 .meta-item {
   display: flex; align-items: flex-start; gap: 10px;
-  background: #fdfcff; border: 1px solid #ede9fe;
+  background: #f4fbfd; border: 1px solid #cce8f0;
   padding: 12px 14px; border-radius: 12px;
 }
 .meta-icon { font-size: 18px; }
 .meta-label { display: block; font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-.meta-value { display: block; font-size: 14px; font-weight: 600; color: #1e1b4b; }
+.meta-value { display: block; font-size: 14px; font-weight: 600; color: #1e3a5f; }
 
 /* ADD TO CART */
 .add-to-cart-btn {
   width: 100%;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
+  background: linear-gradient(135deg, #1e7896, #1e9696);
   color: white; border: none;
   padding: 17px 24px; border-radius: 14px;
   font-size: 16px; font-weight: 700; cursor: pointer;

@@ -62,67 +62,50 @@
   }
 }
 
-/* Logo OptiCore Retail */
+/* ==================== LOGO AVEC IMAGE - AGGRANDI + ESPACE RÉDUIT ==================== */
 .logo-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 40px;
+  margin-bottom: 16px;     /* Réduit de 48px à 16px */
 }
 
-.logo-icon {
-  width: 52px;
-  height: 52px;
-  background: var(--primary-gradient);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-lg);
+.login-logo {
+  height: 140px;           /* Agrandi de 100px à 140px */
+  width: auto;
+  object-fit: contain;
+  max-width: 320px;
+  transition: transform 0.3s ease;
 }
 
-.logo-icon i {
-  font-size: 26px;
-  color: var(--white);
+.login-logo:hover {
+  transform: scale(1.02);
 }
 
-.logo-text {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: -0.5px;
-}
-
-.logo-text span {
-  font-weight: 300;
-  color: var(--gray);
-}
-
-/* Header */
+/* Header - Espace réduit */
 .card-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;      /* Réduit de 40px à 32px */
 }
 
 .card-header h2 {
-  font-size: 32px;
+  font-size: 28px;          /* Réduit légèrement de 32px */
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 10px;
+  margin-bottom: 6px;       /* Réduit de 10px à 6px */
   letter-spacing: -0.5px;
 }
 
 .card-header p {
-  font-size: 15px;
+  font-size: 14px;          /* Réduit de 15px */
   color: var(--gray);
 }
 
-/* Formulaire */
+/* Formulaire - Espace réduit */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;                /* Réduit de 28px à 24px */
 }
 
 /* Input groups */
@@ -358,8 +341,8 @@
 
 /* Card footer */
 .card-footer {
-  margin-top: 36px;
-  padding-top: 28px;
+  margin-top: 32px;         /* Réduit de 36px à 32px */
+  padding-top: 24px;        /* Réduit de 28px à 24px */
   border-top: 1px solid var(--border);
 }
 
@@ -394,21 +377,26 @@
     margin: 16px;
   }
   
-  .logo-text {
-    font-size: 24px;
+  .login-logo {
+    height: 100px;           /* Plus petit sur mobile */
+    max-width: 240px;
   }
   
-  .logo-icon {
-    width: 44px;
-    height: 44px;
-  }
-  
-  .logo-icon i {
-    font-size: 22px;
+  .logo-container {
+    margin-bottom: 12px;
   }
   
   .card-header h2 {
-    font-size: 26px;
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  
+  .card-header {
+    margin-bottom: 24px;
+  }
+  
+  .login-form {
+    gap: 20px;
   }
   
   .form-options {
@@ -424,5 +412,10 @@
   
   .separator {
     display: none;
+  }
+  
+  .card-footer {
+    margin-top: 24px;
+    padding-top: 20px;
   }
 }

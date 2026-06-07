@@ -4,10 +4,8 @@
     
     <div class="sidebar-brand">
       <div class="brand-identity">
-        <div class="brand-icon-wrapper">
-          <i class="fa-solid fa-layer-group"></i>
-        </div>
-        <span class="brand-name" *ngIf="!isSidebarCollapsed">OptiCore <span class="text-accent">Retail</span></span>
+        <img src="/assets/images/logo.png" alt="Logo" class="brand-logo" *ngIf="!isSidebarCollapsed">
+        <img src="/assets/images/logo.png" alt="Logo" class="brand-logo-collapsed" *ngIf="isSidebarCollapsed">
       </div>
       <button class="sidebar-toggle-trigger" (click)="toggleSidebar()" title="Réduire le menu">
         <i class="fa-solid" [class.fa-chevron-left]="!isSidebarCollapsed" [class.fa-chevron-right]="isSidebarCollapsed"></i>
@@ -49,8 +47,11 @@
           <i class="fa-solid fa-timeline"></i>
           <span class="link-label" *ngIf="!isSidebarCollapsed">Prévisions de Vente</span>
         </a>
-        
-        
+
+        <a routerLink="/promotions" routerLinkActive="is-active" class="navigation-link">
+          <i class="fa-solid fa-tags"></i>
+          <span class="link-label" *ngIf="!isSidebarCollapsed">Promotions ML</span>
+        </a>
         
       </nav>
     </div>

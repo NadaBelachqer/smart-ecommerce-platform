@@ -11,6 +11,7 @@ import { OrderDetailComponent } from './pages/orders/order-detail/order-detail.c
 import { ForecastListComponent } from './pages/forecast/forecast-list/forecast-list.component';
 import { InventoryListComponent } from './pages/inventory/inventory-list/inventory-list.component';
 import { PricingOptimizerComponent } from './pages/pricing/pricing-optimizer/pricing-optimizer.component';
+import { PromotionListComponent } from './pages/promotions/promotion-list/promotion-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,6 +31,7 @@ export const routes: Routes = [
       { path: 'orders/:id', component: OrderDetailComponent },
       { path: 'forecast', component: ForecastListComponent },
       { path: 'inventory', component: InventoryListComponent },
+      { path: 'promotions', component: PromotionListComponent },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ]
   },

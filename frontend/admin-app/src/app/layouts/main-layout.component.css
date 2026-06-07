@@ -56,8 +56,8 @@
 
 /* En-tête de Marque */
 .sidebar-brand {
-  height: 75px;
-  padding: 0 24px;
+  height: 90px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,20 +70,17 @@
   gap: 14px;
 }
 
-.brand-icon-wrapper {
-  color: var(--admin-blue-accent);
-  font-size: 22px;
+.brand-logo {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+  max-width: 280px;
 }
 
-.brand-name {
-  font-size: 17px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-}
-
-.brand-name .text-accent {
-  color: #f43f5e;
+.brand-logo-collapsed {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
 }
 
 .sidebar-toggle-trigger {

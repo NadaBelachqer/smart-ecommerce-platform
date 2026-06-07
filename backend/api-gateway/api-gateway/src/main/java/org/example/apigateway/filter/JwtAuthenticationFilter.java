@@ -4,6 +4,7 @@ import org.example.apigateway.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,11 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         System.out.println(" Path: " + path);
 
 
+        if (request.getMethod() == HttpMethod.OPTIONS) {
+            System.out.println("Route publique (CORS preflight)");
+            return chain.filter(exchange);
+        }
+
         if (path.contains("/api/auth/login") || path.contains("/api/auth/register")) {
             System.out.println("✅ Route publique (auth)");
             return chain.filter(exchange);
@@ -45,6 +51,11 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         System.out.println("🔒 Route protégée: " + path);
+
+        if (path.equals("/api/promotions/validated")) {
+            System.out.println("Route publique (promotions validees)");
+            return chain.filter(exchange);
+        }
 
         String authHeader = request.getHeaders().getFirst("Authorization");
 

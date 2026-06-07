@@ -1,0 +1,126 @@
+<div class="promo-container">
+  <div class="page-header">
+    <div>
+      <h1>Gestion des Promotions</h1>
+      <p>Generez, consultez et validez les promotions suggerees par le modele ML.</p>
+    </div>
+
+    <button class="btn-suggest" (click)="suggestPromotions()" [disabled]="isSuggesting">
+      <span *ngIf="!isSuggesting">Suggest Promos</span>
+      <span *ngIf="isSuggesting" class="loading-btn">
+        <span class="spinner"></span>
+        Generation...
+      </span>
+    </button>
+  </div>
+
+  <div *ngIf="successMessage" class="message success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="message error">
+    {{ errorMessage }}
+    <button class="btn-retry" (click)="loadBatches()">Reessayer</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Chargement des batches...</div>
+
+  <div *ngIf="!isLoading && batches.length === 0 && !errorMessage" class="empty-state">
+    <div class="empty-icon">
+      <i class="fa-solid fa-tags"></i>
+    </div>
+    <p>Aucun batch de promotions. Cliquez sur "Suggest Promos" pour commencer.</p>
+  </div>
+
+  <div *ngIf="!isLoading && batches.length > 0" class="batches-list">
+    <div
+      *ngFor="let batch of batches"
+      class="batch-card"
+      [class.expanded]="selectedBatch?.batchId === batch.batchId"
+    >
+      <div class="batch-header" (click)="selectBatch(batch)">
+        <div class="batch-meta">
+          <span class="batch-id">Batch #{{ batch.batchId }}</span>
+          <span class="batch-date">{{ formatDate(batch.createdAt) }}</span>
+          <span class="badge" [ngClass]="getStatusClass(batch.batchStatus)">
+            {{ getStatusLabel(batch.batchStatus) }}
+          </span>
+          <span class="suggestions-count">{{ batch.totalSuggestions }} suggestion(s)</span>
+        </div>
+
+        <div class="batch-actions" (click)="$event.stopPropagation()">
+          <button
+            *ngIf="batch.batchStatus === 'PENDING'"
+            class="btn-validate"
+            (click)="validate(batch.batchId)"
+            [disabled]="actionLoadingId === batch.batchId"
+          >
+            {{ actionLoadingId === batch.batchId ? 'Validation...' : 'Valider' }}
+          </button>
+
+          <button
+            *ngIf="batch.batchStatus === 'PENDING'"
+            class="btn-reject"
+            (click)="reject(batch.batchId)"
+            [disabled]="actionLoadingId === batch.batchId"
+          >
+            {{ actionLoadingId === batch.batchId ? 'Rejet...' : 'Rejeter' }}
+          </button>
+
+          <button
+            *ngIf="batch.batchStatus === 'VALIDATED'"
+            class="btn-cancel"
+            (click)="cancel(batch.batchId)"
+            [disabled]="actionLoadingId === batch.batchId"
+          >
+            <i class="fa-solid fa-rotate-left"></i>
+            {{ actionLoadingId === batch.batchId ? 'Annulation...' : 'Annuler la validation' }}
+          </button>
+
+          <span class="chevron">{{ selectedBatch?.batchId === batch.batchId ? '^' : 'v' }}</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="selectedBatch?.batchId === batch.batchId && detailLoadingId === batch.batchId"
+        class="loading detail-loading"
+      >
+        Chargement du detail du batch...
+      </div>
+
+      <div
+        *ngIf="selectedBatch?.batchId === batch.batchId && detailLoadingId !== batch.batchId"
+        class="promotions-table"
+      >
+        <div *ngIf="(selectedBatch?.promotions?.length ?? 0) === 0" class="empty-detail">
+          Aucune promotion dans ce batch.
+        </div>
+
+        <ng-container *ngIf="(selectedBatch?.promotions?.length ?? 0) > 0">
+          <div class="table-header">
+            <div>Produit</div>
+            <div>Categorie</div>
+            <div>Prix actuel</div>
+            <div>Remise</div>
+            <div>Prix promo</div>
+            <div>Raison</div>
+            <div>Statut</div>
+          </div>
+
+          <div class="table-body">
+            <div *ngFor="let promo of selectedBatch?.promotions" class="table-row">
+              <div class="cell font-bold">{{ promo.productName }}</div>
+              <div class="cell"><span class="cat-badge">{{ promo.category }}</span></div>
+              <div class="cell">{{ promo.currentPrice | number:'1.2-2' }} DH</div>
+              <div class="cell discount">-{{ promo.suggestedDiscount | number:'1.0-0' }}%</div>
+              <div class="cell promo-price">{{ promo.promotionalPrice | number:'1.2-2' }} DH</div>
+              <div class="cell reason">{{ promo.reason }}</div>
+              <div class="cell">
+                <span class="badge" [ngClass]="getStatusClass(promo.status)">
+                  {{ getStatusLabel(promo.status) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

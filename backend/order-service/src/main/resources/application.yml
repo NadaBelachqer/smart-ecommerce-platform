@@ -1,12 +1,12 @@
 server:
-  port: 8084
+  port: 8085
 
 spring:
   application:
     name: order-service
 
   datasource:
-    url: ${ORDER_DB_URL:jdbc:mysql://localhost:3313/order_db?useSSL=false&allowPublicKeyRetrieval=true}
+    url: ${ORDER_DB_URL:jdbc:mysql://localhost:3315/order_db?useSSL=false&allowPublicKeyRetrieval=true}
     username: ${ORDER_DB_USERNAME:root}
     password: ${ORDER_DB_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { ProductService, Product } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import { Promotion, PromotionService } from '../../services/promotion.service';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -17,8 +18,10 @@ export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private cdr = inject(ChangeDetectorRef);
   private cartService = inject(CartService);
+  private promotionService = inject(PromotionService);
 
   product: Product | null = null;
+  promotion: Promotion | null = null;
   loading = true;
   errorMessage = '';
   addedToCart = false;
@@ -27,7 +30,9 @@ export class ProductDetailComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      this.loadProduct(Number(id));
+      const productId = Number(id);
+      this.loadProduct(productId);
+      this.loadPromotion(productId);
     } else {
       this.loading = false;
       this.errorMessage = 'ID invalide';
@@ -59,10 +64,28 @@ export class ProductDetailComponent implements OnInit {
       });
   }
 
+  loadPromotion(productId: number) {
+    this.promotionService.getValidatedPromotions()
+      .subscribe({
+        next: (promotions) => {
+          this.promotion = (promotions || [])
+            .find(promotion => Number(promotion.productId) === Number(productId)) || null;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.promotion = null;
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
   
   addToCart() {
     if (this.product) {
-      this.cartService.add(this.product);
+      const product = this.promotion
+        ? { ...this.product, sellingPrice: Number(this.promotion.promotionalPrice) }
+        : this.product;
+      this.cartService.add(product);
       this.addedToCart = true;
       setTimeout(() => this.addedToCart = false, 2000);
     }
@@ -85,6 +108,18 @@ export class ProductDetailComponent implements OnInit {
   }
 
   quantity: number = 1;
+
+  formatPrice(price: number | undefined | null): string {
+    return Number(price || 0).toFixed(2);
+  }
+
+  discountLabel(): string {
+    return this.promotion ? `-${Math.round(Number(this.promotion.suggestedDiscount || 0))}%` : '';
+  }
+
+  originalPrice(): number {
+    return Number(this.promotion?.currentPrice || this.product?.sellingPrice || 0);
+  }
 
 
 

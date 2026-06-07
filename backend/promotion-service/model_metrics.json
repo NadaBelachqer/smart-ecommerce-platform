@@ -1,0 +1,11 @@
+{
+  "model_type": "XGBoost_Improved",
+  "r2_score": 0.9856622219085693,
+  "rmse": 5.627189210217902,
+  "mae": 4.131306171417236,
+  "mape": 4.623701744433252,
+  "max_discount_normal": 30,
+  "max_discount_exceptional": 35,
+  "n_features": 40,
+  "training_date": "2026-06-06 02:10:08"
+}

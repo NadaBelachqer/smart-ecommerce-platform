@@ -18,15 +18,33 @@
   box-shadow: 0 8px 32px rgba(79,70,229,0.08), 0 2px 8px rgba(0,0,0,0.05);
 }
 
+/* ==================== HEADER AVEC LOGO IMAGE - ESPACE RÉDUIT ==================== */
 .auth-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;     /* Espace réduit */
 }
 
-.logo {
-  font-size: 2rem;
-  margin-bottom: 0.6rem;
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;       /* Espace réduit entre logo et titre */
 }
+
+.auth-logo {
+  height: 100px;              /* Logo agrandi */
+  width: auto;
+  object-fit: contain;
+  max-width: 240px;
+  transition: transform 0.3s ease;
+}
+
+.auth-logo:hover {
+  transform: scale(1.02);
+}
+
+/* Supprimer l'ancien logo */
+/* .logo { font-size: 2rem; margin-bottom: 0.6rem; } */ /* À supprimer */
 
 .auth-header h2 {
   margin: 0;
@@ -37,27 +55,34 @@
 }
 
 .auth-header p {
-  margin-top: 0.35rem;
-  font-size: 0.9rem;
+  margin-top: 4px;           /* Espace réduit */
+  font-size: 0.85rem;        /* Légèrement réduit */
   color: #6b7280;
 }
 
-.input-group { margin-bottom: 1.2rem; }
+/* Formulaire - Espace réduit */
+.auth-form {
+  margin-top: 0;
+}
+
+.input-group {
+  margin-bottom: 1rem;       /* Espace réduit */
+}
 
 label {
-  font-size: 0.83rem;
+  font-size: 0.8rem;         /* Légèrement réduit */
   color: #374151;
   display: block;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.35rem;    /* Espace réduit */
   font-weight: 500;
 }
 
 .input-wrapper input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 1rem;      /* Padding réduit */
   border: 1.5px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   outline: none;
   background: #fafafa;
   transition: border 0.2s, box-shadow 0.2s;
@@ -74,29 +99,32 @@ label {
   background: #fef2f2;
   border: 1px solid #fecaca;
   color: #991b1b;
-  padding: 0.75rem;
+  padding: 0.7rem;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin-bottom: 1rem;
   text-align: center;
 }
 
 .btn-primary {
   width: 100%;
-  padding: 0.85rem;
+  padding: 0.75rem;          /* Padding réduit */
   border: none;
   border-radius: 9px;
   background: linear-gradient(135deg, #4f46e5, #6366f1);
   color: white;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s;
   font-family: inherit;
   letter-spacing: 0.2px;
 }
 
-.btn-primary:hover { opacity: 0.92; transform: translateY(-1px); }
+.btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
 
 .btn-primary:disabled {
   background: #9ca3af;
@@ -106,8 +134,8 @@ label {
 
 .auth-footer {
   text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
+  margin-top: 1.2rem;        /* Espace réduit */
+  font-size: 0.8rem;
   color: #6b7280;
   display: flex;
   gap: 6px;
@@ -120,4 +148,49 @@ label {
   text-decoration: none;
 }
 
-.auth-footer a:hover { text-decoration: underline; }
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Version responsive pour mobile */
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .auth-logo {
+    height: 70px;            /* Plus petit sur mobile */
+    max-width: 180px;
+  }
+  
+  .logo-container {
+    margin-bottom: 8px;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .auth-header p {
+    font-size: 0.8rem;
+  }
+  
+  .input-group {
+    margin-bottom: 0.85rem;
+  }
+  
+  input {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.85rem;
+  }
+  
+  .btn-primary {
+    padding: 0.65rem;
+    font-size: 0.85rem;
+  }
+  
+  .auth-footer {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+  }
+}

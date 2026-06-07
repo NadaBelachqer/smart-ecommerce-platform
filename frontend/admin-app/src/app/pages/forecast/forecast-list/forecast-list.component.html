@@ -39,8 +39,7 @@
           <div class="product-info">
             <h3>{{ product.name }}</h3>
             <p class="sku">{{ product.sku }}</p>
-            <p class="price">{{ product.sellingPrice | currency:'EUR':'symbol':'1.2-2' }}</p>
-          </div>
+<p class="price">{{ product.sellingPrice | number:'1.2-2' }} DH</p>          </div>
         </div>
       </div>
     </div>
@@ -92,7 +91,7 @@
             </div>
 
             <div class="form-group">
-              <label>Prix (€)</label>
+              <label>Prix dh</label>
               <input type="number" [(ngModel)]="price" readonly style="background:#f5f5f5; cursor:not-allowed">
             </div>
 

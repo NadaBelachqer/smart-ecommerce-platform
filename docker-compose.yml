@@ -104,6 +104,24 @@ services:
       timeout: 20s
       retries: 10
 
+  mysql-promotion:
+    image: mysql:8
+    container_name: mysql-promotion
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: promotion_db
+    ports:
+      - "3316:3306"
+    volumes:
+      - mysql_promotion_data:/var/lib/mysql
+      - ./backend/promotion-service/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    networks:
+      - ecommerce-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
   # ==================== SERVICES BACKEND ====================
 
   auth-service:
@@ -159,7 +177,7 @@ services:
       context: ./backend/order-service
     container_name: order-service
     ports:
-      - "8086:8084"
+      - "8085:8085"
     depends_on:
       mysql-order:
         condition: service_healthy
@@ -271,6 +289,7 @@ volumes:
   mysql_forecast_data:
   mysql_order_data:
   mysql_pricing_data:
+  mysql_promotion_data:
 
 # ==================== RÉSEAU ====================
 

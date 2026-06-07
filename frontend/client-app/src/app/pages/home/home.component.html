@@ -2,18 +2,23 @@
 <div class="promo-bar">
   <span class="promo-tag">🔥 OFFRE DE LA SEMAINE</span>
   <span class="promo-text">Jusqu'à -30% sur une sélection de produits frais</span>
-</div>
+</div> 
 
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-container">
     <div class="nav-brand">
-      <a routerLink="/">🛍️ MonShop</a>
+      <a routerLink="/"><img src="assets/images/logo.png" alt="Logo" class="nav-logo"></a>
     </div>
 
     <div class="nav-search">
       <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </span>
         <input
           type="text" [(ngModel)]="searchKeyword" placeholder="Rechercher un produit..." (keyup.enter)="search()">
         <button (click)="search()">Rechercher</button>
@@ -23,7 +28,12 @@
     <div class="nav-links">
       <a routerLink="/" class="nav-link active">Accueil</a>
       <a routerLink="/cart" class="cart-link">
-        🛒 Panier
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        Panier
         <span class="badge" *ngIf="cartService.totalItems() > 0">{{ cartService.totalItems() }}</span>
       </a>
 
@@ -75,22 +85,22 @@
         <h3 class="sidebar-title">Catégories</h3>
         <nav class="categories-nav">
           <button (click)="loadProducts()" class="category-link" [class.active]="!selectedCategory">
-            <span class="cat-icon">🏪</span> Tout voir
+            Tout voir
           </button>
           <button (click)="filterByCategory('Electronics')" class="category-link" [class.active]="selectedCategory === 'Electronics'">
-            <span class="cat-icon">💻</span> Électronique
+            Électronique
           </button>
           <button (click)="filterByCategory('Dairy')" class="category-link" [class.active]="selectedCategory === 'Dairy'">
-            <span class="cat-icon">🥛</span> Produits laitiers
+            Produits laitiers
           </button>
           <button (click)="filterByCategory('Fruits')" class="category-link" [class.active]="selectedCategory === 'Fruits'">
-            <span class="cat-icon">🍎</span> Fruits
+            Fruits
           </button>
           <button (click)="filterByCategory('Légumes')" class="category-link" [class.active]="selectedCategory === 'Légumes'">
-            <span class="cat-icon">🥦</span> Légumes
+            Légumes
           </button>
           <button (click)="filterByCategory('Boissons')" class="category-link" [class.active]="selectedCategory === 'Boissons'">
-            <span class="cat-icon">🥤</span> Boissons
+            Boissons
           </button>
         </nav>
 
@@ -102,6 +112,43 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
+
+      <!-- Promotions -->
+      <section *ngIf="promotions.length > 0" class="validated-promos">
+        <div class="promo-section-header">
+          <div>
+            <span class="promo-kicker">Promotions validees</span>
+            <h2>Offres actives</h2>
+          </div>
+          <span class="promo-total">{{ promotions.length }} offre(s)</span>
+        </div>
+
+        <div class="promo-strip">
+          <article *ngFor="let promotion of promotions" class="promo-offer-card">
+            <div class="promo-offer-image">
+              <img
+                [src]="promotionImageUrl(promotion)"
+                [alt]="promotion.productName"
+                (error)="$event.target.src='https://placehold.co/400x400/fff7ed/c2410c?text=PROMO'">
+              <span class="promo-offer-discount">{{ promotionDiscountLabel(promotion) }}</span>
+            </div>
+
+            <div class="promo-offer-body">
+              <span class="promo-offer-category">{{ promotion.category }}</span>
+              <h3>{{ promotion.productName }}</h3>
+              <div class="promo-offer-prices">
+                <span class="promo-offer-old">{{ formatPrice(promotion.currentPrice) }} DH</span>
+                <span class="promo-offer-new">{{ formatPrice(promotion.promotionalPrice) }} DH</span>
+              </div>
+              <p>{{ promotion.reason }}</p>
+              <div class="promo-offer-actions">
+                <button type="button" (click)="addPromotionToCart(promotion)">Ajouter</button>
+                <a [routerLink]="['/products', promotion.productId]">Details</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
 
       <!-- Loading skeleton -->
       <div *ngIf="loading" class="loading-skeleton">
@@ -132,25 +179,37 @@
         </div>
 
         <div class="products-grid">
-          <div *ngFor="let product of products" class="product-card">
-            <div class="product-image">
-              <img
-                [src]="getImageUrl(product)"
-                [alt]="product.name"
-                (error)="$event.target.src='https://placehold.co/300x300?text=Image+coming+soon'">
-              <div class="card-overlay">
-                <button class="quick-view-btn" [routerLink]="['/products', product.id]">👁 Voir détails</button>
+          <div *ngFor="let product of products" class="product-card" [class.promo-product-card]="hasPromotion(product)">
+            <div class="product-image-wrapper">
+              <div class="product-image">
+                <img
+                  [src]="getImageUrl(product)"
+                  [alt]="product.name"
+                  (error)="$event.target.src='https://placehold.co/400x400/f8f7ff/7c3aed?text=' + product.name.charAt(0).toUpperCase()">
+                <div class="card-overlay">
+                  <button class="quick-view-btn" [routerLink]="['/products', product.id]">Voir détails</button>
+                </div>
+                <span class="product-badge" *ngIf="product.category">{{ product.category }}</span>
+                <span class="discount-badge" *ngIf="hasPromotion(product)">{{ discountLabel(product) }}</span>
               </div>
-              <span class="product-badge" *ngIf="product.category">{{ product.category }}</span>
             </div>
 
             <div class="product-info">
               <h3 class="product-title">{{ product.name }}</h3>
-              <div class="price-row">
-                <span class="current-price">{{ product.sellingPrice }} <small>DH</small></span>
+              <div class="promo-note" *ngIf="hasPromotion(product)">
+                Promo validee
               </div>
+              <div class="price-row" *ngIf="getPromotion(product) as promotion; else regularPrice">
+                <span class="old-price">{{ formatPrice(originalPrice(product)) }} DH</span>
+                <span class="promo-price">{{ formatPrice(promotion.promotionalPrice) }} <small>DH</small></span>
+              </div>
+              <ng-template #regularPrice>
+                <div class="price-row">
+                  <span class="current-price">{{ formatPrice(product.sellingPrice) }} <small>DH</small></span>
+                </div>
+              </ng-template>
               <button class="add-to-cart" (click)="addToCart(product)">
-                🛒 Ajouter au panier
+                Ajouter au panier
               </button>
             </div>
           </div>
@@ -178,7 +237,7 @@
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
-    <span class="footer-brand">🛍️ MonShop</span>
+    <img src="assets/images/logo.png" alt="Logo" class="footer-logo">
     <span class="footer-copy">© 2025 · Tous droits réservés</span>
   </div>
 </footer>
