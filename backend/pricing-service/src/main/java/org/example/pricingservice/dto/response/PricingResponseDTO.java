@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class PricingResponseDTO {
 
+    private Long historyId;
     private Long productId;
     private Double competitorPrice;
     private Double optimalPrice;

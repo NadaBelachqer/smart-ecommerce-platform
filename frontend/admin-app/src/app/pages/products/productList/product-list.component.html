@@ -121,6 +121,9 @@
           <td class="price-cell text-right">
             <span class="currency-amount">{{ product.sellingPrice | number:'1.2-2' }}</span>
             <span class="currency-unit">DH</span>
+            <span *ngIf="isAiOptimized(product.id)" class="ai-price-badge" title="Prix optimisé par l'IA">
+              <i class="fas fa-robot"></i> IA
+            </span>
           </td>
           
           <td class="cost-cell text-right">

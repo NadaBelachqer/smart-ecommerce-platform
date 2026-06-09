@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/pricing")
 @RequiredArgsConstructor
-
 public class PricingController {
 
     private final PricingService pricingService;
@@ -29,6 +28,16 @@ public class PricingController {
         System.out.println("=============");
 
         return ResponseEntity.ok(pricingService.optimize(request));
+    }
+
+    @PostMapping("/{historyId}/apply")
+    public ResponseEntity<PricingHistory> applyPrice(@PathVariable Long historyId) {
+        return ResponseEntity.ok(pricingService.applyPrice(historyId));
+    }
+
+    @GetMapping("/optimized-products")
+    public ResponseEntity<List<Long>> getOptimizedProductIds() {
+        return ResponseEntity.ok(pricingService.getOptimizedProductIds());
     }
 
     @GetMapping("/history/{productId}")

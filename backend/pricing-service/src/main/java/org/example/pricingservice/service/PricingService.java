@@ -8,6 +8,7 @@ import org.example.pricingservice.dto.request.PricingRequestDTO;
 import org.example.pricingservice.dto.response.PricingResponseDTO;
 import org.example.pricingservice.dto.response.ProductResponseDTO;
 import org.example.pricingservice.entity.PricingHistory;
+import org.example.pricingservice.entity.PricingStatus;
 import org.example.pricingservice.repository.PricingRepository;
 import org.springframework.stereotype.Service;
 
@@ -98,13 +99,14 @@ public class PricingService {
             // 8. Retourner la réponse
             // 8. Retourner la réponse (avec competitorPrice)
             return PricingResponseDTO.builder()
+                    .historyId(history.getId())
                     .productId(request.getProductId())
                     .optimalPrice(optimalPrice)
                     .expectedDemand(expectedDemand)
                     .expectedRevenue(expectedRevenue)
                     .expectedProfit(expectedProfit)
                     .score(score)
-                    .competitorPrice(competitorPrice)  // ← AJOUTER CETTE LIGNE
+                    .competitorPrice(competitorPrice)
                     .strategy(strategy)
                     .strategyLabel(strategyLabel)
                     .message("Prix optimal généré avec succès (Version 1.0 - Fallback)")
@@ -122,5 +124,26 @@ public class PricingService {
     // HISTORIQUE
     public List<PricingHistory> history(Long productId) {
         return pricingRepository.findByProductId(productId);
+    }
+
+    // APPLIQUER LE PRIX OPTIMAL
+    public PricingHistory applyPrice(Long historyId) {
+        PricingHistory history = pricingRepository.findById(historyId)
+                .orElseThrow(() -> new RuntimeException("Historique non trouvé: " + historyId));
+
+        productClient.updateSellingPrice(history.getProductId(), history.getOptimalPrice());
+
+        history.setStatus(PricingStatus.APPLIED);
+        history.setAppliedAt(LocalDateTime.now());
+        return pricingRepository.save(history);
+    }
+
+    // LISTE DES PRODUITS AVEC PRIX IA APPLIQUÉ
+    public List<Long> getOptimizedProductIds() {
+        return pricingRepository.findByStatus(PricingStatus.APPLIED)
+                .stream()
+                .map(PricingHistory::getProductId)
+                .distinct()
+                .toList();
     }
 }

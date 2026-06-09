@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "pricing_history")
 @Data
@@ -30,9 +31,16 @@ public class PricingHistory {
     private String strategy;
     private String strategyLabel;
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private PricingStatus status = PricingStatus.PENDING;
+
+    private LocalDateTime appliedAt;
+
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
         pricingDate = LocalDateTime.now();
+        if (status == null) status = PricingStatus.PENDING;
     }
 }

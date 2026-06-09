@@ -8,6 +8,7 @@ export interface PricingRequest {
   productId: number;
 }
 export interface PricingResponse {
+  history_id: number;
   product_id: number;       
   optimal_price: number;    
   expected_demand: number;  
@@ -33,6 +34,8 @@ export interface PricingHistory {
   created_at: string;
   strategy: string;
   strategy_label: string;
+  status: 'PENDING' | 'APPLIED' | 'REJECTED';
+  applied_at?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -58,6 +61,21 @@ export class PricingService {
   getHistory(productId: number): Observable<PricingHistory[]> {
     return this.http.get<PricingHistory[]>(
       `${this.apiUrl}/history/${productId}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  applyPrice(historyId: number): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/${historyId}/apply`,
+      {},
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  getOptimizedProductIds(): Observable<number[]> {
+    return this.http.get<number[]>(
+      `${this.apiUrl}/optimized-products`,
       { headers: this.getAuthHeaders() }
     );
   }

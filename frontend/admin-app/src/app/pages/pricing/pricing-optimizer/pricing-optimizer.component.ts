@@ -26,7 +26,10 @@ export class PricingOptimizerComponent implements OnInit {
   loadingProduct = false;
   loadingOptimize = false;
   loadingHistory = false;
+  loadingApply = false;
+  applySuccess = false;
   errorMessage = '';
+  successMessage = '';
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -48,11 +51,10 @@ export class PricingOptimizerComponent implements OnInit {
       .subscribe({
         next: (p) => {
           this.product = p;
-          console.log('✅ Produit chargé:', p);
           this.cdr.detectChanges();
         },
         error: (err) => {
-          console.error('❌ Erreur chargement produit:', err);
+          console.error(err);
           this.errorMessage = 'Produit introuvable';
           this.cdr.detectChanges();
         }
@@ -61,12 +63,12 @@ export class PricingOptimizerComponent implements OnInit {
 
   optimize() {
     if (!this.productId) return;
-    
+
     this.loadingOptimize = true;
     this.errorMessage = '';
+    this.successMessage = '';
     this.pricingResult = null;
-
-    console.log('🚀 Appel optimization pour produit:', this.productId);
+    this.applySuccess = false;
 
     this.pricingService.optimize(this.productId)
       .pipe(finalize(() => {
@@ -75,13 +77,11 @@ export class PricingOptimizerComponent implements OnInit {
       }))
       .subscribe({
         next: (res) => {
-          console.log('✅ Résultat ML reçu:', res);
           this.pricingResult = res;
           this.cdr.detectChanges();
           this.loadHistory();
         },
         error: (err) => {
-          console.error('❌ Erreur optimisation:', err);
           this.errorMessage = 'Erreur: ' + (err.error?.message || err.message || 'Service indisponible');
           this.cdr.detectChanges();
         }
@@ -90,10 +90,8 @@ export class PricingOptimizerComponent implements OnInit {
 
   loadHistory() {
     if (!this.productId) return;
-    
-    this.loadingHistory = true;
-    console.log('📜 Chargement historique pour produit:', this.productId);
 
+    this.loadingHistory = true;
     this.pricingService.getHistory(this.productId)
       .pipe(finalize(() => {
         this.loadingHistory = false;
@@ -101,14 +99,31 @@ export class PricingOptimizerComponent implements OnInit {
       }))
       .subscribe({
         next: (h) => {
-          console.log('✅ Historique reçu:', h);
           this.history = h.sort((a, b) =>
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           );
           this.cdr.detectChanges();
         },
+        error: () => { this.cdr.detectChanges(); }
+      });
+  }
+
+  applyPrice() {
+    if (!this.pricingResult?.history_id) return;
+    this.loadingApply = true;
+    this.errorMessage = '';
+    this.pricingService.applyPrice(this.pricingResult.history_id)
+      .pipe(finalize(() => { this.loadingApply = false; this.cdr.detectChanges(); }))
+      .subscribe({
+        next: () => {
+          this.applySuccess = true;
+          this.successMessage = `Prix optimal de ${this.pricingResult!.optimal_price.toFixed(2)} DH applique avec succes sur le catalogue !`;
+          if (this.product) this.product.sellingPrice = this.pricingResult!.optimal_price;
+          this.loadHistory();
+          this.cdr.detectChanges();
+        },
         error: (err) => {
-          console.error('❌ Erreur chargement historique:', err);
+          this.errorMessage = "Erreur lors de l'application: " + (err.error?.message || err.message);
           this.cdr.detectChanges();
         }
       });
@@ -122,19 +137,6 @@ export class PricingOptimizerComponent implements OnInit {
   getPriceDiffPercent(): number {
     if (!this.product?.sellingPrice) return 0;
     return (this.getPriceDiff() / this.product.sellingPrice) * 100;
-  }
-
-  getStrategyIcon(strategy: string): string {
-    const icons: Record<string, string> = {
-      'stock_critical': 'fa-triangle-exclamation',
-      'liquidation': 'fa-tag',
-      'destocking': 'fa-boxes',
-      'penetration': 'fa-rocket',
-      'premium': 'fa-gem',
-      'promo_seasonal': 'fa-calendar-alt',
-      'competitive': 'fa-chart-line'
-    };
-    return icons[strategy] || 'fa-chart-simple';
   }
 
   getScoreClass(score: number): string {
@@ -154,5 +156,18 @@ export class PricingOptimizerComponent implements OnInit {
       'competitive': 'strategy-competitive'
     };
     return classes[strategy] || '';
+  }
+
+  getStrategyIcon(strategy: string): string {
+    const icons: Record<string, string> = {
+      'stock_critical': 'fa-triangle-exclamation',
+      'liquidation': 'fa-tag',
+      'destocking': 'fa-boxes',
+      'penetration': 'fa-rocket',
+      'premium': 'fa-gem',
+      'promo_seasonal': 'fa-calendar-alt',
+      'competitive': 'fa-chart-line'
+    };
+    return icons[strategy] || 'fa-chart-simple';
   }
 }

@@ -65,6 +65,14 @@ public class ProductService {
 
 
     @Transactional
+    public ProductResponseDTO updateSellingPrice(Long id, Double newPrice) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
+        product.setSellingPrice(newPrice);
+        return productMapper.toResponseDTO(productRepository.save(product));
+    }
+
+    @Transactional
     public ProductResponseDTO createProduct(ProductRequestDTO request) throws IOException {
         if (request.getSku() != null && productRepository.findBySku(request.getSku()).isPresent()) {
             throw new RuntimeException("Un produit avec ce SKU existe déjà");

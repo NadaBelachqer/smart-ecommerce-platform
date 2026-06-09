@@ -19,7 +19,7 @@ public class CorsConfig {
                 "http://localhost:*",
                 "http://127.0.0.1:*"
         ));
-        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(List.of("*"));
         corsConfig.setExposedHeaders(List.of("Authorization", "Content-Type"));
         corsConfig.setAllowCredentials(true);

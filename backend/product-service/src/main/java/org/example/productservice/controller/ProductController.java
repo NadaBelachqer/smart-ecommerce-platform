@@ -107,4 +107,12 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/admin/update-price/{id}")
+    public ResponseEntity<ProductResponseDTO> updatePrice(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> body) {
+        Double newPrice = Double.valueOf(body.get("sellingPrice").toString());
+        return ResponseEntity.ok(productService.updateSellingPrice(id, newPrice));
+    }
 }

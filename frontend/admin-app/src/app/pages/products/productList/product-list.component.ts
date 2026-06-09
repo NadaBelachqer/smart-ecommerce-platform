@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService, Product } from '../../../services/product.service';
+import { PricingService } from '../../../services/pricing.service';
 import { finalize } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
@@ -15,11 +16,13 @@ import { FormsModule } from '@angular/forms';
 export class ProductListComponent implements OnInit {
 
   private productService = inject(ProductService);
+  private pricingService = inject(PricingService);
   private cdr = inject(ChangeDetectorRef);
 
   Math = Math;
 
   products: Product[] = [];
+  aiOptimizedIds = new Set<number>();
   loading = false;
   errorMessage = '';
   
@@ -35,6 +38,21 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
+    this.loadAiOptimizedIds();
+  }
+
+  loadAiOptimizedIds() {
+    this.pricingService.getOptimizedProductIds().subscribe({
+      next: (ids) => {
+        this.aiOptimizedIds = new Set(ids);
+        this.cdr.detectChanges();
+      },
+      error: () => {}
+    });
+  }
+
+  isAiOptimized(productId: number): boolean {
+    return this.aiOptimizedIds.has(productId);
   }
 
   loadProducts() {

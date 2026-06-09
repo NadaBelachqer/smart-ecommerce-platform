@@ -2,8 +2,12 @@ package org.example.pricingservice.client;
 
 import org.example.pricingservice.dto.response.ProductResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class ProductClient {
@@ -12,6 +16,19 @@ public class ProductClient {
 
     @Value("${product.service.url:http://localhost:8082}")
     private String productServiceUrl;
+
+    public void updateSellingPrice(Long productId, Double newPrice) {
+        String url = productServiceUrl + "/products/admin/update-price/" + productId;
+        try {
+            Map<String, Object> body = new HashMap<>();
+            body.put("sellingPrice", newPrice);
+            restTemplate.put(url, new HttpEntity<>(body));
+            System.out.println("✅ [ProductClient] Prix mis à jour: " + newPrice + " DH pour produit " + productId);
+        } catch (Exception e) {
+            System.err.println("❌ [ProductClient] Erreur update prix: " + e.getMessage());
+            throw new RuntimeException("Impossible de mettre à jour le prix: " + e.getMessage());
+        }
+    }
 
     public ProductResponseDTO getProduct(Long productId) {
         if (productId == null) {

@@ -23,6 +23,11 @@
     </button>
   </div>
 
+  <div *ngIf="successMessage" class="success-alert">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+
   <div *ngIf="product" class="product-card">
     <div class="product-visual">
       <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name">
@@ -125,6 +130,13 @@
         <i class="fas fa-arrows-rotate" [class.fa-spin]="loadingOptimize"></i>
         <span>Actualiser les simulations</span>
       </button>
+      <button *ngIf="!applySuccess" type="button" class="btn-apply" (click)="applyPrice()" [disabled]="loadingApply">
+        <i [class]="loadingApply ? 'fas fa-spinner fa-spin' : 'fas fa-check'"></i>
+        <span>{{ loadingApply ? 'Application...' : 'Appliquer ce prix sur le catalogue' }}</span>
+      </button>
+      <span *ngIf="applySuccess" class="applied-badge">
+        <i class="fas fa-robot"></i> Prix IA appliqué
+      </span>
     </div>
   </div>
 
@@ -146,6 +158,7 @@
             <th class="text-right">Prix marché</th>
             <th class="text-center">Élasticité (Demande)</th>
             <th class="text-right">Profit projeté</th>
+            <th class="text-center">Statut</th>
           </tr>
         </thead>
         <tbody>
@@ -163,6 +176,10 @@
             <td class="text-right text-muted">{{ h.competitor_price | number:'1.2-2' }} DH</td>
             <td class="text-center font-medium">{{ h.expected_demand | number:'1.0-0' }} u</td>
             <td class="text-right font-semibold text-success">{{ h.expected_profit | number:'1.2-2' }} DH</td>
+            <td class="text-center">
+              <span *ngIf="h.status === 'APPLIED'" class="applied-badge"><i class="fas fa-robot"></i> Appliqué</span>
+              <span *ngIf="h.status !== 'APPLIED'" class="pending-badge">En attente</span>
+            </td>
           </tr>
         </tbody>
       </table>
